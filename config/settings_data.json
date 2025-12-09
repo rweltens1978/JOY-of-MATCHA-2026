@@ -1,1 +1,86 @@
-{"current":{"license_key":"","color_bg_btn":"#fc4f00","colors_background_1":"#FFFFFF","color_text_btn":"#020b1e","color_paginate":"#c4c4c4","color_paginate_active":"#000000","color_arrow":"#000000","button_color_border":"#000000","button_radius":30,"button_color":"#000000","button_text_color":"#FFFFFF","type_header_font":"montserrat_n4","type_body_font":"montserrat_n4","social_twitter_link":"https:\/\/twitter.com\/","social_facebook_link":"https:\/\/facebook.com\/","social_instagram_link":"http:\/\/instagram.com\/","social_linkedin_link":"https:\/\/www.linkedin.com\/","social_youtube_link":"https:\/\/www.youtube.com\/","predictive_search_show_vendor":false,"predictive_search_show_price":false,"favicon":"shopify:\/\/shop_images\/2.svg","logo":"shopify:\/\/shop_images\/surge-logo.png","logo_width":100,"logo_mobwidth":115,"payment_icon_1":"shopify:\/\/shop_images\/icon1.svg","payment_icon_2":"shopify:\/\/shop_images\/icon2.svg","payment_icon_3":"shopify:\/\/shop_images\/icon3.svg","payment_icon_4":"shopify:\/\/shop_images\/icon4.svg","payment_icon_5":"shopify:\/\/shop_images\/icon5.svg","payment_icon_6":"shopify:\/\/shop_images\/icon6.svg","payment_icon_7":"shopify:\/\/shop_images\/icon7.svg","width_conteiner_all":"off","width_all_section":"contein","enable_sticky_header":false,"color_paginate_btn":"#a1f71a","background_paginate_btn":"#aff8ff","cart_notes_enable":false,"enable_discount_code":false,"enable_payment_icons":false,"empty_minicart_collection_1":"frontpage","empty_minicart_collection_2":"frontpage","empty_minicart_collection_3":"frontpage","empty_minicart_collection_4":"frontpage","empty_minicart_shop_link":"shopify:\/\/collections\/all","minicart_free_shipping_price_qualified_text":"You've qualified For free shipping","minicart_suggestion_product_1":"","minicart_suggestion_product_2":"","minicart_suggestion_product_3":"","minicart_trust_icon_1":"","minicart_trust_icon_text_1":"","minicart_trust_icon_2":"","minicart_trust_icon_text_2":"","minicart_trust_icon_3":"","minicart_trust_icon_text_3":"","minicart_trust_icon_4":"","minicart_trust_icon_text_4":"","cart_type":"drawer","icon_cart":"shopping_bag","cart_bubble":false,"cart_bubble_animation":false,"reviews_text":"","checkout_button_color":"#2cc453","minicart_payment_icons":"","sections":{"main-login":{"type":"main-login","settings":{"login_sub_title":""}}},"content_for_index":[]}}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "license_key": "DUMR7FBV-PFNJWDTE-K2CN58LS-E89B6E3B",
+    "store_url": "joyofmatcha.com",
+    "color_bg_btn": "#fc4f00",
+    "colors_background_1": "#FFFFFF",
+    "color_text_btn": "#020b1e",
+    "color_paginate": "#c4c4c4",
+    "color_paginate_active": "#000000",
+    "color_arrow": "#000000",
+    "button_color_border": "#000000",
+    "button_radius": 30,
+    "button_color": "#000000",
+    "button_text_color": "#FFFFFF",
+    "type_header_font": "montserrat_n4",
+    "type_body_font": "montserrat_n4",
+    "social_twitter_link": "https://twitter.com/",
+    "social_facebook_link": "https://facebook.com/",
+    "social_instagram_link": "http://instagram.com/",
+    "social_linkedin_link": "https://www.linkedin.com/",
+    "social_youtube_link": "https://www.youtube.com/",
+    "predictive_search_show_vendor": false,
+    "predictive_search_show_price": false,
+    "favicon": "shopify://shop_images/2.svg",
+    "logo": "shopify://shop_images/surge-logo.png",
+    "logo_width": 100,
+    "logo_mobwidth": 115,
+    "payment_icon_1": "shopify://shop_images/icon1.svg",
+    "payment_icon_2": "shopify://shop_images/icon2.svg",
+    "payment_icon_3": "shopify://shop_images/icon3.svg",
+    "payment_icon_4": "shopify://shop_images/icon4.svg",
+    "payment_icon_5": "shopify://shop_images/icon5.svg",
+    "payment_icon_6": "shopify://shop_images/icon6.svg",
+    "payment_icon_7": "shopify://shop_images/icon7.svg",
+    "width_conteiner_all": "off",
+    "width_all_section": "contein",
+    "enable_sticky_header": false,
+    "color_paginate_btn": "#a1f71a",
+    "background_paginate_btn": "#aff8ff",
+    "cart_notes_enable": false,
+    "enable_discount_code": false,
+    "enable_payment_icons": false,
+    "empty_minicart_collection_1": "frontpage",
+    "empty_minicart_collection_2": "frontpage",
+    "empty_minicart_collection_3": "frontpage",
+    "empty_minicart_collection_4": "frontpage",
+    "empty_minicart_shop_link": "shopify://collections/all",
+    "minicart_free_shipping_price_qualified_text": "You've qualified For free shipping",
+    "minicart_suggestion_product_1": "",
+    "minicart_suggestion_product_2": "",
+    "minicart_suggestion_product_3": "",
+    "minicart_trust_icon_1": "",
+    "minicart_trust_icon_text_1": "",
+    "minicart_trust_icon_2": "",
+    "minicart_trust_icon_text_2": "",
+    "minicart_trust_icon_3": "",
+    "minicart_trust_icon_text_3": "",
+    "minicart_trust_icon_4": "",
+    "minicart_trust_icon_text_4": "",
+    "cart_type": "drawer",
+    "icon_cart": "shopping_bag",
+    "cart_bubble": false,
+    "cart_bubble_animation": false,
+    "reviews_text": "",
+    "checkout_button_color": "#2cc453",
+    "minicart_payment_icons": "",
+    "sections": {
+      "main-login": {
+        "type": "main-login",
+        "settings": {
+          "login_sub_title": ""
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}
