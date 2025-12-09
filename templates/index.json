@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "yas_hero_cropped_efEYCp": {
@@ -9,8 +18,9 @@
             "title": "<h3>A Simple Way to [Desired Outcome] Without [Pain Point]</h3>",
             "subtitle": "<p>Join [#] Happy Customers Already Enjoying [Core Benefit], Backed By Our [USP. Ex. Guarantee, Free Shipping, Expert Formula].</p>",
             "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
-            "star_color": "#ff8e00",
+            "star_color": "#f28907",
             "slide_bg": "#f7f7f7",
+            "show_image_only": "all",
             "hide_image": false,
             "image_position": "right",
             "image_positionm": "top",
@@ -19,10 +29,13 @@
             "cpadding_x_mob": 20,
             "cpadding_y_mob": 20,
             "container_radius": 30,
+            "image_round": 30,
             "heading_size": "large",
             "headline_typography": "capitalize",
-            "text_color": "#000000",
-            "btext_color": "#000000",
+            "text_color": "#405111",
+            "btext_color": "#405111",
+            "pointer_background_color": "#d95d30",
+            "pointer_color": "#ffffff",
             "show_payment_icons": true,
             "heading_align": "left",
             "mob_heading_align": "center",
@@ -34,10 +47,15 @@
             "icon_3_text": "check",
             "point_3_text": "Feel [Emotional Outcome] and finally [End Fear State]",
             "review_on": "on",
+            "remove_review_radius": false,
             "review_bg_color": "#ffffff",
+            "review_star_color": "#f28907",
+            "review_bg_opacity": 1,
+            "review_text_color": "#111111",
             "review-title": "<h2>Julia Larson</h2>",
             "review-text": "<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihi quo minus id quod maxime placeat facere possimus</p><p></p>",
             "button_text": "SHOP NOW",
+            "icon_alt": "",
             "show_arrow": true,
             "button_link": "/",
             "setting_btn": "global",
@@ -56,7 +74,7 @@
       "settings": {
         "background_color": "rgba(0,0,0,0)",
         "font_variant": "default",
-        "title_font": "montserrat_n4",
+        "title_font": "poppins_n4",
         "section_width": "page-width",
         "enable_custom_width": true,
         "custom_page_width": 1472,
@@ -127,6 +145,7 @@
         "headline_typography": "capitalize",
         "text_color": "#000000",
         "subtitle_color": "#666666",
+        "block_color": "#000000",
         "heading_align": "center",
         "section_width": "container-fluid",
         "top_btm_padding": true,
@@ -136,7 +155,6 @@
         "padding_y_desk": 20,
         "padding_x_mob": 15,
         "padding_y_mob": 15,
-        "block_color": "#000000",
         "scroll_speed": 15,
         "mod_carusel": "marquee",
         "display_on": "all",
@@ -197,6 +215,8 @@
         "subheading": "",
         "settging_btn": "global",
         "btn": "",
+        "icon_alt": "",
+        "show_arrow": true,
         "btn_url": "",
         "button_border_size": 1,
         "button_radius": 50,
@@ -272,7 +292,7 @@
         "title": "<h2>Discover our top-rated bestsellers</h2>",
         "product_page_title": "<h2>You may also be interested in...</h2>",
         "under_title_text": "<h3>Join thousands who’ve already [achieved desired outcome] with these top picks</h3>",
-        "background_color": "#ededed", 
+        "background_color": "#ededed",
         "heading_size": "medium",
         "headline_typography": "capitalize",
         "heading_align": "center",
@@ -314,7 +334,9 @@
         "button_color": "rgba(0,0,0,0)",
         "button_text_color": "rgba(0,0,0,0)",
         "text_btn_card": "SHOP NOW",
+        "icon_alt": "",
         "view_more_btn": "View More",
+        "view_more_color": "#000000",
         "view_more_url": ""
       }
     },
@@ -373,6 +395,7 @@
         "display_on": "all",
         "num_bg": "#000000",
         "num_txt": "#ffffff",
+        "media_sizes": "medium",
         "title": "<h2>3 Easy Steps to [Desired outcome]</h2>",
         "subtitle": "<h3>It's never been easier to [achieve outcome], just follow these simple steps and enjoy [primary benefit] fast.</h3>",
         "container_styling": "card",
@@ -382,11 +405,14 @@
         "box_shadow_color": "#000000",
         "card_border": 1,
         "box_color": "rgba(0,0,0,0)",
+        "box_text_color": "#000000",
         "card_border_color": "#ededed",
         "container_radius": 10,
         "settging_btn": "global",
         "btn_text": "",
         "btn": "",
+        "icon_alt": "",
+        "show_arrow": true,
         "btn_url": "",
         "button_border_size": 1,
         "button_radius": 50,
@@ -478,6 +504,8 @@
         "subheading": "<p>Short headline that highlights the main benefits they’ll experience from watching this video</p>",
         "settging_btn": "global",
         "btn": "",
+        "icon_alt": "",
+        "show_arrow": true,
         "btn_url": "",
         "button_border_size": 1,
         "button_radius": 50,
@@ -795,7 +823,8 @@
         "button_radius": 10,
         "button_color": "rgba(0,0,0,0)",
         "button_text_color": "rgba(0,0,0,0)",
-        "text_btn_card": "SHOP NOW"
+        "text_btn_card": "SHOP NOW",
+        "icon_alt": ""
       }
     },
     "yas_faq_DyB9Aw": {
@@ -1239,7 +1268,8 @@
         "button_radius": 10,
         "button_color": "rgba(0,0,0,0)",
         "button_text_color": "rgba(0,0,0,0)",
-        "button_text": "GET YOURS NOW"
+        "button_text": "GET YOURS NOW",
+        "icon_alt": ""
       }
     }
   },

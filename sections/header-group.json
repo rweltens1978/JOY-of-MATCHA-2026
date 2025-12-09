@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header Group",
@@ -54,7 +63,7 @@
       "type": "yas-announcement",
       "name": "Announcement bar",
       "settings": {
-        "background_color": "#000000",
+        "background_color": "#405111",
         "font_variant": "default",
         "title_font": "montserrat_n4",
         "text_color": "#ffffff",
@@ -66,7 +75,7 @@
         "padding_x_mob": 0,
         "padding_y_mob": 7,
         "display_on": "all",
-        "static": "<p>Some kind of announcement goes here</p>",
+        "static": "<p>Gratis verzending vanaf €59</p>",
         "url": "/"
       }
     },
@@ -76,16 +85,24 @@
         "slider": {
           "type": "slider",
           "settings": {
+            "show_slider": true,
             "title_slider": "Bestsellers",
-            "product_list": [],
+            "product_list": [
+              "ceremoniele-matcha-thee-bio",
+              "luxe-matcha-thee-set",
+              "master-ritual-set",
+              "matcha-capsules-bio"
+            ],
             "show_reviews": true,
             "star_count": 5,
-            "review_text": "10 reviews"
+            "review_text": ""
           }
         },
         "collection": {
           "type": "collection",
+          "disabled": true,
           "settings": {
+            "show_collection": true,
             "collection_list": [],
             "collection_text": "",
             "collection_styling": "product"
@@ -101,17 +118,18 @@
           "type": "review",
           "settings": {
             "testimonial": "Have been buying these for years !! Really like the bigger size of the Gummies now ! Appreciate it Joe V. 🙌",
-            "photo": "",
             "name": "Michael",
             "verified": true,
             "rating": 5,
+            "review_bg_color": "#ffffff",
+            "review_text_color": "#405111",
             "container_styling": "card",
             "box_shadow_offset": 0,
             "box_shadow_blur": 0,
             "box_shadow_spread": 0,
-            "box_shadow_color": "#000000",
+            "box_shadow_color": "#6e893d",
             "card_border": 1,
-            "card_border_color": "#000000",
+            "card_border_color": "#e6ecb8",
             "container_radius": 18
           }
         }
@@ -123,8 +141,24 @@
         "review"
       ],
       "settings": {
+        "enable_logo_left": false,
         "enable_search": true,
-        "search_only_products": true
+        "search_only_products": true,
+        "padding_x_desk": 20,
+        "padding_y_desk": 17,
+        "padding_x_mob": 20,
+        "padding_y_mob": 17,
+        "section_width": "container-fluid",
+        "enable_custom_width": true,
+        "custom_page_width": 1472,
+        "font_variant": "default",
+        "title_font": "poppins_n4",
+        "background_color": "#ffffff",
+        "mob_background_color": "#ffffff",
+        "text_color": "#405111",
+        "mob_text_color": "#405111",
+        "mega_menu_typography": "capitalize",
+        "mega_bdr_color": "#e6ecb8"
       }
     },
     "trust_policy_bar": {
@@ -133,26 +167,27 @@
         "text_block_1": {
           "type": "text_block",
           "settings": {
-            "icon_google": "",
-            "text": "<p>FREE UK SHIPPING</p>"
+            "icon_google": "delivery_truck_speed",
+            "text": "<p>Gratis verzending in BE & NL vanaf €59</p>"
           }
         },
         "text_block_2": {
           "type": "text_block",
           "settings": {
-            "icon_google": "",
-            "text": "<p>100,000 HAPPY CUSTOMERS</p>"
+            "icon_google": "loyalty",
+            "text": "<p>18.000+ Tevreden klanten</p>"
           }
         },
         "text_block_3": {
           "type": "text_block",
           "settings": {
-            "icon_google": "",
-            "text": "<p>FREE UK SHIPPING</p>"
+            "icon_google": "shield_with_heart",
+            "text": "<p>30 Dagen niet lekker, geld terug garantie</p>"
           }
         },
         "text_block_4": {
           "type": "text_block",
+          "disabled": true,
           "settings": {
             "icon_google": "",
             "text": "<p>100,000 HAPPY CUSTOMERS</p>"
@@ -167,17 +202,17 @@
       ],
       "name": "Trust policy bar",
       "settings": {
-        "background_color": "#ffffff",
+        "background_color": "#E6ECB8",
         "font_variant": "default",
         "title_font": "montserrat_n4",
-        "text_color": "#000000",
+        "text_color": "#405111",
         "section_width": "container-fluid",
         "enable_custom_width": false,
         "custom_page_width": 1472,
         "padding_x_desk": 0,
-        "padding_y_desk": 22,
+        "padding_y_desk": 10,
         "padding_x_mob": 0,
-        "padding_y_mob": 16,
+        "padding_y_mob": 8,
         "display_on": "all",
         "scroll_speed": 45,
         "gap_icon": 34,
