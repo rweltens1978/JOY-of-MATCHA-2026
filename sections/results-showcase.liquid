@@ -1,0 +1,654 @@
+{%- liquid
+  assign section_prefix_class = 'results-showcase'
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .results-showcase :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+
+{%- style -%}
+  .results-showcase_wrapper {
+    padding: var(--xl-padding-y) 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .results-showcase_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+  
+  .results-showcase_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .results-showcase_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .results-showcase .inner-padding .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .results-showcase_wrapper.inner-padding .container,
+  .results-showcase_wrapper.outer-padding {
+    background: var(--bg-color);
+    color: var(--text-color);
+    background-image: url({{ section.settings.bg_image | image_url: width: 2000 }});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .results-showcase_wrapper.inner-padding .container,
+  .results-showcase_wrapper.outer-padding {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .results-showcase .heading {
+    text-align: var(--heading-align);
+    margin-bottom: 40px;
+  }
+
+  .results-showcase .title h2,
+  .results-showcase .title h1,
+  .results-showcase .title h3,
+  .results-showcase .title p {
+    font-size: var(--xl-heading-size);
+    text-transform: var(--heading-transform);
+    color: var(--title-color);
+    margin: 0;
+    line-height: 120%;
+    font-weight: 700;
+  }
+
+  .results-showcase .slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .results-showcase .carousel-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .results-showcase .carousel {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    transition: transform 0.5s ease;
+    padding: 0 40px; 
+    width: max-content; 
+  }
+
+  .results-showcase .carousel-item {
+    flex: 0 0 auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .results-showcase .result-card {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: #333;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .results-showcase .card-body p {
+    margin-bottom: 10px;
+  }
+
+  .results-showcase .screenshot {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #eee;
+  }
+
+  .results-showcase .block-label {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 8px 16px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    width: fit-content;
+  }
+  
+  .results-showcase .block-label strong {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 2px;
+  }
+
+  .results-showcase .carousel-nav {
+    display: flex;
+    gap: 60px;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .results-showcase .carousel-nav .arrow { 
+    font-size: 20px; 
+    cursor: pointer; 
+    padding: 5px; 
+    border: 1px solid var(--text-color);
+    color: var(--text-color); 
+    border-radius: 50%; 
+    transition: background-color 0.3s; 
+    width: 54px; 
+    line-height: normal; 
+    height: 54px; 
+    align-items: center; 
+    display: inline-flex; 
+    justify-content: center; 
+  }
+
+  .results-showcase .carousel-nav .arrow svg path{
+    fill: var(--text-color);
+  }
+
+  .results-showcase .fb_carousel-pagination {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .results-showcase .dot {
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .results-showcase .dot.active {
+    background: #fff;
+    transform: scale(1.2);
+  }
+
+  .results-showcase .image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .results-showcase .image-wrapper svg,
+  .results-showcase .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 0;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .results-showcase .carousel-nav {
+      gap: 36px !important;
+      flex-wrap: unset !important;
+    }
+    
+    .results-showcase .fb_carousel-pagination {
+      gap: 14px;
+    }
+
+    .results-showcase .carousel-nav .arrow { 
+      font-size: 16px; 
+      padding: 3px; 
+      width: 40px; 
+      height: 40px; 
+    }
+  }
+
+  @media (max-width: 768px) {
+    .outer-padding .results-showcase_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .results-showcase .title h2,
+    .results-showcase .title h1,
+    .results-showcase .title h3,
+    .results-showcase .title p {
+      font-size: var(--xs-heading-size);
+    }
+{%- endstyle -%}
+
+<div 
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    --bg-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --title-color: {{ section.settings.title_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --heading-align: {{ section.settings.heading_align }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %} --xl-heading-size: 28px;
+      {% when 'medium' %} --xl-heading-size: 40px;
+      {% when 'large' %} --xl-heading-size: 56px;
+    {% endcase %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %} --xs-heading-size: 20px;
+      {% when 'medium' %} --xs-heading-size: 32px;
+      {% when 'large' %} --xs-heading-size: 32px;
+    {% endcase %}
+    --swiper-navigation-color: {{ section.settings.text_color }};
+  "
+>
+  <div class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}" style="--custom-width: {{ section.settings.custom_page_width }};">
+    <div class="{{ section_width }}">
+      <div class="heading">
+        {% if section.settings.title != blank %}
+          <div class="title">{{ section.settings.title }}</div>
+        {% endif %}
+      </div>
+
+      <div class="slider-container">
+        <div class="carousel-wrapper">
+          <div class="carousel" id="carousel-{{ section.id }}">
+            {% for block in section.blocks %}
+              <div class="carousel-item">
+                <div class="result-card">
+                  <div class="card-body">
+                    <div class="image-wrapper">
+                      {%- if block.settings.screenshot != blank -%}
+                        {{ block.settings.screenshot | image_url: width: 600 | image_tag: class: 'screenshot', loading: 'lazy' }}
+                      {%- else -%}
+                        {%- render 'placeholder-svgs', type: 'product', index: forloop.index -%}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+                {% if block.settings.block_label != blank %}
+                  <div class="block-label">
+                    <strong>{{ block.settings.block_label }}</strong>
+                    {{ block.settings.block_sublabel }}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        
+        <div class="carousel-nav">
+          <div class="arrow" data-direction="prev">{% render 'swiper-arrow-left-n' %}</div>
+          <div class="fb_carousel-pagination">
+            {% for block in section.blocks %}
+              <div class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}"></div>
+            {% endfor %}
+          </div>
+          <div class="arrow" data-direction="next">{% render 'swiper-arrow-right-n' %}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionId = '{{ section.id }}';
+    const carousel = document.getElementById(`carousel-${sectionId}`);
+    const dots = document.querySelectorAll(`#shopify-section-${sectionId} .dot`);
+    const arrows = document.querySelectorAll(`#shopify-section-${sectionId} .arrow`);
+    let currentIndex = 0;
+    const itemWidth = carousel.children[0].offsetWidth + 24; // Width + gap
+    
+    // Clone items for infinite effect
+    const items = Array.from(carousel.children);
+    // Clone multiple times to ensure we have enough buffer for wide screens
+    for (let i = 0; i < 3; i++) {
+        items.forEach(item => {
+            const clone = item.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            carousel.appendChild(clone);
+        });
+    }
+    
+    // Center initial view
+    // const centerOffset = (carousel.parentElement.offsetWidth - itemWidth) / 2;
+    
+    function updateCarousel() {
+        const offset = -(currentIndex * itemWidth);
+        carousel.style.transform = `translateX(${offset}px)`;
+        
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex % items.length);
+        });
+    }
+
+    carousel.addEventListener('transitionend', () => {
+        if (currentIndex >= items.length) {
+            carousel.style.transition = 'none';
+            currentIndex = currentIndex % items.length;
+            updateCarousel();
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    carousel.style.transition = 'transform 0.5s ease';
+                });
+            });
+        }
+    });
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            currentIndex = parseInt(dot.dataset.index);
+            updateCarousel();
+        });
+    });
+
+    // Arrow navigation
+    arrows.forEach(arrow => {
+      arrow.addEventListener('click', () => {
+        const direction = arrow.getAttribute('data-direction');
+        if (direction === 'prev') {
+          currentIndex--;
+        } else if (direction === 'next') {
+          currentIndex++;
+        }
+        updateCarousel();
+      });
+    });
+
+    // Auto scroll
+    setInterval(() => {
+        currentIndex++;
+        updateCarousel();
+    }, 3000);
+    
+    updateCarousel();
+    
+    // Handle resize
+    window.addEventListener('resize', () => {
+        updateCarousel();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Results Showcase",
+  "tag": "section",
+  "class": "section results-showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header content"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "<h2>Real Tests, From Real Clients</h2>"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "header",
+      "content": "Settings section"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1000,
+      "max": 1600,
+      "step": 10,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "result",
+      "name": "Result Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "screenshot",
+          "label": "Screenshot"
+        },
+        {
+          "type": "text",
+          "id": "block_label",
+          "label": "Block Label",
+          "default": "BLOCK #41"
+        },
+        {
+          "type": "text",
+          "id": "block_sublabel",
+          "label": "Block Sublabel",
+          "default": "Comparison table"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Results Showcase",
+      "category": "Reviews",
+      "blocks": [
+        {
+          "type": "result"
+        },
+        {
+          "type": "result"
+        },
+        {
+          "type": "result"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

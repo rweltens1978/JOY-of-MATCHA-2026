@@ -1,0 +1,812 @@
+<section class="blog-post mb-40 mb-md-0 py-md-60 py-xl-80">
+  {% if section.settings.show_breadcrumbs != blank %}
+      <!-- Breadcrumb start =================== -->
+      <div class="container">
+          <nav class="breadcrumb mt-15 mb-20 d-block">
+              <ol class="breadcrumb__list">
+                  <li><a href="{{ routes.root_url }}">{{ section.settings.home_text }}</a></li>
+                  {% if blog.title == "All" %}
+                    <li><a href="{{ blog.url }}">{{ section.settings.blogs_text }}</a></li>
+                  {% else %}
+                    <li>{{ blog.title | link_to: blog.url }}</li>
+                  {% endif %}
+                  <li class="current">{{ article.title }}</li>
+              </ol>
+          </nav>
+      </div>
+      <!-- Breadcrumb END ====================== -->
+  {% endif %}
+  <div class="container">
+      <div class="pure-g"> 
+          <div class="pure-u-1 pure-u-lg-15-24 pure-u-xl-15-24">
+              <div class="blog-post__list">
+                  <div class="article article--featured">
+                    {%- if article.image -%}
+                      <figure class="article__img">
+                          <a href="#" class="ratio21by1">
+                            {%- liquid
+                              assign max_width = article.image.width
+                              if article.image > 1532
+                                  assign max_width = 1532
+                              endif
+                              assign image_height = max_width | divided_by: article.image.aspect_ratio | round
+                
+                              capture image_alt
+                                  unless article.image.alt == blank
+                                      echo article.image.alt
+                                      else
+                                          echo article.title | escape
+                                  endunless
+                              endcapture
+                            -%}
+                            {{-
+                              article.image
+                              | image_url: width: max_width
+                              | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 30px), 35.573vw', height: image_height, alt: image_alt, class: 'pure-img lazyload svg__thumb'
+                            -}}
+                          </a>
+                      </figure>
+                    {% endif %}
+                      <div class="article__content">
+                          <h1 class="article__title">{{article.title}}</h1>
+                          {% if section.settings.blog_show_date != blank or section.settings.blog_show_author != blank %}
+                            <div class="article__meta">
+                                <div class="article__author">
+                                    <span class="text-2 text-grey">{% if section.settings.blog_show_date != blank %}{{section.settings.posted_on_text}} {{ article.published_at | time_tag: format: 'date' }}{% endif %} {% if section.settings.blog_show_author != blank %}by {{ article.author }}{% endif %}</span>
+                                </div>
+                            </div>
+                          {% endif %}
+                          {% if article.content != blank %}
+                            <div class="article__desc rte wysiwyg">
+                                {{article.content}} 
+                            </div>
+                          {% endif %}
+                      </div>
+                  </div>
+                  <div class="article">
+                    {% for block in section.blocks %}
+                        {% if block.type == "extra-content" %}
+                          {% if block.settings.content_heading != blank or block.settings.description != blank %}
+                            {% if block.settings.image != blank %}
+                              <figure class="article__img">
+                                  <div class="ratio21by1">
+                                    {%- liquid
+                                      assign max_width = block.settings.image.width
+                                      if block.settings.image > 1532
+                                          assign max_width = 1532
+                                      endif
+                                      assign image_height = max_width | divided_by: block.settings.image.aspect_ratio | round
+                        
+                                      capture image_alt
+                                          unless block.settings.image.alt == blank
+                                              echo block.settings.image.alt
+                                              else
+                                                  echo article.title | escape
+                                          endunless
+                                      endcapture
+                                    -%}
+                                    {{-
+                                      block.settings.image
+                                      | image_url: width: max_width
+                                      | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 30px), 35.573vw', height: image_height, alt: image_alt, class: 'pure-img lazyload svg__thumb'
+                                    -}}
+                                  </div>
+                                  {% if block.settings.image_caption != blank %}
+                                    <figcaption class="article__caption text-center text-lg-right">{{ block.settings.image_caption }}</figcaption>
+                                  {% endif %}
+                              </figure>
+                            {% endif %}
+                            {% if block.settings.description != blank or block.settings.content_heading != blank %}
+                              <div class="article__content">
+                                {% if block.settings.content_heading != blank %}
+                                  <h4 class="article__title">{{block.settings.content_heading}}</h4>
+                                {% endif %}
+                                {% if block.settings.description != blank %}
+                                  <div class="article__desc">
+                                      {{block.settings.description}}
+                                  </div>
+                                {% endif %}
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                        {% endif %}
+                    {% endfor %}   
+                  </div>
+                  {% if section.settings.bottom_banner_title != blank %}
+                    <div class="highlight mb-md-55 xs-full-width d-none d-lg-block">
+                        <div class="bg-info" {% if section.settings.bottom_banner_background_color != blank %}style="background-color: {{section.settings.bottom_banner_background_color}};"{% endif %}>
+                            <div class="highlight__info px-25 px-md-40 py-60 text-center">
+                              {% if section.settings.bottom_banner_heading != blank %}
+                                <h4 class="subtitle">{{section.settings.bottom_banner_heading}}</h4>
+                              {% endif %}
+                                <h2 class="title">{{section.settings.bottom_banner_title}}</h2>
+                              {% if section.settings.bottom_banner_button_link != blank %}
+                                <a href="{{section.settings.bottom_banner_button_link}}" class="btn btn--icon-hand">{{section.settings.bottom_banner_button_text}}</a>
+                              {% endif %}
+                              {% if section.settings.bottom_banner_enable_payment_icons %}
+                              <div class="payment_icons my-10">
+                                {% render 'payment-icons', enable: section.settings.sidebar_banner_enable_payment_icons %}   
+                              </div>
+                              {% endif %}
+                              {% if section.settings.bottom_banner_show_reviews != blank %}
+                                  {% if settings.reviews_ratings != blank or settings.reviews_text != blank %}
+                                    <div class="rating justify-content-center mb-0">
+                                          {% if settings.reviews_ratings != blank %}
+                                              <span class="rating__star">
+                                                {%- liquid
+                                                  assign max_width = settings.reviews_ratings.width
+                                                  if settings.reviews_ratings > 30
+                                                      assign max_width = 30
+                                                  endif
+                                                  assign image_height = max_width | divided_by: settings.reviews_ratings.aspect_ratio | round
+                                    
+                                                  capture image_alt
+                                                      unless settings.reviews_ratings.alt == blank
+                                                          echo settings.reviews_ratings.alt
+                                                          else
+                                                              echo 'image_alternative.static' | t
+                                                      endunless
+                                                  endcapture
+                                                -%}
+                                                {{-
+                                                  settings.reviews_ratings
+                                                  | image_url: width: max_width
+                                                  | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 30px), 35.573vw', height: image_height, alt: image_alt, class: ''
+                                                -}}
+                                              </span>
+                                          {% endif %}
+                                          {% if settings.reviews_text != blank %}
+                                              <span class="rating__text">{{settings.reviews_text}}</span>
+                                          {% endif %}
+                                      </div>
+                                  {% endif %}
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                  {% endif %}
+                  {%- if blog.comments_enabled? -%}
+                    <div class="comment d-none d-lg-block">
+                      <div class="article-template__comment-wrapper background-secondary">
+                        <div id="comments" class="page-width page-width--narrow">
+                          {%- if article.comments_count > 0 -%}
+                            {%- assign anchorid = '#Comments-' | append: article.id -%}
+                            <h2 id="Comments-{{ article.id }}">{{ 'blogs.article.comments' | t: count: article.comments_count }}</h2>
+                            {% paginate article.comments by 5 %}
+                              <div class="article-template__comments">
+                                {%- if comment.status == 'pending' and comment.content -%}
+                                  <article id="{{ comment.id }}" class="article-template__comments-comment">
+                                    {{ comment.content }}
+                                    <footer class="right">
+                                      <p class="circle-divider caption-with-letter-spacing">{{ comment.author }}</p>
+                                    </footer>
+                                  </article>
+                                {%- endif -%}
+
+                                {%- for comment in article.comments -%}
+                                  <article id="{{ comment.id }}" class="article-template__comments-comment">
+                                    {{ comment.content }}
+                                    <footer class="right">
+                                      <p class="circle-divider caption-with-letter-spacing">{{ comment.author }}</p><p class="caption-with-letter-spacing">{{ comment.created_at | time_tag: format: 'date' }}</p>
+                                    </footer>
+                                  </article>
+                                {%- endfor -%}
+                                {% render 'pagination', paginate: paginate, anchor: anchorid %}
+                              </div>
+                            {% endpaginate %}
+                          {%- endif -%}
+                          <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+                            {% form 'new_comment', article %}
+                              {%- liquid
+                                assign post_message = 'blogs.article.success'
+                                if blog.moderated? and comment.status == 'unapproved'
+                                  assign post_message = 'blogs.article.success_moderated'
+                                endif
+                              -%}
+                              <h5 class="title mt-0">{{ 'blogs.article.comment_form_title' | t }}</h5>
+                              
+                              {%- if form.errors -%}
+                                <div class="form__messages" role="alert">
+                                  <h3 class="form-status caption-large" tabindex="-1" autofocus>
+                                    {% render 'icon-error' %} {{ 'templates.contact.form.error_heading' | t }}
+                                  </h3>
+                                  <ul class="form-status-list caption-large">
+                                  {%- for field in form.errors -%}
+                                    <li>
+                                      <a href="#CommentForm-{{ field }}" class="link">
+                                        {%- if form.errors.translated_fields[field] contains 'author' -%}
+                                          {{ 'blogs.article.name' | t }}
+                                        {%- elsif form.errors.translated_fields[field] contains 'body'-%}
+                                         {{ 'blogs.article.message' | t }}
+                                        {%- else -%}
+                                          {{ form.errors.translated_fields[field] }}
+                                        {%- endif -%}
+                                        {{ form.errors.messages[field] }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                                </div>
+                              {%- elsif form.posted_successfully? -%}
+                                <div class="form-status-list form__message" role="status">
+                                  <h3 class="form-status" tabindex="-1" autofocus>{% render 'icon-success' %} {{ post_message | t }}</h3>
+                                </div>
+                              {%- endif -%}
+
+                              <div{% if blog.moderated? == false %} class="article-template__comments-fields"{% endif %}>
+                                <div class="article-template__comment-fields">
+                                  <div class="form-row form-group">
+                                    <label class="field__label form-label fw-700" for="CommentForm-author">{{ 'blogs.article.name' | t }} <span aria-hidden="true">*</span></label>
+                                    <input type="text" name="comment[author]" id="CommentForm-author" class="field__input form-input form-control" autocomplete="name" value="{{ form.author }}" aria-required="true"{% if form.errors contains 'author' %} aria-invalid="true" aria-describedby="CommentForm-author-error"{% endif %} placeholder="{{ 'blogs.article.name' | t }}">
+                                  </div>
+                                   <div class="form-row form-group">
+                                      <label class="field__label form-label fw-700" for="CommentForm-email">{{ 'blogs.article.email' | t }} <span aria-hidden="true">*</span></label>
+                                      <input
+                                        type="email"
+                                        name="comment[email]"
+                                        id="CommentForm-email"
+                                        autocomplete="email"
+                                        class="field__input form-input form-control"
+                                        value="{{ form.email }}"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        aria-required="true"
+                                        {% if form.errors contains 'email' %}
+                                          aria-invalid="true"
+                                          aria-describedby="CommentForm-email-error"
+                                        {% endif %}
+                                        placeholder="{{ 'blogs.article.email' | t }}" required data-pristine-required-message="Please enter Email Address"
+                                      >
+                                    </div>
+                                </div>
+                                <div class="field field--with-error">
+                                  <label class="form__label field__label form-label fw-700" for="CommentForm-body">{{ 'blogs.article.message' | t }} <span aria-hidden="true">*</span></label>
+                                  <textarea
+                                    rows="5"
+                                    name="comment[body]"
+                                    id="CommentForm-body"
+                                    class="text-area field__input form-textarea form-control"
+                                    aria-required="true"
+                                    {% if form.errors contains 'body' %}
+                                      aria-invalid="true"
+                                      aria-describedby="CommentForm-body-error"
+                                    {% endif %}
+                                    placeholder="{{ 'blogs.article.message' | t }}"
+                                  >{{ form.body }}</textarea>
+                                    
+                                </div>
+                              </div>
+                              {%- if blog.moderated? -%}
+                                <p class="article-template__comment-warning caption">{{ 'blogs.article.moderated' | t }}</p>
+                              {%- endif -%}
+                              <div class="form-button text-center mt-30 mt-md-50">
+                                <button type="submit" class="btn mb-30 btn--fixed-width" value="{{ 'blogs.article.post' | t }}">{{ 'blogs.article.post' | t }}</button>
+                              </div>
+                            {% endform %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+              </div>
+          </div>
+          {% if section.blocks.size > 0 or section.settings.sidebar_banner_title != blank or blog.comments_enabled? %}
+            <div class="pure-u-1 pure-u-lg-9-24 pure-u-xl-8-24 ml-auto">
+                <div class="sidebar">
+                  {% if section.settings.sidebar_banner_title != blank %}
+                    <div class="highlight higlight--small mb-lg-65 d-none d-lg-block">
+                        <div class="bg-info">
+                            <div class="highlight__info px-25 px-md-40 py-60 text-center">
+                              {% if section.settings.sidebar_banner_heading != blank %}
+                                <h4 class="subtitle">{{section.settings.sidebar_banner_heading}}</h4>
+                              {% endif %}
+                                <h2 class="title text-11">{{section.settings.sidebar_banner_title}}</h2>
+                              {% if section.settings.sidebar_banner_button_link != blank %}
+                                <a href="{{section.settings.sidebar_banner_button_link}}" class="btn btn--icon-hand">{{section.settings.sidebar_banner_button_text}}</a>
+                              {% endif %}
+                              <div class="payment_icons my-10">
+                                {% render 'payment-icons', enable: section.settings.sidebar_banner_enable_payment_icons %}   
+                              </div>
+                              {% if section.settings.sidebar_banner_show_reviews != blank %}
+                                  {% if settings.reviews_ratings != blank or settings.reviews_text != blank %}
+                                    <div class="rating justify-content-center mb-0">
+                                          {% if settings.reviews_ratings != blank %}
+                                              <span class="rating__star">
+                                                {%- liquid
+                                                  assign max_width = settings.reviews_ratings.width
+                                                  if settings.reviews_ratings > 30
+                                                      assign max_width = 30
+                                                  endif
+                                                  assign image_height = max_width | divided_by: settings.reviews_ratings.aspect_ratio | round
+                                    
+                                                  capture image_alt
+                                                      unless settings.reviews_ratings.alt == blank
+                                                          echo settings.reviews_ratings.alt
+                                                          else
+                                                              echo 'image_alternative.static' | t
+                                                      endunless
+                                                  endcapture
+                                                -%}
+                                                {{-
+                                                  settings.reviews_ratings
+                                                  | image_url: width: max_width
+                                                  | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 30px), 35.573vw', height: image_height, alt: image_alt, class: ''
+                                                -}}
+                                              </span>
+                                          {% endif %}
+                                          {% if settings.reviews_text != blank %}
+                                              <span class="rating__text">{{settings.reviews_text}}</span>
+                                          {% endif %}
+                                      </div>
+                                  {% endif %}
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                  {% endif %}
+                  {% if section.blocks.size > 0 %}
+                    <div class="sidebar__list">
+                      {% if section.settings.sidebar_products_title != blank %}
+                        <h2 class="text-6 mb-md-35 fw-400">{{section.settings.sidebar_products_title}}</h2>
+                      {% endif %}
+                      {% for block in section.blocks %}
+                        {% if block.type == "sidebar-products" %}
+                        {% if block.settings.product != blank %}
+                          {% assign blogproduct = all_products[block.settings.product] %}
+                          {% assign blogproductCurrentVariant = blogproduct.selected_or_first_available_variant %}
+                            <div class="product">
+                                <div class="product__image-container">
+                                    <a href="{{blogproduct.url}}" class="product__image ratio1by1">
+                                      {% if block.settings.product_image != blank %}
+                                        {%- liquid
+                                          assign max_width = block.settings.product_image.width
+                                          if block.settings.product_image > 1212
+                                              assign max_width = 1212
+                                          endif
+                                          assign image_height = max_width | divided_by: block.settings.product_image.aspect_ratio | round
+                            
+                                          capture image_alt
+                                              unless block.settings.product_image.alt == blank
+                                                  echo block.settings.product_image.alt
+                                                  else
+                                                      echo blogproduct.title | t
+                                              endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          block.settings.product_image
+                                          | image_url: width: max_width
+                                          | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 767px) (100vw - 50px), (max-width: 1023px) calc(100vw - 30px), 31.563vw', height: image_height, alt: image_alt, class: 'pure-img'
+                                        -}}
+                                      {% else %}
+                                        {% if blogproduct.featured_image.src != blank %}
+                                          {%- liquid
+                                            assign max_width = blogproduct.featured_image.width
+                                            if blogproduct.featured_image > 1212
+                                                assign max_width = 1212
+                                            endif
+                                            assign image_height = max_width | divided_by: blogproduct.featured_image.aspect_ratio | round
+                              
+                                            capture image_alt
+                                                unless blogproduct.featured_image.alt == blank
+                                                    echo blogproduct.featured_image.alt
+                                                    else
+                                                        echo blogproduct.title | t
+                                                endunless
+                                            endcapture
+                                          -%}
+                                          {{-
+                                            blogproduct.featured_image
+                                            | image_url: width: max_width
+                                            | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 767px) (100vw - 50px), (max-width: 1023px) calc(100vw - 30px), 31.563vw', height: image_height, alt: image_alt, class: 'pure-img'
+                                          -}}
+                                        {% endif %}
+                                      {% endif %}
+                                    </a>
+                                </div>
+                                <div class="product__detail">
+                                  {%- if block.settings.show_rating -%}
+                                    <div class="rating">
+                                        <span class="shopify-product-reviews-badge" data-id="{{ blogproduct.id }}"></span>
+                                    </div>
+                                  {% endif %}
+                                    <a href="{{blogproduct.url}}" class="product__title">{{blogproduct.title}}</a>
+                                    <div class="product__meta">
+                                        <div class="product__price">
+                                          {%- if blogproductCurrentVariant.compare_at_price > blogproductCurrentVariant.price -%}
+                                            <span class="product__price-sale">{{blogproductCurrentVariant.compare_at_price | money}}</span>
+                                          {%- endif -%}
+                                            <span class="product__price-original">{{ blogproductCurrentVariant.price | money}}</span>
+                                        </div>
+                                      {%- if blogproductCurrentVariant.compare_at_price > blogproductCurrentVariant.price -%}
+                                        {% assign productPerSav =  blogproductCurrentVariant.compare_at_price | minus: blogproductCurrentVariant.price | times: 100.0 | divided_by: blogproductCurrentVariant.compare_at_price | money_without_currency | times: 100 | remove: '.0' | plus: 0 %}
+                                        {% if productPerSav > 0 %}
+                                          <span class="badge">{{section.settings.sidebar_products_save_text}} {{productPerSav}}%</span>
+                                        {% endif %}
+                                      {%- endif -%}
+                                    </div>
+                                </div>
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                  {% if section.settings.sidebar_banner_title != blank %}
+                    <div class="highlight mb-30 mb-md-55 xs-full-width d-block d-lg-none">
+                        <div class="bg-info" {% if section.settings.sidebar_banner_background_color != blank %}style="background-color: {{section.settings.sidebar_banner_background_color}};"{% endif %}>
+                            <div class="highlight__info px-25 px-md-40 py-60 text-center">
+                              {% if section.settings.sidebar_banner_heading != blank %}
+                                <h4 class="subtitle d-none d-md-block">{{section.settings.sidebar_banner_heading}}</h4>
+                              {% endif %}
+                                <h2 class="title">{{section.settings.sidebar_banner_title}}</h2>
+                              {% if section.settings.sidebar_banner_button_link != blank %}
+                                <a href="{{section.settings.sidebar_banner_button_link}}" class="btn btn--icon-hand">{{section.settings.sidebar_banner_button_text}}</a>
+                              {% endif %}
+                              <div class="payment_icons my-10">
+                               {% render 'payment-icons', enable: section.settings.sidebar_banner_enable_payment_icons %}   
+                              </div>
+                              {% if section.settings.sidebar_banner_reviews_html != blank %}
+                                <div class="rating justify-content-center mb-0">
+                                  {{section.settings.sidebar_banner_reviews_html}}
+                                </div>
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                  {% endif %}
+                  {%- if blog.comments_enabled? -%}
+                    <div class="comment d-block d-lg-none">
+                        <div class="article-template__comment-wrapper background-secondary">
+                          <div id="comments" class="page-width page-width--narrow">
+                            {%- if article.comments_count > 0 -%}
+                              {%- assign anchorid = '#Comments-' | append: article.id -%}
+
+                              <h2 id="Comments-{{ article.id }}">{{ 'blogs.article.comments' | t: count: article.comments_count }}</h2>
+                              {% paginate article.comments by 5 %}
+                                <div class="article-template__comments">
+                                  {%- if comment.status == 'pending' and comment.content -%}
+                                    <article id="{{ comment.id }}" class="article-template__comments-comment">
+                                      {{ comment.content }}
+                                      <footer class="right">
+                                        <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
+                                      </footer>
+                                    </article>
+                                  {%- endif -%}
+
+                                  {%- for comment in article.comments -%}
+                                    <article id="{{ comment.id }}" class="article-template__comments-comment">
+                                      {{ comment.content }}
+                                      <footer class="right">
+                                        <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span><span class="caption-with-letter-spacing">{{ comment.created_at | time_tag: format: 'date' }}</span>
+                                      </footer>
+                                    </article>
+                                  {%- endfor -%}
+                                  {% render 'pagination', paginate: paginate, anchor: anchorid %}
+                                </div>
+                              {% endpaginate %}
+                            {%- endif -%}
+                            {% form 'new_comment', article %}
+                              {%- liquid
+                                assign post_message = 'blogs.article.success'
+                                if blog.moderated? and comment.status == 'unapproved'
+                                  assign post_message = 'blogs.article.success_moderated'
+                                endif
+                              -%}
+                              <h5 class="title mt-0">{{ 'blogs.article.comment_form_title' | t }}</h5>
+                              {%- if form.errors -%}
+                                <div class="form__message" role="alert">
+                                  <h3 class="form-status caption-large" tabindex="-1" autofocus>
+                                    {% render 'icon-error' %} {{ 'templates.contact.form.error_heading' | t }}
+                                  </h3>
+                                </div>
+                                <ul class="form-status-list caption-large">
+                                  {%- for field in form.errors -%}
+                                    <li>
+                                      <a href="#CommentForm-{{ field }}" class="link">
+                                        {%- if form.errors.translated_fields[field] contains 'author' -%}
+                                          {{ 'blogs.article.name' | t }}
+                                        {%- elsif form.errors.translated_fields[field] contains 'body'-%}
+                                         {{ 'blogs.article.message' | t }}
+                                        {%- else -%}
+                                          {{ form.errors.translated_fields[field] }}
+                                        {%- endif -%}
+                                        {{ form.errors.messages[field] }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- elsif form.posted_successfully? -%}
+                                <div class="form-status-list form__message" role="status">
+                                  <h3 class="form-status" tabindex="-1" autofocus>{% render 'icon-success' %} {{ post_message | t }}</h3>
+                                </div>
+                              {%- endif -%}
+
+                              <div{% if blog.moderated? == false %} class="article-template__comments-fields"{% endif %}>
+                                <div class="article-template__comment-fields">
+                                  <div class="form-row form-group">
+                                    <label class="field__label form-label fw-700" for="CommentForm-author">{{ 'blogs.article.name' | t }} <span aria-hidden="true">*</span></label>
+                                    <input type="text" name="comment[author]" id="CommentForm-author" class="field__input form-input form-control" autocomplete="name" value="{{ form.author }}" aria-required="true"{% if form.errors contains 'author' %} aria-invalid="true" aria-describedby="CommentForm-author-error"{% endif %} placeholder="{{ 'blogs.article.name' | t }}">
+                                  </div>
+                                   <div class="form-row form-group">
+                                      <label class="field__label form-label fw-700" for="CommentForm-email">{{ 'blogs.article.email' | t }} <span aria-hidden="true">*</span></label>
+                                      <input
+                                        type="email"
+                                        name="comment[email]"
+                                        id="CommentForm-email"
+                                        autocomplete="email"
+                                        class="field__input form-input form-control"
+                                        value="{{ form.email }}"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        aria-required="true"
+                                        {% if form.errors contains 'email' %}
+                                          aria-invalid="true"
+                                          aria-describedby="CommentForm-email-error"
+                                        {% endif %}
+                                        placeholder="{{ 'blogs.article.email' | t }}" required data-pristine-required-message="Please enter Email Address"
+                                      >
+                                    </div>
+                                </div>
+                                <div class="field field--with-error">
+                                  <label class="form__label field__label form-label fw-700" for="CommentForm-body">{{ 'blogs.article.message' | t }} <span aria-hidden="true">*</span></label>
+                                  <textarea
+                                    rows="5"
+                                    name="comment[body]"
+                                    id="CommentForm-body"
+                                    class="text-area field__input form-textarea form-control"
+                                    aria-required="true"
+                                    {% if form.errors contains 'body' %}
+                                      aria-invalid="true"
+                                      aria-describedby="CommentForm-body-error"
+                                    {% endif %}
+                                    placeholder="{{ 'blogs.article.message' | t }}"
+                                  >{{ form.body }}</textarea>
+                                    
+                                </div>
+                              </div>
+                              {%- if blog.moderated? -%}
+                                <p class="article-template__comment-warning caption">{{ 'blogs.article.moderated' | t }}</p>
+                              {%- endif -%}
+                              <div class="form-button text-center mt-30 mt-md-50">
+                                <button type="submit" class="btn mb-30 btn--fixed-width" value="{{ 'blogs.article.post' | t }}">{{ 'blogs.article.post' | t }}</button>
+                              </div>
+                            {% endform %}
+                          </div>
+                        </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+            </div>
+          {% endif %}
+      </div>
+  </div>
+</section>
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ shop.url | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      {% assign image_size = article.image.width | append: 'x' %}
+      "image": [
+        {{ article | img_url: image_size | prepend: "https:" | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      {% if settings.share_image %}
+        {% assign image_size = settings.share_image.width | append: 'x' %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": {{ settings.share_image.height | json }},
+          "url": {{ settings.share_image | img_url: image_size | prepend: "https:" | json }},
+          "width": {{ settings.share_image.width | json }}
+        },
+      {% endif %}
+      "name": {{ shop.name | json }}
+    }
+  }
+  </script>
+{% schema %}
+{
+  "name": "Blog post sidebar widgets",
+  "settings": [
+    {
+      "type": "text",
+      "id": "home_text",
+      "label": "Home text",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "blogs_text",
+      "label": "Blogs text",
+      "default": "Blog"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_date",
+      "default": true,
+      "label": "t:sections.main-article.blocks.title.settings.blog_show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_author",
+      "default": false,
+      "label": "t:sections.main-article.blocks.title.settings.blog_show_author.label"
+    },
+    {
+      "type": "text",
+      "id": "posted_on_text",
+      "label": "Posted on text",
+      "default": "Posted on"
+    },
+    {
+      "type": "header",
+      "content": "Bottom banner"
+    },
+    {
+      "type": "color",
+      "id": "bottom_banner_background_color",
+      "label": "Bottom banner background color"
+    },
+    {
+      "type": "text",
+      "id": "bottom_banner_heading",
+      "label": "Bottom banner heading"
+    },
+    {
+      "type": "text",
+      "id": "bottom_banner_title",
+      "label": "Bottom banner title"
+    },
+    {
+      "type": "url",
+      "id": "bottom_banner_button_link",
+      "label": "Bottom banner button link"
+    },
+    {
+      "type": "text",
+      "id": "bottom_banner_button_text",
+      "label": "Bottom banner button text",
+      "default": "Get Mine Now"
+    },
+    {
+      "type": "checkbox",
+      "id": "bottom_banner_enable_payment_icons",
+      "label": "Bottom banner enable payment icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "bottom_banner_show_reviews",
+      "label": "Bottom banner show Flash",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "color",
+      "id": "sidebar_banner_background_color",
+      "label": "Sidebar banner background color"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_banner_heading",
+      "label": "Sidebar banner heading"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_banner_title",
+      "label": "Sidebar banner title"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_banner_button_link",
+      "label": "Sidebar banner button link"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_banner_button_text",
+      "label": "Sidebar banner button text",
+      "default": "Get Mine Now"
+    },
+    {
+      "type": "checkbox",
+      "id": "sidebar_banner_enable_payment_icons",
+      "label": "Sidebar banner enable payment icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "sidebar_banner_show_reviews",
+      "label": "Sidebar banner show Flash",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sidebar_products_title",
+      "label": "Sidebar products title",
+      "default": "Featured in this article"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_products_save_text",
+      "label": "Sidebar products save text",
+      "default": "Save"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "sidebar-products",
+      "name": "Sidebar products",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "default": true,
+          "label": "Show product rating",
+          "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+        }
+      ]
+    },
+    {
+      "type": "extra-content",
+      "name": "Additional content copy",
+      "settings": [
+        {
+          "type": "text",
+          "id": "content_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_caption",
+          "label": "Image caption"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

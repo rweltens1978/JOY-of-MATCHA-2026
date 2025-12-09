@@ -1,0 +1,20 @@
+{
+  "wrapper": "div.page__error",
+  "sections": {
+    "main": { 
+      "type": "main-page",
+      "settings": {
+        "sub_title": "Join thousands who’ve already [achieved desired outcome] with these top picks",
+        "background_color": "#000000",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "text_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

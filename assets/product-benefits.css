@@ -1,0 +1,277 @@
+.product-benefits-section .title {
+  margin-bottom: 8px !important;
+}
+
+.product-benefits-section .title h2 {
+  margin-bottom: 0 !important;
+}
+
+.product-benefits-section .product-benefits-details {
+  display: flex;
+  justify-content: center;
+  height: 303px;
+  overflow: hidden;
+}
+
+.product-benefits-section .product-benefits-rouded {
+  width: 350px;
+  height: 350px;
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-benefits-section .product-benefits-rouded::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 30px;
+  opacity: 0.3;
+  border-radius: 50%;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.product-benefits-content {
+  margin-top: 26px;
+}
+
+.product-benefit-block {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.product-benefit-image {
+  min-width: 72px !important;
+  min-height: 72px !important;
+  background-color: #fff;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-benefit-image img,
+.product-benefit-image svg{
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.product-benefits-content .benefit_image {
+  border-radius: 50%;
+}
+
+.product-benefit-description {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  line-height: 120%;
+}
+
+.product-benefit-description .product-heading {
+  margin: 0;
+  font-family: "Material Medium";
+}
+
+.product-benefit-description p {
+  opacity: 0.7;
+}
+
+.product-benefits-section .product-benefits-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-benefits-section .button-wrapper .cta-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 15px 40px;
+  border-radius: 100px;
+}
+
+.product-benefits-section .button-wrapper svg {
+  height: 15px;
+  width: 15px;
+}
+
+.product-benefits-section .button-wrapper svg path {
+  fill: #ffffff;
+}
+
+.product-benefits-section .payment_options {
+  text-align: left;
+}
+
+.product-benefits-section .product_image {
+   border-radius: 7.75px;
+}
+
+.payment_options_stock {
+  display: none;
+}
+
+.product-benefit {
+  display: none;
+}
+
+.payment_options_icons img{
+  width: 38px;
+  height: 26px;
+}
+
+@media screen and (min-width: 1024px) {
+  .product-benefits-section .product-benefits-wrapper {
+    position: relative;
+  }
+
+  .product-benefits-section .product-benefits-middle {
+    margin-top: 100px;
+  }
+
+  .product-benefits-section .product-benefits-details {
+    height: 660px;
+  }
+
+  .product-benefits-section .product-benefits-rouded {
+    width: 768px;
+    height: 798px;
+  }
+
+  .product-benefits-section .product-benefits-rouded:before {
+    padding: 40px;
+  }
+
+  .product-benefit-block {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .product-benefit-block .product-benefit-description {
+    text-align: center;
+  }
+
+  .product-benefit {
+    display: block;
+    position: absolute;
+  }
+
+  .product-benefit-block {
+    position: absolute;
+  }
+
+  .product-benefit-block.product-benefit-block-1 {
+    top: 100px;
+    left: 60px;
+    width: 204px;
+  }
+
+  .product-benefits-wrapper .product-benefit-1 {
+    top: 0;
+    left: 20%;
+    top: 190px;
+  }
+
+  .product-benefit-block.product-benefit-block-2 {
+    top: 400px;
+    left: 60px;
+    width: 206px;
+  }
+
+  .product-benefits-wrapper .product-benefit-2 {
+    left: 20%;
+    top: 45%;
+  }
+
+  .product-benefit-block.product-benefit-block-3 {
+    top: 700px;
+    left: 60px;
+    width: 220px;
+  }
+
+  .product-benefits-wrapper .product-benefit-3 {
+    left: 20%;
+    bottom: 28%;
+  }
+
+  .product-benefit-block.product-benefit-block-4 {
+    top: 100px;
+    right: 60px;
+    width: 220px;
+  }
+
+  .product-benefits-wrapper .product-benefit-4 {
+    right: 20%;
+    top: 190px;
+  }
+
+  .product-benefit-block.product-benefit-block-5 {
+    top: 400px;
+    right: 60px;
+    width: 220px;
+  }
+
+  .product-benefits-wrapper .product-benefit-5 {
+    right: 20%;
+    top: 45%;
+  }
+
+  .product-benefit-block.product-benefit-block-6 {
+    top: 700px;
+    right: 60px;
+    width: 220px;
+  }
+
+  .product-benefits-wrapper .product-benefit-6 {
+    right: 20%;
+    bottom: 28%;
+  }
+
+  .product-benefits-section .product-benefits-cta {
+    margin-top: 108px;
+  }
+
+  .product-benefits-section .button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .product-benefits-section .button-wrapper .cta-btn {
+    max-width: 587px;
+    min-width: 587px;
+  }
+
+  .payment_options_stock {
+    display: block;
+  }
+
+  .payment_options_stock span {
+    font-weight: 700;
+    vertical-align: middle;
+    color: #37465a;
+  }
+
+  .payment_options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .payment_options_icons {
+    line-height: 0;
+  }
+}

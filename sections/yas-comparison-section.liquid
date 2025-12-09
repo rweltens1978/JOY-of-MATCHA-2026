@@ -1,0 +1,972 @@
+{%- liquid
+  assign section_prefix_class = 'main-comparison-section'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-comparison-section :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-comparison-section_content-wrapper a p {
+    margin: 0 auto;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .main-comparison-section_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-comparison-section_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-comparison-section_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-comparison-section_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-comparison-section_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-comparison-section_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-comparison-section_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-comparison-section_wrapper.inner-padding .container,
+  .main-comparison-section_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-comparison-section .main-comparison_wrapper {
+    text-align: var(--heading-align);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .main-comparison-section_content-wrapper {
+    display: block;
+    position: relative;
+    text-align: var(--heading-align);
+  }
+  .main-comparison-section .heading {
+    width: 100%;
+  }
+
+  .main-comparison-section_content-wrapper {
+    display: var(--content-display);
+    flex-wrap: var(--content-flex-wrap);
+    justify-content: var(--content-justify-content);
+  }
+
+  .main-comparison-section .title h2,
+  .main-comparison-section .title h1,
+  .main-comparison-section .title h3,
+  .main-comparison-section .title p {
+    font-size: var(--xl-heading-size);
+    line-height: 110%;
+    font-weight: 700;
+    text-transform: var(--heading-transform);
+    color: var(--title-color);
+    margin: 0;
+    text-align: var(--heading-align);
+    margin: 0;
+    margin-bottom: 16px;
+  }
+
+  .main-comparison-section .subtitle h2,
+  .main-comparison-section .subtitle h3,
+  .main-comparison-section .subtitle h1,
+  .main-comparison-section .subtitle p {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--title-color);
+    text-align: var(--heading-align);
+    margin: 0;
+    margin-bottom: 20px;
+    line-height: 150%;
+  }
+
+  .main-comparison-section .uppertitle {
+    display: flex;
+    justify-content: var(--heading-justify);
+    align-items: center;
+    margin: 0;
+    margin-bottom: 14.5px;
+  }
+
+  .main-comparison-section .uppertitle .star_span {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+  .main-comparison-section .uppertitle svg path {
+    fill: var(--fill);
+  }
+
+  .main-comparison-section .uppertitle h2,
+  .main-comparison-section .uppertitle h3,
+  .main-comparison-section .uppertitle p {
+    color: var(--title-color);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .main-comparison-section .slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Tight spacing between headline and subheadline */
+  }
+
+  .main-comparison-section .carousel-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    padding: 100px 0 25px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .main-comparison-section .comparison-table-w > .comparison-table .comparison-cell:first-child {
+    background: var(--main-bg);
+    color: #fff;
+    position: relative;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .main-comparison-section .comparison-table-w > .comparison-table .comparison-cell:first-child:after {
+    content: '';
+    background: var(--main-bg);
+    position: absolute;
+    width: 100%;
+    height: 66px;
+    bottom: -55px;
+    border-radius: 0 0 18px 18px;
+  }
+
+  .comparison-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--sec-bg);
+    padding: 30px 21px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 230px;
+    min-height: 110px;
+    max-width: 260px;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 26.82px;
+    letter-spacing: 0;
+    color: var(--body-color);
+    border-radius: 20px;
+  }
+
+  .main-comparison-section a {
+    transition: all 0.3s ease;
+  }
+
+  .main-comparison-section a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .comparison-section-main .comparison-cell {
+    border-radius: var(--cells-radius);
+  }
+
+  @media (min-width: 767px) {
+    .main-comparison-section .main-comparison_wrapper {
+      display: var(--display-value);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .main-comparison-section .main-comparison_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .main-comparison-section_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-comparison-section_wrapper.inner-padding .container,
+    .main-comparison-section_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-comparison-section_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .main-comparison-section .heading {
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-comparison-section .title h2,
+    .main-comparison-section .title h1,
+    .main-comparison-section .title h3,
+    .main-comparison-section .title p {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+      margin: 0;
+      margin-bottom: 16px;
+    }
+
+
+    .main-comparison-section .subtitle h2,
+    .main-comparison-section .subtitle h3,
+    .main-comparison-section .subtitle h1,
+    .main-comparison-section .subtitle p {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    .main-comparison-section .uppertitle h2,
+    .main-comparison-section .uppertitle h3,
+    .main-comparison-section .uppertitle h4,
+    .main-comparison-section .uppertitle p {
+      color: var(--upper-title);
+      font-size: 12px;
+      line-height: 14px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .comparison-cell {
+      font-size: 14px;
+      line-height: 17.07px;
+      padding: 28px 14px;
+      word-break: break-word;
+    }
+    .main-comparison-section .uppertitle {
+      margin-bottom: 16px;
+    }
+    .main-comparison-section .uppertitle svg {
+      max-width: 12px;
+      margin-left: 0px;
+    }
+  }
+{%- endstylesheet -%}
+<div
+  class="main-comparison_wrapper {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    --upper-title: {{ section.settings.uppertitle_color }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+       --xs-heading-size: 20px;
+      {% when 'medium' %}
+       --xs-heading-size: 32px;
+      {% when 'large' %}
+       --xs-heading-size: 32px;
+    {% endcase %}
+    --body-color: {{ section.settings.body_color }};
+    --sec-bg: {{ section.settings.sec_bg }};
+    --main-bg: {{ section.settings.mainc_bg }};
+    --fill: {{ section.settings.star_color }};
+    --cells-radius: {{ section.settings.cells_radius }}px;
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+       --heading-justify: flex-start;
+      {% when 'center' %}
+       --heading-justify: center;
+      {% when 'right' %}
+       --heading-justify: flex-end;
+    {% endcase %}
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+       --heading-align: left;
+      {% when 'center' %}
+       --heading-align: center;
+      {% when 'right' %}
+       --heading-align: right;
+    {% endcase %}
+    --title-color: {{ section.settings.title_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+       --xl-heading-size: 28px;
+      {% when 'medium' %}
+       --xl-heading-size: 40px;
+      {% when 'large' %}
+       --xl-heading-size: 48px;
+    {% endcase %}
+    {% if section.settings.section_width == 'container-fluid' %}
+        --content-display: flex;
+        --content-flex-wrap: wrap;
+        --content-justify-content: center;
+    {% else %}
+     --content-display: block;
+    {% endif %}
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.uppertitle != blank or section.settings.subtitle or section.settings.title != blank -%}
+          <div class="heading word--break">
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle word--break">
+                {{ section.settings.uppertitle -}}
+                <span class="star_span">
+                  {%- for i in (1..5) -%}
+                    {%- render 'star_comparison' -%}
+                  {%- endfor -%}
+                </span>
+              </div>
+            {% endif %}
+            <div class="title word--break">
+              {%- if section.settings.title != blank -%}
+                {{ section.settings.title }}
+              {%- endif -%}
+            </div>
+            <div class="subtitle word--break">
+              {%- if section.settings.subtitle != blank -%}
+                {{ section.settings.subtitle }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <div id="comparison-table-w" class="comparison-table-w scrollbar">
+          <div class="comparison-column">
+            <div class="comparison-table comparison-table-future">
+              <div class="comparison-row heading">
+                <div class="comparison-cell"></div>
+              </div>
+              {% for block in section.blocks %}
+                <div class="comparison-row" {{ block.shopify_attributes }}>
+                  <div class="comparison-cell">{{ block.settings.title }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="comparison-table">
+            <div class="comparison-row heading">
+              {% for i in (1..6) %}
+                {% assign company_name = 'company_name' | append: i %}
+                {% assign logo = 'logo' | append: i %}
+                {% if section.settings[logo] != blank %}
+                  <div class="comparison-cell" {{ block.shopify_attributes }}>
+                    {%- liquid
+                      assign max_width = section.settings[logo].width
+                      if section.settings[logo] > 180
+                        assign max_width = 180
+                      endif
+                      assign image_height = max_width | divided_by: section.settings[logo].aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings[logo].alt != blank
+                          echo section.settings[logo].alt
+                        else
+                          echo 'image_alternative.by_index' | t: index: forloop.index
+                        endif
+                      endcapture
+
+                      capture sizes_attr
+                        echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings[logo]
+                      | image_url: width: max_width
+                      | image_tag:
+                        loading: 'lazy',
+                        width: max_width,
+                        height: image_height,
+                        sizes: sizes_attr,
+                        alt: image_alt,
+                        class: ''
+                    -}}
+                  </div>
+                {% else %}
+                  {% if section.settings[company_name] != blank %}
+                    <div class="comparison-cell" {{ block.shopify_attributes }}>
+                      {{ section.settings[company_name] }}
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% for block in section.blocks %}
+              <div class="comparison-row">
+                {% for i in (1..6) %}
+                  {% assign company_name = 'company_name' | append: i %}
+                  {% assign def_icon = 'def_icon_' | append: i %}
+                  {% if section.settings[company_name] != blank %}
+                    <div class="comparison-cell" {{ block.shopify_attributes }}>
+                      {% if block.settings[def_icon] == 'check' -%}
+                        {%- render 'comparison-check' -%}
+                      {%- else -%}
+                        {%- render 'comparison-cross' -%}
+                      {%- endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="scroll_text" id="scroll_text">
+          Swipe to scroll
+          <span>
+            {%- render 'comparison-arrowright' -%}
+            {%- render 'comparison-arrowright' -%}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  const compresion_block = document.getElementById('comparison-table-w');
+  const compresion_scrollText = document.getElementById('scroll_text');
+
+  if (compresion_block && compresion_scrollText) {
+    window.addEventListener('load', onLoadFunction);
+    window.addEventListener('resize', onLoadFunction);
+  }
+
+  function onLoadFunction(e) {
+    if (!compresion_block || !compresion_scrollText) return;
+    let compresion_isHorizontalScroll = compresion_block.scrollWidth > compresion_block.clientWidth;
+    compresion_isHorizontalScroll
+      ? compresion_scrollText.classList.add('scroll-on')
+      : compresion_scrollText.classList.remove('scroll-on');
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Comparison Table",
+  "tag": "section",
+  "class": "y-comparison-section-main main-comparison-section comparison-section-main",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#EDEDED"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#020B1E"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FF8E00"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body Text Color",
+      "default": "#020B1E"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "cells_radius",
+      "label": "Cells corner radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "color",
+      "id": "mainc_bg",
+      "label": "Main Container Bacground",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "sec_bg",
+      "label": "Secondary Containers Bacground",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle",
+      "default": "<p>Reviewed by +100 Happy Customers</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Why people choose [your brand name] over others</h2>"
+    },
+
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>See why thousands of people are switching to [your brand/product name]</h3>"
+    },
+
+    {
+      "type": "header",
+      "content": "Company Name settings"
+    },
+    {
+      "type": "text",
+      "id": "company_name1",
+      "label": "Company Name #1"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo1",
+      "label": "Compamy Logo 1"
+    },
+    {
+      "type": "text",
+      "id": "company_name2",
+      "label": "Company Name #2"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo2",
+      "label": "Compamy Logo 2"
+    },
+    {
+      "type": "text",
+      "id": "company_name3",
+      "label": "Company Name #3"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo3",
+      "label": "Compamy Logo 3"
+    },
+    {
+      "type": "text",
+      "id": "company_name4",
+      "label": "Company Name #4"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo4",
+      "label": "Compamy Logo 4"
+    },
+    {
+      "type": "text",
+      "id": "company_name5",
+      "label": "Company Name #5"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo5",
+      "label": "Compamy Logo 5"
+    },
+    {
+      "type": "text",
+      "id": "company_name6",
+      "label": "Company Name #6"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo6",
+      "label": "Compamy Logo 6"
+    },
+    {
+      "type": "header",
+      "content": "Icon settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_cross",
+      "label": "Icon cross"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_check",
+      "label": "Icon check"
+    },
+    {
+      "type": "color",
+      "id": "icon_check_color",
+      "label": "Icon Check Color",
+      "default": "#0CF681"
+    },
+    {
+      "type": "color",
+      "id": "icon_cross_color",
+      "label": "Icon Cross Color",
+      "default": "#CC4C4C"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "company",
+      "name": "Company Column",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Key Feature settings"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Key Feature Title"
+        },
+        {
+          "type": "header",
+          "content": "Company settings"
+        },
+        {
+          "type": "select",
+          "id": "def_icon_1",
+          "label": "company icon default #1",
+          "options": [
+            { "value": "check", "label": "Check (✅)" },
+            { "value": "cross", "label": "Cross (❌)" }
+          ],
+          "default": "cross"
+        },
+        {
+          "type": "select",
+          "id": "def_icon_2",
+          "label": "company icon default #2",
+          "options": [
+            { "value": "check", "label": "Check (✅)" },
+            { "value": "cross", "label": "Cross (❌)" }
+          ],
+          "default": "cross"
+        },
+        {
+          "type": "select",
+          "id": "def_icon_3",
+          "label": "company icon default #3",
+          "options": [
+            { "value": "check", "label": "Check (✅)" },
+            { "value": "cross", "label": "Cross (❌)" }
+          ],
+          "default": "cross"
+        },
+        {
+          "type": "select",
+          "id": "def_icon_4",
+          "label": "company icon default #4",
+          "options": [
+            { "value": "check", "label": "Check (✅)" },
+            { "value": "cross", "label": "Cross (❌)" }
+          ],
+          "default": "cross"
+        },
+        {
+          "type": "select",
+          "id": "def_icon_5",
+          "label": "company icon default #5",
+          "options": [
+            { "value": "check", "label": "Check (✅)" },
+            { "value": "cross", "label": "Cross (❌)" }
+          ],
+          "default": "cross"
+        },
+        {
+          "type": "select",
+          "id": "def_icon_6",
+          "label": "company icon default #6",
+          "options": [
+            { "value": "check", "label": "Check (✅)" },
+            { "value": "cross", "label": "Cross (❌)" }
+          ],
+          "default": "cross"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison Table",
+      "category": "Info",
+      "settings": {
+        "company_name1": "Company Name",
+        "company_name2": "Company Name 2",
+        "company_name3": "Company Name 3",
+        "company_name4": "Company Name 4",
+        "uppertitle": "<h3>Reviewed by +100 Happy Customers</h3>",
+        "title": "<h2>Why people choose [your brand name] over others</h2>",
+        "subtitle": "<h3>See why thousands of people are switching to [your brand/product name]</h3>"
+      },
+      "blocks": [
+        {
+          "type": "company",
+          "settings": {
+            "title": "Key feature #01",
+            "def_icon_1": "check",
+            "def_icon_2": "cross",
+            "def_icon_3": "cross",
+            "def_icon_4": "cross",
+            "def_icon_5": "cross",
+            "def_icon_6": "cross"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "title": "Key feature #02",
+            "def_icon_1": "check",
+            "def_icon_2": "cross",
+            "def_icon_3": "cross",
+            "def_icon_4": "cross",
+            "def_icon_5": "cross",
+            "def_icon_6": "cross"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "title": "Key feature #03",
+            "def_icon_1": "check",
+            "def_icon_2": "cross",
+            "def_icon_3": "cross",
+            "def_icon_4": "cross",
+            "def_icon_5": "cross",
+            "def_icon_6": "cross"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "title": "Key feature #04",
+            "def_icon_1": "check",
+            "def_icon_2": "cross",
+            "def_icon_3": "cross",
+            "def_icon_4": "cross",
+            "def_icon_5": "cross",
+            "def_icon_6": "cross"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "title": "Key feature #05",
+            "def_icon_1": "check",
+            "def_icon_2": "cross",
+            "def_icon_3": "cross",
+            "def_icon_4": "cross",
+            "def_icon_5": "cross",
+            "def_icon_6": "cross"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

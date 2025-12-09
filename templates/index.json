@@ -1,0 +1,1263 @@
+{
+  "sections": {
+    "yas_hero_cropped_efEYCp": {
+      "type": "yas-hero-cropped",
+      "blocks": {
+        "hero_banner_QEEgky": {
+          "type": "Hero-Banner",
+          "settings": {
+            "title": "<h3>A Simple Way to [Desired Outcome] Without [Pain Point]</h3>",
+            "subtitle": "<p>Join [#] Happy Customers Already Enjoying [Core Benefit], Backed By Our [USP. Ex. Guarantee, Free Shipping, Expert Formula].</p>",
+            "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
+            "star_color": "#ff8e00",
+            "slide_bg": "#f7f7f7",
+            "hide_image": false,
+            "image_position": "right",
+            "image_positionm": "top",
+            "cpadding_x_desk": 120,
+            "cpadding_y_desk": 70,
+            "cpadding_x_mob": 20,
+            "cpadding_y_mob": 20,
+            "container_radius": 30,
+            "heading_size": "large",
+            "headline_typography": "capitalize",
+            "text_color": "#000000",
+            "btext_color": "#000000",
+            "show_payment_icons": true,
+            "heading_align": "left",
+            "mob_heading_align": "center",
+            "show_points": "block",
+            "icon_1_text": "check",
+            "point_1_text": "Get [Primary Benefit] in just [Timeframe]",
+            "icon_2_text": "check",
+            "point_2_text": "Enjoy [Secondary Benefit] without [Common Hassle]",
+            "icon_3_text": "check",
+            "point_3_text": "Feel [Emotional Outcome] and finally [End Fear State]",
+            "review_on": "on",
+            "review_bg_color": "#ffffff",
+            "review-title": "<h2>Julia Larson</h2>",
+            "review-text": "<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihi quo minus id quod maxime placeat facere possimus</p><p></p>",
+            "button_text": "SHOP NOW",
+            "show_arrow": true,
+            "button_link": "/",
+            "setting_btn": "global",
+            "button_border_size": 1,
+            "button_border_color": "#000000",
+            "button_radius": 10,
+            "button_color": "#ffffff",
+            "button_text_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "hero_banner_QEEgky"
+      ],
+      "name": "Hero Banner - cropped",
+      "settings": {
+        "background_color": "rgba(0,0,0,0)",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "page-width",
+        "enable_custom_width": true,
+        "custom_page_width": 1472,
+        "size": "big",
+        "padding_x_desk": 20,
+        "padding_y_desk": 0,
+        "padding_x_mob": 0,
+        "padding_y_mob": 0,
+        "display_on": "all",
+        "align_content": "center"
+      }
+    },
+    "yas_logo_carousel_B3Wk4h": {
+      "type": "yas-logo-carousel",
+      "blocks": {
+        "logo_block_KKkQtV": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_KJHC6G": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_BnqNK4": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_mQNF8D": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_JeVjie": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_8FG4He": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_block_KKkQtV",
+        "logo_block_KJHC6G",
+        "logo_block_BnqNK4",
+        "logo_block_mQNF8D",
+        "logo_block_JeVjie",
+        "logo_block_8FG4He"
+      ],
+      "name": "Logo Carousel",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "background_color": "rgba(0,0,0,0)",
+        "mob_background_color": "#c4c4c4",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "subtitle_color": "#666666",
+        "heading_align": "center",
+        "section_width": "container-fluid",
+        "top_btm_padding": true,
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 20,
+        "padding_y_desk": 20,
+        "padding_x_mob": 15,
+        "padding_y_mob": 15,
+        "block_color": "#000000",
+        "scroll_speed": 15,
+        "mod_carusel": "marquee",
+        "display_on": "all",
+        "separator": "",
+        "gap_icon": 120
+      }
+    },
+    "yas_testimonials_video_bTeGeH": {
+      "type": "yas-testimonials-video",
+      "blocks": {
+        "testimonial_nX3pLq": {
+          "type": "testimonial",
+          "settings": {
+            "video_y": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_controls": "false"
+          }
+        },
+        "testimonial_6LaVw7": {
+          "type": "testimonial",
+          "settings": {
+            "video_y": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_controls": "false"
+          }
+        },
+        "testimonial_nHgJ3T": {
+          "type": "testimonial",
+          "settings": {
+            "video_y": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_controls": "false"
+          }
+        },
+        "testimonial_6qGhXW": {
+          "type": "testimonial",
+          "settings": {
+            "video_y": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_controls": "false"
+          }
+        },
+        "testimonial_jXGYHT": {
+          "type": "testimonial",
+          "settings": {
+            "video_y": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_controls": "false"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_nX3pLq",
+        "testimonial_6LaVw7",
+        "testimonial_nHgJ3T",
+        "testimonial_6qGhXW",
+        "testimonial_jXGYHT"
+      ],
+      "name": "Testimonials Video",
+      "settings": {
+        "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
+        "heading": "<h2>Join the [number]+ People Enjoying their new [benefit / feeling / transformation]</h2>",
+        "subheading": "",
+        "settging_btn": "global",
+        "btn": "",
+        "btn_url": "",
+        "button_border_size": 1,
+        "button_radius": 50,
+        "button_border_color": "#000000",
+        "button_color": "#000000",
+        "button_text_color": "#ffffff",
+        "background_color": "",
+        "star_color": "#ff8e00",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "heading_align": "center",
+        "text_color_h": "#000000",
+        "banner_height": "494",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "top_btm_padding": true,
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "enable_full_slide_width": false,
+        "padding_lr_desk": 20,
+        "padding_tb_desk": 20,
+        "padding_lr_mob": 20,
+        "padding_tb_mob": 20,
+        "display_on": "all",
+        "corner_radius": 20
+      }
+    },
+    "yas_featured_products_xKnypj": {
+      "type": "yas-featured-products",
+      "blocks": {
+        "product_6igRHK": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "star_count": 5,
+            "review_text": "10 reviews"
+          }
+        },
+        "product_FAfkmi": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "star_count": 5,
+            "review_text": "10 reviews"
+          }
+        },
+        "product_cgXTy3": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "star_count": 5,
+            "review_text": "10 reviews"
+          }
+        },
+        "product_zhAwJt": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "star_count": 5,
+            "review_text": "10 reviews"
+          }
+        }
+      },
+      "block_order": [
+        "product_6igRHK",
+        "product_FAfkmi",
+        "product_cgXTy3",
+        "product_zhAwJt"
+      ],
+      "name": "Featured Products",
+      "settings": {
+        "title": "<h2>Discover our top-rated bestsellers</h2>",
+        "product_page_title": "<h2>You may also be interested in...</h2>",
+        "under_title_text": "<h3>Join thousands who’ve already [achieved desired outcome] with these top picks</h3>",
+        "background_color": "#ededed", 
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "heading_align": "center",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "text_color": "#000000",
+        "section_width": "contained-content",
+        "top_btm_padding": true,
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_lr_desk": 0,
+        "padding_tb_desk": 96,
+        "padding_lr_mob": 0,
+        "padding_tb_mob": 40,
+        "display_on": "all",
+        "secondary_image_highlight": false,
+        "show_reviews": true,
+        "card_title_line": true,
+        "card_title_typography": "capitalize",
+        "card_clickable": true,
+        "container_styling": "card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_background": "rgba(0,0,0,0)",
+        "ver_card_padding": 0,
+        "hor_card_padding": 0,
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 10,
+        "column_prod_mob": "2",
+        "show_cta": true,
+        "show_arrow": true,
+        "setting_btn": "global",
+        "button_border_size": 1,
+        "button_border_color": "#000000",
+        "button_radius": 10,
+        "button_color": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "text_btn_card": "SHOP NOW",
+        "view_more_btn": "View More",
+        "view_more_url": ""
+      }
+    },
+    "yas_transformation_zVPCdU": {
+      "type": "yas-transformation",
+      "blocks": {
+        "card_NWxEeK": {
+          "type": "card",
+          "settings": {
+            "card_title": "<h3>Place your order</h3>",
+            "card_text": "<p>Secure your [product] in minutes with our easy and secure checkout.</p>",
+            "card_number": "1"
+          }
+        },
+        "card_gBedLc": {
+          "type": "card",
+          "settings": {
+            "card_title": "<h3>Get Fast Shipping</h3>",
+            "card_text": "<p>We'll pack & ship your order within [x] hours, with tracking sent straight to your inbox.</p>",
+            "card_number": "2"
+          }
+        },
+        "card_MXP4id": {
+          "type": "card",
+          "settings": {
+            "card_title": "<h3>Enjoy [Desired outcome]</h3>",
+            "card_text": "<p>Experience [desired outcome] in just [timeframe] without [common objection]</p>",
+            "card_number": "3"
+          }
+        }
+      },
+      "block_order": [
+        "card_NWxEeK",
+        "card_gBedLc",
+        "card_MXP4id"
+      ],
+      "name": "Transformation",
+      "settings": {
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "background_color": "rgba(0,0,0,0)",
+        "title_color": "#000000",
+        "subtitle_color": "#666666",
+        "text_color": "#000000",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "heading_align": "center",
+        "section_width": "contained-content",
+        "top_btm_padding": true,
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 20,
+        "padding_y_desk": 80,
+        "padding_x_mob": 20,
+        "padding_y_mob": 45,
+        "display_on": "all",
+        "num_bg": "#000000",
+        "num_txt": "#ffffff",
+        "title": "<h2>3 Easy Steps to [Desired outcome]</h2>",
+        "subtitle": "<h3>It's never been easier to [achieve outcome], just follow these simple steps and enjoy [primary benefit] fast.</h3>",
+        "container_styling": "card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_border": 1,
+        "box_color": "rgba(0,0,0,0)",
+        "card_border_color": "#ededed",
+        "container_radius": 10,
+        "settging_btn": "global",
+        "btn_text": "",
+        "btn": "",
+        "btn_url": "",
+        "button_border_size": 1,
+        "button_radius": 50,
+        "button_border_color": "#000000",
+        "button_color": "#000000",
+        "button_text_color": "#ffffff"
+      }
+    },
+    "yas_image_with_icons_rAnyyL": {
+      "type": "yas-image-with-icons",
+      "blocks": {
+        "icon_block_HF9AnC": {
+          "type": "icon_block",
+          "settings": {
+            "title": "Short benefit or feature",
+            "text": "[Short sentence that explains how this helps them or removes a pain point]"
+          }
+        },
+        "icon_block_tr9ErD": {
+          "type": "icon_block",
+          "settings": {
+            "title": "Short benefit or feature",
+            "text": "[Short sentence that explains how this helps them or removes a pain point]"
+          }
+        },
+        "icon_block_6MfXdm": {
+          "type": "icon_block",
+          "settings": {
+            "title": "Short benefit or feature",
+            "text": "[Short sentence that explains how this helps them or removes a pain point]"
+          }
+        },
+        "icon_block_PwCfkj": {
+          "type": "icon_block",
+          "settings": {
+            "title": "Short benefit or feature",
+            "text": "[Short sentence that explains how this helps them or removes a pain point]"
+          }
+        }
+      },
+      "block_order": [
+        "icon_block_HF9AnC",
+        "icon_block_tr9ErD",
+        "icon_block_6MfXdm",
+        "icon_block_PwCfkj"
+      ],
+      "name": "Image With Icons",
+      "settings": {
+        "title": "<h2>[Achieve key outcome] with [product/service] that [solves main problem or frustration]</h2>",
+        "subtitle": "<h3>[Short statement that adds reassurance, social proof, or unique approach]</h3>",
+        "background_color": "#ededed",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "text_color": "#000000",
+        "heading_align": "center",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 100,
+        "padding_x_mob": 0,
+        "padding_y_mob": 70,
+        "display_on": "all",
+        "icon_color": "#000000",
+        "image_position": "left",
+        "image_round": 10
+      }
+    },
+    "yas_testimonials_video_eUqWCW": {
+      "type": "yas-testimonials-video",
+      "blocks": {
+        "testimonial_UYENtH": {
+          "type": "testimonial",
+          "settings": {
+            "video_y": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_controls": "false"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_UYENtH"
+      ],
+      "name": "Testimonials Video",
+      "settings": {
+        "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
+        "heading": "<h2>Watch the video</h2>",
+        "subheading": "<p>Short headline that highlights the main benefits they’ll experience from watching this video</p>",
+        "settging_btn": "global",
+        "btn": "",
+        "btn_url": "",
+        "button_border_size": 1,
+        "button_radius": 50,
+        "button_border_color": "#000000",
+        "button_color": "#000000",
+        "button_text_color": "#ffffff",
+        "background_color": "transparent",
+        "star_color": "#ff8e00",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "heading_align": "center",
+        "text_color_h": "#000000",
+        "banner_height": "494",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "top_btm_padding": true,
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "enable_full_slide_width": true,
+        "padding_lr_desk": 20,
+        "padding_tb_desk": 45,
+        "padding_lr_mob": 20,
+        "padding_tb_mob": 30,
+        "display_on": "all",
+        "corner_radius": 20
+      }
+    },
+    "yas_shopable_image_Pfk8kb": {
+      "type": "yas-shopable-image",
+      "blocks": {
+        "point_Gp9Emp": {
+          "type": "point",
+          "settings": {
+            "tooltip_text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "x_coord": 15,
+            "y_coord": 15,
+            "product": ""
+          }
+        },
+        "point_eL4Lbh": {
+          "type": "point",
+          "settings": {
+            "tooltip_text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "x_coord": 50,
+            "y_coord": 50,
+            "product": ""
+          }
+        },
+        "point_8DaNiT": {
+          "type": "point",
+          "settings": {
+            "tooltip_text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "x_coord": 68,
+            "y_coord": 25,
+            "product": ""
+          }
+        },
+        "point_KFEUbK": {
+          "type": "point",
+          "settings": {
+            "tooltip_text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "x_coord": 85,
+            "y_coord": 69,
+            "product": ""
+          }
+        },
+        "point_EAgXYi": {
+          "type": "point",
+          "settings": {
+            "tooltip_text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "x_coord": 15,
+            "y_coord": 85,
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "point_Gp9Emp",
+        "point_eL4Lbh",
+        "point_8DaNiT",
+        "point_KFEUbK",
+        "point_EAgXYi"
+      ],
+      "name": "Shopable Image",
+      "settings": {
+        "heading_type": "top",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "star_color": "#ff8e00",
+        "heading_align": "center",
+        "background_color": "#ededed",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 100,
+        "padding_x_mob": 5,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "image_round": 16,
+        "title": "<h2>[Short promise of style, function or discovery tied to the image]</h2>",
+        "subtitle": "<h3>[Short supportive line that invites exploration or highlights ease]</h3>",
+        "uppertitle": "",
+        "marker_color": "#000000",
+        "marker_hover_color": "#000000",
+        "marker_symbol": "#ffffff",
+        "tooltip_color": "#000000",
+        "tooltip_text": "#ffffff",
+        "ptitle": "#ffffff",
+        "ptext": "#ffffff",
+        "pprice": "#ffffff",
+        "ttip_round": 16
+      }
+    },
+    "yas_gallery_GaKF3a": {
+      "type": "yas-gallery",
+      "blocks": {
+        "photo_slide_mNR7nh": {
+          "type": "photo_slide",
+          "settings": {}
+        },
+        "testimonial_slide_MVe6mh": {
+          "type": "testimonial_slide",
+          "settings": {
+            "rating": "<p>★★★★★</p>",
+            "name": "Leslie Alexander",
+            "status": "Verified Customer",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+          }
+        },
+        "photo_slide_mftViR": {
+          "type": "photo_slide",
+          "settings": {}
+        },
+        "testimonial_slide_RbtaaA": {
+          "type": "testimonial_slide",
+          "settings": {
+            "rating": "<p>★★★★★</p>",
+            "name": "Leslie Alexander",
+            "status": "Verified Customer",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+          }
+        },
+        "photo_slide_xARTVE": {
+          "type": "photo_slide",
+          "settings": {}
+        },
+        "testimonial_slide_JKwwFW": {
+          "type": "testimonial_slide",
+          "settings": {
+            "rating": "<p>★★★★★</p>",
+            "name": "Leslie Alexander",
+            "status": "Verified Customer",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "photo_slide_mNR7nh",
+        "testimonial_slide_MVe6mh",
+        "photo_slide_mftViR",
+        "testimonial_slide_RbtaaA",
+        "photo_slide_xARTVE",
+        "testimonial_slide_JKwwFW"
+      ],
+      "name": "Gallery",
+      "settings": {
+        "background_color": "rgba(0,0,0,0)",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "title_color": "#000000",
+        "subtitle_color": "#666666",
+        "status_color": "#000000",
+        "body_color": "#000000",
+        "heading_align": "center",
+        "section_width": "container-fluid",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 100,
+        "padding_x_mob": 0,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "scroll_speed": 15,
+        "auto_scroll": true,
+        "enable_arrow": true,
+        "title": "<h2>What people are saying</h2>",
+        "subtitle": "<h3>Real stories from people who made the switch.</h3>",
+        "container_styling": "card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_background": "#f4f4f4",
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 10
+      }
+    },
+    "yas_collection_list_DPX7EY": {
+      "type": "yas-collection-list",
+      "blocks": {
+        "collection_4747eU": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_fR9rV4": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_TETgxQ": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_RURTtr": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_783nDb": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_RwtMEp": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_TYTDqJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        },
+        "collection_4QcMRw": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "description": "<p>An optional short category description could go here</p>"
+          }
+        }
+      },
+      "block_order": [
+        "collection_4747eU",
+        "collection_fR9rV4",
+        "collection_TETgxQ",
+        "collection_RURTtr",
+        "collection_783nDb",
+        "collection_RwtMEp",
+        "collection_TYTDqJ",
+        "collection_4QcMRw"
+      ],
+      "name": "Featured Collections",
+      "settings": {
+        "title": "<h2>Find Your Perfect [Product/Category]</h2>",
+        "subtitle": "<h3>[Short enticing line that highlights variety, style, or quality]</h3>",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "heading_align": "center",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "background_color": "#ededed",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_lr_desk": 0,
+        "padding_tb_desk": 75,
+        "padding_lr_mob": 0,
+        "padding_tb_mob": 40,
+        "display_on": "all",
+        "secondary_image_highlight": false,
+        "card_title_line": true,
+        "card_title_typography": "capitalize",
+        "card_clickable": true,
+        "container_styling": "card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_background": "rgba(0,0,0,0)",
+        "card_padding": 10,
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 10,
+        "column_prod_mob": "2",
+        "setting_btn": "global",
+        "button_border_size": 1,
+        "button_border_color": "#000000",
+        "show_cta": true,
+        "show_arrow": true,
+        "button_radius": 10,
+        "button_color": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "text_btn_card": "SHOP NOW"
+      }
+    },
+    "yas_faq_DyB9Aw": {
+      "type": "yas-faq",
+      "blocks": {
+        "faq_block_4CeXJC": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What make [product name] different?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_tC8BRb": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_UxC64K": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_TGac94": {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will my order arrive?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_V7AgRc": {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will i see results?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_HnG4jU": {
+          "type": "faq_block",
+          "settings": {
+            "title": "is [product name] safe to use?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_GhWnGA": {
+          "type": "faq_block",
+          "settings": {
+            "title": "can i cancel or return my order?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        }
+      },
+      "block_order": [
+        "faq_block_4CeXJC",
+        "faq_block_tC8BRb",
+        "faq_block_UxC64K",
+        "faq_block_TGac94",
+        "faq_block_V7AgRc",
+        "faq_block_HnG4jU",
+        "faq_block_GhWnGA"
+      ],
+      "name": "FAQ Section",
+      "settings": {
+        "title": "<h2>Frequently Asked Questions</h2>",
+        "under_title_text": "<h3>Got questions? We’ve got answers!</h3>",
+        "heading_align": "center",
+        "background_color": "#f9f9f9",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_lr_desk": 0,
+        "padding_tb_desk": 100,
+        "padding_lr_mob": 0,
+        "padding_tb_mob": 20,
+        "text_color": "#000000",
+        "subtitle_color": "#696969",
+        "display_on": "all",
+        "show_video": true,
+        "video_aligment": "right",
+        "faq_background_color": "#ffffff",
+        "faq_border_color": "#e0e0e0",
+        "faq_border_size": 1,
+        "title_color_block": "#000000",
+        "text_color_block": "#696969"
+      }
+    },
+    "yas_tp_reviews_dGV9yF": {
+      "type": "yas-tp-reviews",
+      "blocks": {
+        "testimonial_slide_CrFEc9": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_nVjnfj": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_qM6qtJ": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_dJPApJ": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_kAzWem": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_dkP6Ek": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_VDpgTY": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_V8PDmj": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_qqNfwa": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_APpUwh": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_xYBRRm": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        },
+        "testimonial_slide_Y79hcM": {
+          "type": "testimonial_slide",
+          "settings": {
+            "show_dots": false,
+            "rating": "<p>★★★★★</p>",
+            "name": "Terry Weiss",
+            "status": "@bariweiss",
+            "text": "<p>As someone who has struggled with maintaining a healthy weight for years, I was excited to try this out. This has helped me to stay accountable and make more informed choices about my diet</p><p>@humehealth has really turned my life around. This is most exciting thing since the launch of the iphone</p>",
+            "comments": "15 Sep 2022"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_slide_CrFEc9",
+        "testimonial_slide_nVjnfj",
+        "testimonial_slide_qM6qtJ",
+        "testimonial_slide_dJPApJ",
+        "testimonial_slide_kAzWem",
+        "testimonial_slide_dkP6Ek",
+        "testimonial_slide_VDpgTY",
+        "testimonial_slide_V8PDmj",
+        "testimonial_slide_qqNfwa",
+        "testimonial_slide_APpUwh",
+        "testimonial_slide_xYBRRm",
+        "testimonial_slide_Y79hcM"
+      ],
+      "name": "TP Reviews",
+      "settings": {
+        "background_color": "rgba(0,0,0,0)",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "title_color": "#020b1e",
+        "subtitle_color": "#020b1e",
+        "star_color": "#67bba0",
+        "status_color": "#020b1e",
+        "body_color": "#020b1e",
+        "heading_align": "center",
+        "section_width": "container-fluid",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 100,
+        "padding_x_mob": 0,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "scroll_speed": 45,
+        "auto_scroll": true,
+        "uppertitle": "<h3>Based on <strong>89,503</strong> Reviews By Happy Customers</h3>",
+        "title": "<h2>what people are saying...</h2>",
+        "subtitle": "",
+        "card_background": "#ededed",
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 16
+      }
+    },
+    "yas_blog_posts_8RFgYc": {
+      "type": "yas-blog-posts",
+      "blocks": {
+        "blog_post_PybEGq": {
+          "type": "blog_post",
+          "settings": {
+            "selected_post": ""
+          }
+        },
+        "blog_post_mPwhHC": {
+          "type": "blog_post",
+          "settings": {
+            "selected_post": ""
+          }
+        },
+        "blog_post_KcHJVX": {
+          "type": "blog_post",
+          "settings": {
+            "selected_post": ""
+          }
+        },
+        "blog_post_jfN6AM": {
+          "type": "blog_post",
+          "settings": {
+            "selected_post": ""
+          }
+        }
+      },
+      "block_order": [
+        "blog_post_PybEGq",
+        "blog_post_mPwhHC",
+        "blog_post_KcHJVX",
+        "blog_post_jfN6AM"
+      ],
+      "name": "Blog Posts",
+      "settings": {
+        "heading": "<h2>Recent Blog Posts</h2>",
+        "subtitle": "<h3>Read Some Of Our Blog Posts And Learn How To [Benefit].</h3>",
+        "heading_align": "center",
+        "background_color": "#ededed",
+        "title_size": "medium",
+        "title_format": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "title_color": "#000000",
+        "subtitle_color": "#696969",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_lr_desk": 0,
+        "padding_tb_desk": 90,
+        "padding_lr_mob": 0,
+        "padding_tb_mob": 40,
+        "display_on": "all",
+        "text_color_title": "#000000",
+        "text_color_blog": "#4b4b4b",
+        "text_color_url": "#000000",
+        "card_title_line": true,
+        "card_description": true,
+        "card_clickable": true,
+        "container_styling": "card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_background": "rgba(0,0,0,0)",
+        "card_padding": 15,
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 10
+      }
+    },
+    "yas_instagram_9LVNrc": {
+      "type": "yas-instagram",
+      "blocks": {
+        "image_LfXEE4": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_ERiU7m": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_WGtPD7": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_K3ka4e": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_xkgTUq": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_QaVeRY": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image_LfXEE4",
+        "image_ERiU7m",
+        "image_WGtPD7",
+        "image_K3ka4e",
+        "image_xkgTUq",
+        "image_QaVeRY"
+      ],
+      "name": "Instagram",
+      "settings": {
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "background_color": "rgba(0,0,0,0)",
+        "text_color": "#000000",
+        "subtitle_color": "#666666",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "heading_align": "left",
+        "mob_heading_align": "center",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 10,
+        "padding_y_desk": 100,
+        "padding_x_mob": 0,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "uppertitle": "",
+        "star_color": "#ff8e00",
+        "title": "<h2>Join our community</h2>",
+        "subtitle": "<p>@Username</p>",
+        "image_round": 10
+      }
+    },
+    "yas_email_sign_up_VFbxJ8": {
+      "type": "yas-email-sign-up",
+      "name": "Newsletter Signup Bar",
+      "settings": {
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "star_color": "#ff8e00",
+        "heading_align": "center",
+        "background_color": "#ededed",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 100,
+        "padding_x_mob": 0,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "title": "<h2>sign up to our Free newsletter & receive [benefit]</h2>",
+        "subtitle": "<h3>Join our community of [number] and receive [benefit].</h3>",
+        "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
+        "placeholder_text": "Enter your email address",
+        "privacy_text": "<p>We will never share your information</p>",
+        "input_color": "#000000",
+        "input_border_color": "#000000",
+        "setting_btn": "global",
+        "button_border_size": 1,
+        "button_border_color": "#000000",
+        "show_arrow": true,
+        "button_radius": 10,
+        "button_color": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "button_text": "GET YOURS NOW"
+      }
+    }
+  },
+  "order": [
+    "yas_hero_cropped_efEYCp",
+    "yas_logo_carousel_B3Wk4h",
+    "yas_testimonials_video_bTeGeH",
+    "yas_featured_products_xKnypj",
+    "yas_transformation_zVPCdU",
+    "yas_image_with_icons_rAnyyL",
+    "yas_testimonials_video_eUqWCW",
+    "yas_shopable_image_Pfk8kb",
+    "yas_gallery_GaKF3a",
+    "yas_collection_list_DPX7EY",
+    "yas_faq_DyB9Aw",
+    "yas_tp_reviews_dGV9yF",
+    "yas_blog_posts_8RFgYc",
+    "yas_instagram_9LVNrc",
+    "yas_email_sign_up_VFbxJ8"
+  ]
+}

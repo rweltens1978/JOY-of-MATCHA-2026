@@ -1,0 +1,2358 @@
+{%- liquid
+  capture sticky_behavior
+    case settings.section_enable_sticky
+      when 'on_scroll_up'
+        echo 'upwards'
+      else
+        echo 'stacked'
+    endcase
+  endcapture
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .page-header :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .header {
+    top: 0;
+    z-index: 10;
+    position: sticky;
+  }
+  .header__main {
+    position: relative;
+    background-color: #ffffff;
+    border-bottom: 1px solid transparent;
+  }
+
+  .page-header_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .cart-count-bubble {
+    position: absolute;
+    top: -10px;
+    left: 13px;
+    font-size: 10px;
+    line-height: 12px;
+    background: var(--color-text-btn);
+    color: var(--bg-color);
+    padding: 2px;
+    text-align: center;
+    border-radius: 100px;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header__toggle {
+    padding-left: 15px;
+  }
+
+  .page-header .testimonial-footer {
+    display: block;
+    font-weight: unset;
+  }
+
+  .page-header .testimonial-content {
+    flex: unset;
+  }
+
+  .page-header .testimonial-footer strong {
+    font-size: 16px;
+    line-height: 120%;
+    font-weight: 700;
+  }
+
+  .page-header .testimonial-footer .testimonial-stars {
+    font-size: 20px;
+    margin-bottom: 7px;
+    display: flex;
+    gap: 1px;
+  }
+
+  .page-header .testimonial-card {
+    padding: 26px 22px;
+  }
+
+  .page-header .testimonial-text {
+    margin-top: 10px;
+  }
+
+  .page-header .testimonial-footer .verified-w {
+    display: block;
+  }
+
+  .page-header .collection-item {
+    position: relative;
+    background-color: transparent;
+  }
+
+  .page-header .collection-item a {
+    height: auto;
+  }
+  .collection-item_product:hover svg path,
+  .cart:hover svg path {
+    fill: var(--color-bg-btn);
+  }
+  a h3,
+  .yas-header .cart svg path,
+  .custom-menu a,
+  .form-icon,
+  .sub_header-collection .collection-info,
+  .collection-item_product {
+    transition: all 0.3s ease;
+  }
+  .form-icon:hover,
+  .yas-header .cart:hover,
+  .sub_header-slider a:hover h3,
+  .sub_header-collection .collection-info:hover,
+  .collection-item_product:hover,
+  .custom-menu a:hover,
+  .anchor:hover {
+    color: var(--color-bg-btn) !important;
+  }
+  .header_w .menu_burger:hover span {
+    background: var(--color-bg-btn);
+  }
+  a:not([href]) {
+    cursor: not-allowed;
+  }
+  @media only screen and (max-width: 1023px) {
+    /* line 13, ../scss/layout/_header.scss */
+    .header__toggle {
+      padding-right: 15px;
+    }
+  }
+  /* line 19, ../scss/layout/_header.scss */
+  .header__toggle span {
+    width: 18px;
+    height: 2px;
+    display: block;
+    cursor: pointer;
+    margin: 3px auto;
+    background-color: #000000;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+  }
+  /* line 33, ../scss/layout/_header.scss */
+  .header__toggle.active span:nth-child(1) {
+    -webkit-transform: translateY(13px) rotate(45deg);
+    -moz-transform: translateY(13px) rotate(45deg);
+    -ms-transform: translateY(13px) rotate(45deg);
+    -o-transform: translateY(13px) rotate(45deg);
+    transform: translateY(13px) rotate(45deg);
+  }
+  /* line 37, ../scss/layout/_header.scss */
+  .header__toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  /* line 41, ../scss/layout/_header.scss */
+  .header__toggle.active span:nth-child(3) {
+    -webkit-transform: translateY(-13px) rotate(45deg);
+    -moz-transform: translateY(-13px) rotate(45deg);
+    -ms-transform: translateY(-13px) rotate(45deg);
+    -o-transform: translateY(-13px) rotate(45deg);
+    transform: translateY(-13px) rotate(45deg);
+  }
+  /* line 47, ../scss/layout/_header.scss */
+  .header__nav {
+    display: flex;
+    align-items: center;
+  }
+  /* line 52, ../scss/layout/_header.scss */
+  .header__logo {
+    margin-right: 65px;
+  }
+  @media only screen and (max-width: 1023px) {
+    /* line 52, ../scss/layout/_header.scss */
+    .header__logo {
+      margin-right: 0;
+    }
+  }
+  /* line 58, ../scss/layout/_header.scss */
+  .header__logo a {
+    display: block;
+    padding: 10px 0;
+  }
+  @media only screen and (max-width: 767px) {
+    .header__logo a {
+      padding: 0;
+    }
+  }
+  /* line 62, ../scss/layout/_header.scss */
+  .header__logo img {
+    max-width: 150px;
+  }
+  /* line 67, ../scss/layout/_header.scss */
+  .header__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+  }
+  /* line 73, ../scss/layout/_header.scss */
+  .header__action-search .form-icon {
+    padding: 0;
+    color: inherit;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    display: block;
+    height: 24px;
+  }
+  /* line 129, ../scss/layout/_header.scss */
+  .header__action-search span {
+    line-height: 1;
+  }
+  .hearch-search-form {
+    display: none;
+    width: 350px;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    border: 2px solid #333333;
+    right: 0;
+    top: 100%;
+    margin-top: 23px;
+    padding: 12px;
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+  .header__action-search.active .hearch-search-form {
+    display: block;
+  }
+  @media (max-width: 767px) {
+    .hearch-search-form {
+      background: var(--mob-bg-color);
+      color: var(--mob-text-color);
+    }
+  }
+  /* line 80, ../scss/layout/_header.scss */
+  .header__search {
+    /*width: 24px;*/
+    width: 100%;
+
+    height: 22px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+  }
+  /* line 87, ../scss/layout/_header.scss */
+  .header__search input.form-input {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: auto;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    font-size: 14px;
+    border-radius: 0;
+    padding-left: 50px;
+    position: relative;
+    color: #000000;
+    transform: translate(0, 0);
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0, 0.105, 0.035, 1.57);
+    transition-delay: 0.3s;
+    padding: 0;
+  }
+  /* line 41, ../scss/base/_mixins.scss */
+  .header__search input.form-input.placeholder {
+    color: #000000;
+  }
+  /* line 42, ../scss/base/_mixins.scss */
+  .header__search input.form-input:-moz-placeholder {
+    color: #000000;
+  }
+  /* line 43, ../scss/base/_mixins.scss */
+  .header__search input.form-input::-moz-placeholder {
+    color: #000000;
+  }
+  /* line 44, ../scss/base/_mixins.scss */
+  .header__search input.form-input:-ms-input-placeholder {
+    color: #000000;
+  }
+  /* line 45, ../scss/base/_mixins.scss */
+  .header__search input.form-input::-webkit-input-placeholder {
+    color: #000000;
+  }
+  /* line 111, ../scss/layout/_header.scss */
+  .header__search input.form-input:focus {
+    outline: none;
+    border: 0;
+    box-shadow: none;
+    color: #000000;
+  }
+  /* line 121, ../scss/layout/_header.scss */
+  .header__search .form-icon {
+    padding: 0;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    position: absolute;
+    right: 0;
+  }
+  /* line 129, ../scss/layout/_header.scss */
+  .header__search .form-icon span {
+    line-height: 1;
+  }
+  /* line 135, ../scss/layout/_header.scss */
+  .header__search.active {
+    width: 150px;
+  }
+  @media only screen and (min-width: 1024px) and (max-width: 1199px) {
+    .header__search.active {
+      width: 130px;
+    }
+  }
+  @media only screen and (max-width: 1023px) {
+    /* line 135, ../scss/layout/_header.scss */
+    .header__search.active {
+      width: 200px;
+    }
+  }
+  /* line 141, ../scss/layout/_header.scss */
+  .header__search.active input {
+    opacity: 1;
+    pointer-events: all;
+  }
+  /* line 147, ../scss/layout/_header.scss */
+  .header__nav--desktop {
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    /* line 147, ../scss/layout/_header.scss */
+    .header__nav--desktop {
+      display: flex;
+    }
+  }
+  /* line 155, ../scss/layout/_header.scss */
+  .header__nav--mobile {
+    display: none;
+  }
+  @media only screen and (max-width: 1023px) {
+    /* line 155, ../scss/layout/_header.scss */
+    .header__nav--mobile {
+      display: flex;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    /* line 164, ../scss/layout/_header.scss */
+    .header--without-menu .header__main {
+      padding: 19px 0;
+    }
+  }
+  /* line 170, ../scss/layout/_header.scss */
+  .header--without-menu .header__nav {
+    align-items: center;
+  }
+  /* line 174, ../scss/layout/_header.scss */
+  .header--without-menu .featurebox__slider {
+    flex: 1 1 auto;
+  }
+  /* line 177, ../scss/layout/_header.scss */
+  .header--without-menu .featurebox__slider .flickity-button {
+    padding: 0;
+    width: 16px;
+    height: 16px;
+    color: #c6c6c6;
+  }
+  @media only screen and (max-width: 1199px) {
+    /* line 184, ../scss/layout/_header.scss */
+    .header--without-menu .featurebox__slider .featurebox {
+      justify-content: center;
+    }
+  }
+  @media only screen and (max-width: 1199px) {
+    /* line 189, ../scss/layout/_header.scss */
+    .header--without-menu .featurebox__slider .featurebox:first-child {
+      justify-content: center;
+    }
+  }
+  /* line 197, ../scss/layout/_header.scss */
+  .header--without-menu .featurebox__slider .featurebox__icon .material-icons {
+    opacity: 0.6;
+    font-size: 18px;
+  }
+  /* .header_w.header_w--sticky{
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  } */
+  .header_wrap_navigate,
+  .page-header .sub_header,
+  .header_w .menu_burger,
+  .page-header .sub_header .collection-list,
+  .page-header .collection-info,
+  .page-header .collection-item_product,
+  .page-header .title-slider,
+  .page-header .sub_header-slider .product-reviews {
+    display: flex;
+  }
+  .page-header .sub_header .collection-item a,
+  .header_w,
+  .page-header .sub_header,
+  .page-header .sub_header .sub_header-menu a {
+    width: 100%;
+  }
+  .collection-content-box p {
+    line-height: 120%;
+    color: var(--text-color);
+  }
+  .header_w,
+  .page-header .sub_header {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  .page-header .btn_collection-toogle,
+  .header_w {
+    position: relative;
+  }
+  .page-header .collection-item_product,
+  .page-header .title-slider,
+  .page-header .control_sub-header,
+  .page-header .sub_header-slider .product-reviews {
+    align-items: center;
+  }
+  .page-header .sub_header .sub_header-menu a,
+  .header_w .logo,
+  .page-header .control_sub-header,
+  .page-header .control_sub-header .swiper-b-prev,
+  .page-header .control_sub-header .swiper-b-next,
+  .page-header .sub_header .collection-item a {
+    display: inline-flex;
+  }
+  .header_w .logo {
+    justify-content: center;
+    text-align: center;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 700;
+    flex-grow: 1;
+    text-decoration: none;
+    color: var(--text-color);
+  }
+  .header_w .logo img,
+  .page-header .sub_header-slider img {
+    height: auto;
+  }
+  .page-header .header_left,
+  .page-header .header_wrap_navigate {
+    flex-shrink: 0;
+    width: calc(34% - 14px);
+  }
+  .page-header .header_wrap_navigate {
+    justify-content: end;
+  }
+  .header_w .logo img {
+    width: var(--logo-width-xl);
+  }
+  .header_wrap_navigate,
+  .page-header .collection-item_product {
+    gap: 3px;
+  }
+  .header_w .cart {
+    justify-content: flex-end;
+    border: 0;
+    color: inherit;
+    position: relative;
+  }
+  .page-header .sub_header,
+  .page-header .menu-overlay {
+    position: fixed;
+  }
+  .header_w .menu_burger,
+  .page-header .sub_header,
+  .page-header .sub_header .collection-list {
+    flex-direction: column;
+  }
+  .page-header [data-revealed='true'] .sub_header {
+    top: 0;
+    height: calc(100dvh - 0);
+  }
+  .page-header [data-revealed='true'] .menu-overlay {
+    inset: var(--page-header-height) 0 0 0;
+  }
+  .header_w:has([data-revealed='true']) {
+    min-height: var(--page-header-height);
+  }
+  .page-header .sub_header {
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    max-width: 390px;
+    height: calc(100dvh - 0px);
+    z-index: var(--z-drawer);
+    overflow: auto;
+    transition: transform 0.25s ease;
+    padding: 17px 0 24px 0;
+    border-top: 1px solid #dfdfdf;
+    transform: translateX(-100%);
+  }
+  .sub_header.is-open {
+    transform: translateX(0);
+  }
+  .header_w .menu_burger.open span:nth-child(2),
+  .page-header .menu-overlay {
+    opacity: 0;
+  }
+  .page-header .menu-overlay {
+    inset: var(--header-total-height) 0 0 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: var(--z-overlay);
+    visibility: hidden;
+    transition: 0.2s ease;
+    top: 0;
+  }
+  .page-header .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .page-header .sub_header .sub_header-menu ul,
+  .header_w .menu_burger {
+    padding: 0;
+  }
+  .header_w .menu_burger {
+    gap: 4px;
+    background: transparent;
+    border: 0;
+    color: inherit;
+  }
+  .header_w .menu_burger,
+  .page-header .sub_header .collection-item a h3,
+  .page-header .collection-toogle .collection-item p,
+  .page-header .collection-item_product h5,
+  .page-header .sub_header .sub_header-menu ul {
+    margin: 0;
+  }
+  .header_w .menu_burger span {
+    width: 18px;
+    height: 2px;
+    border-radius: 50px;
+    background: currentColor;
+    transform-origin: center;
+    transition: transform 0.2s, opacity 0.2s, background 0.2s;
+  }
+  .header_w .menu_burger.open span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+  }
+  .header_w .menu_burger.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+  .page-header .sub_header-review {
+    margin-bottom: 0 !important;
+  }
+  .page-header .title-slider,
+  .page-header .btn_collection-toogle,
+  .page-header .sub_header .collection-item a h3,
+  .page-header .sub_header .sub_header-menu a {
+    font-weight: 700;
+  }
+  .page-header .title-slider,
+  .page-header .btn_collection-toogle {
+    font-size: 16px;
+  }
+  .page-header .btn_collection-toogle {
+    line-height: 150%;
+    margin-left: auto;
+    color: var(--text-color);
+  }
+  .page-header .sub_header > div {
+    margin-bottom: 36px;
+  }
+  .page-header .sub_header-review {
+    margin-bottom: 0;
+  }
+  .page-header .sub_header > div.sub_header-collection {
+    margin-bottom: 0;
+  }
+  .page-header .sub_header > div:not(.sub_header-slider) {
+    padding: 0 20px;
+  }
+  .page-header .sub_header .collection-list,
+  .page-header .sub_header .collection-item a {
+    gap: 24px;
+  }
+  /* .page-header .title-slider,
+  .page-header .sub_header .sub_header-menu a,
+  .page-header .sub_header .collection-item a,
+  .page-header .sub_header-slider .product-reviews,
+  .page-header .sub_header-slider a{
+    color:#000;
+  } */
+
+  .page-header .collection-item,
+  .page-header .collection-item a {
+    border-radius: 0;
+  }
+  .page-header .sub_header .sub_header-menu a,
+  .page-header .sub_header .collection-item a,
+  .page-header .sub_header-slider a {
+    text-decoration: none;
+  }
+  .page-header .sub_header .collection-item a,
+  .page-header .control_sub-header .swiper-b-prev,
+  .page-header .control_sub-header .swiper-b-next {
+    align-items: center;
+  }
+  .header_w .menu_burger.open span {
+    height: 1.5px;
+  }
+  .page-header .collection-item_product h5 {
+    text-transform: uppercase;
+  }
+  .page-header .collection-item_product h5,
+  .page-header .sub_header .collection-item a h3,
+  .page-header .sub_header .sub_header-menu a {
+    font-size: 14px;
+  }
+  .page-header .sub_header .collection-item a h3 {
+    line-height: 100%;
+    padding-right: 25px;
+    align-content: center;
+    color: var(--text-color);
+  }
+  .page-header .sub_header .testimonial-photo {
+    width: 73px;
+    height: 73px;
+    margin-top: 4px;
+  }
+  .page-header .collection-info {
+    align-items: center;
+    padding-right: 10px;
+    flex-grow: 1;
+  }
+  .page-header .collection-toogle .collection-item > a {
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--mega-bdr-color);
+  }
+  .page-header .collection-toogle .collection-item h3 {
+    margin-bottom: 5px;
+  }
+  .page-header .collection-item_product h5,
+  .page-header .collection-toogle .collection-item p {
+    line-height: 18px;
+  }
+  .not-product-collection .collection-list .collection-item:first-child {
+    padding-top: 28px;
+  }
+  .page-header .collection-toogle .collection-item p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 120%;
+    margin-top: 9px;
+  }
+  .page-header .collection-toogle .collection-item > a img,
+  .page-header .collection-toogle .collection-item > a svg {
+    width: 60px;
+    height: 60px;
+    min-height: 60px;
+    min-width: 60px;
+    max-height: 60px;
+    max-width: 60px;
+    border-radius: 10px;
+  }
+  .page-header .collection-item[data-open='false'] .collection-item_listprod {
+    display: none;
+  }
+  .page-header .collection-item[data-open='true'] .collection-item_listprod {
+    display: block;
+  }
+  .page-header .collection-item_product {
+    padding: 25px 0;
+  }
+  .page-header .collection-item_product {
+    border-bottom: 1px solid var(--mega-bdr-color);
+  }
+  .page-header .sub_header-menu {
+    margin-bottom: 14px !important;
+  }
+  .page-header .collection-toogle .collection-item[data-open='true'] > a {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .page-header .collection-item svg,
+  .page-header .collection-item img {
+    min-height: 0;
+    min-width: 60px;
+    max-height: 60px;
+    max-width: 60px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .page-header .control_sub-header svg {
+    width: 13px;
+  }
+  .page-header .sub_header .sub_header-menu li + li {
+    border-top: 1px solid var(--mega-bdr-color);
+  }
+  .page-header .collection-item_product svg {
+    min-width: 12px;
+    width: 12px;
+  }
+  .page-header .collection-item_product h5 {
+    font-weight: 600;
+  }
+  .page-header .sub_header .sub_header-menu ul {
+    list-style: none;
+  }
+  .page-header .sub_header .sub_header-menu a {
+    padding: 26px 0;
+    color: var(--text-color);
+  }
+  .menu-burger-close svg path {
+    fill: var(--text-color);
+  }
+  .page-header .sub_header-slider {
+    padding-left: 20px;
+  }
+  .page-header .sub_header-slider img {
+    width: 140px;
+    aspect-ratio: 1/1;
+    margin-bottom: 16px;
+  }
+  .page-header .sub_header-slider .swiper-slide {
+    width: auto;
+    max-width: 140px;
+  }
+  .page-header .title-slider {
+    justify-content: space-between;
+    padding-right: 20px;
+    line-height: 37px;
+  }
+  .not-product-collection .collection-list .collection-item:last-child {
+    border-bottom: 1px solid #d9d9d9;
+    border-radius: 0;
+    padding-bottom: 28px;
+  }
+  .page-header .control_sub-header {
+    gap: 5px;
+  }
+  .page-header .control_sub-header .swiper-b-prev,
+  .page-header .control_sub-header .swiper-b-next {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    justify-content: center;
+  }
+  .page-header .control_sub-header .swiper-button-disabled {
+    opacity: 0.4;
+  }
+  .page-header .sub_header-slider .product-reviews {
+    font-size: 10px;
+    font-weight: 500;
+    gap: 8px;
+    color: var(--text-color);
+  }
+  .page-header .sub_header-slider .product-reviews span {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .page-header .sub_header-slider .product-reviews svg {
+    width: 10px;
+  }
+  .page-header .sub_header-slider h3,
+  body.no-scroll {
+    overflow: hidden;
+  }
+  .page-header .sub_header-slider h3 {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 100%;
+    color: var(--text-color);
+    margin: 12px 0;
+    /* min-height: 28px; */
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .page-header .sub_header-slider span.price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 100%;
+    text-align: center;
+    color: var(--text-color);
+  }
+  body.no-scroll {
+    touch-action: none;
+  }
+  .page-header_fixed-area {
+    transition: box-shadow 0.3s ease;
+  }
+  .page-header--fixed .page-header_fixed-area {
+    position: fixed;
+    left: 0;
+    z-index: 99999;
+    width: 100%;
+    background-color: var(--bg-color);
+    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.35);
+  }
+  .page-header--fixed [data-behavior='upwards'] .page-header_fixed-area {
+    animation: header-upwards-animation 0.5s;
+  }
+  .page-header--fixed .page-header_fixed-area {
+    top: 0;
+  }
+  .page-header_box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    padding: var(--xl-padding-y) var(--xl-padding-x);
+  }
+  .menu-top_header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 17px !important;
+    border-bottom: 1px solid var(--mega-bdr-color);
+    margin-bottom: 20px !important;
+  }
+  .menu-burger-close {
+    border: 0;
+    line-height: 0;
+    padding: 0;
+  }
+  .menu-top_label {
+    font-size: 16px;
+    line-height: 120%;
+    font-weight: 700;
+  }
+  .menu-top_label,
+  .title-slider,
+  .product-reviews h3,
+  .collection-content-box h3,
+  .custom-menu ul li a {
+    text-transform: var(--menu-transform);
+  }
+  @media (max-width: 768px) {
+    .header_w .logo img {
+      width: var(--logo-width-xs);
+    }
+    .page-header--fixed .page-header_fixed-area {
+      background-color: var(--mob-bg-color);
+    }
+    .page-header .sub_header,
+    .page-header .sub_header .collection-item a {
+      max-width: 100%;
+    }
+    .header_w,
+    .page-header .sub_header {
+      background-color: var(--mob-bg-color);
+      color: var(--mob-text-color);
+    }
+    .page-header .sub_header-slider .product-reviews,
+    .page-header .sub_header-slider h3,
+    .page-header .sub_header-slider span.price,
+    .page-header .sub_header .collection-item a h3,
+    .collection-content-box p,
+    .page-header .sub_header .sub_header-menu a {
+      color: var(--mob-text-color);
+    }
+    .menu-burger-close svg path {
+      fill: var(--mob-text-color);
+    }
+    .page-header_box {
+      padding: var(--xs-padding-y) var(--xs-padding-x);
+    }
+  }
+  @media (min-width: 998px) {
+    .page-header_box {
+      gap: 28px;
+    }
+    .header_wrap_navigate,
+    .page-header .collection-item_product {
+      gap: 10px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-header .sub_header,
+    .header_w .menu_burger span,
+    .page-header .menu-overlay {
+      transition: none;
+    }
+  }
+{%- endstylesheet -%}
+<div
+  id="{{- section.id -}}"
+  class="header_w {% if settings.enable_sticky_header %}header_w--sticky{% endif %} {% if section.settings.enable_logo_left %}header_w--logo-left{% endif %}"
+  style="
+    --hdr-h: 62px;
+    --z-sticky: 9999;
+    --z-overlay: 9997;
+    --z-drawer: 9998;
+    --logo-width-xl: {{ settings.logo_width | append: 'px' }};
+    --logo-width-xs: {{ settings.logo_mobwidth | append: 'px' }};
+    --bg-color: {{ section.settings.background_color }};
+    --mob-bg-color: {{ section.settings.mob_background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --mob-text-color: {{ section.settings.mob_text_color }};
+    --menu-transform: {{ section.settings.mega_menu_typography }};
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --mega-bdr-color: {{ section.settings.mega_bdr_color }};
+  "
+>
+  {%- unless settings.section_enable_sticky == 'none' -%}
+    <sticky-block
+      class="sticky-header-wrapper"
+      data-ref-block=".page-header_fixed-area"
+      data-body-class="page-header--fixed"
+      data-revealed="false"
+      data-behavior="{{- sticky_behavior -}}"
+      data-spacer="true"
+    >
+  {%- endunless -%}
+  <div
+    class="page-header_fixed-area {% if section.settings.enable_custom_width %}page-header_custom-page-width{% endif %}"
+    style="--custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="page-header_box">
+        <div class="header_left">
+          <button
+            class="menu_burger"
+            id="menu_burger"
+            aria-label="Toggle menu"
+            aria-controls="sub_header"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a href=""></a>
+        </div>
+        <a
+          href="{{ routes.root_url }}"
+          class="logo word--break"
+        >
+          {%- if settings.logo != blank -%}
+            {%- liquid
+              assign max_width = settings.logo.width
+              if settings.logo > 100
+                assign max_width = 100
+              endif
+              assign image_height = max_width | divided_by: settings.logo.aspect_ratio | round
+
+              capture image_alt
+                if settings.logo.alt != blank
+                  echo settings.logo.alt
+                else
+                  echo shop.name | escape
+                endif
+              endcapture
+            -%}
+            {{-
+              settings.logo
+              | image_url: width: max_width
+              | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+            -}}
+          {%- else -%}
+            {{ shop.name }}
+          {%- endif -%}
+        </a>
+        <div class="header_wrap_navigate">
+          {%- if shop.customer_accounts_enabled -%}
+            <div class="header__action-search">
+              <a
+                class="form-icon"
+                {% unless customer %}
+                  href="{{- routes.account_login_url -}}"
+                {% else %}
+                  href="{{- routes.account_url -}}"
+                {% endunless %}
+              >
+                {%- unless customer -%}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                  </svg>
+                {%- else -%}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                  </svg>
+                {%- endunless -%}
+              </a>
+            </div>
+          {%- endif -%}
+          {% if section.settings.enable_search %}
+            <div class="header__action-search" id="js-search-box">
+              <button
+                type="button"
+                class="form-icon"
+                id="js-search-toggle"
+                aria-expanded="false"
+                aria-controls="search-modal"
+              >
+                <span class="material-icons" aria-hidden="true">search</span>
+              </button>
+            </div>
+          {% endif %}
+          {%- unless template.name == 'cart' -%}
+            <button class="cart js-cart-toggle" type="button" aria-label="Open cart">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 15" fill="none">
+                <path d="M6.75 13.5C6.75 13.7225 6.68402 13.94 6.5604 14.125C6.43679 14.31 6.26109 14.4542 6.05552 14.5394C5.84995 14.6245 5.62375 14.6468 5.40552 14.6034C5.18729 14.56 4.98684 14.4528 4.8295 14.2955C4.67217 14.1382 4.56502 13.9377 4.52162 13.7195C4.47821 13.5012 4.50049 13.275 4.58564 13.0695C4.67078 12.8639 4.81498 12.6882 4.99998 12.5646C5.18499 12.441 5.4025 12.375 5.625 12.375C5.92337 12.375 6.20952 12.4935 6.4205 12.7045C6.63147 12.9155 6.75 13.2016 6.75 13.5ZM12.9375 12.375C12.715 12.375 12.4975 12.441 12.3125 12.5646C12.1275 12.6882 11.9833 12.8639 11.8981 13.0695C11.813 13.275 11.7907 13.5012 11.8341 13.7195C11.8775 13.9377 11.9847 14.1382 12.142 14.2955C12.2993 14.4528 12.4998 14.56 12.718 14.6034C12.9363 14.6468 13.1625 14.6245 13.368 14.5394C13.5736 14.4542 13.7493 14.31 13.8729 14.125C13.9965 13.94 14.0625 13.7225 14.0625 13.5C14.0625 13.2016 13.944 12.9155 13.733 12.7045C13.522 12.4935 13.2359 12.375 12.9375 12.375ZM16.1297 3.52969L14.2734 10.0266C14.1715 10.3788 13.9581 10.6884 13.6652 10.909C13.3724 11.1296 13.0159 11.2492 12.6492 11.25H5.91328C554663 11.2492 5.19013 11.1296 4.89727 10.909C4.6044 10.6884 4.39099 10.3788 4.28906 10.0266L2.43281 3.53672V3.52266L1.74375 1.125H0.5625C0.413316 1.125 0.270242 1.06574 0.164752 0.960248C0.0592632 0.854758 0 0.711684 0 0.5625C0 0.413316 0.0592632 0.270242 0.164752 0.164752C0.270242 0.0592632 0.413316 0 0.5625 0H1.74375C1.98809 0.000885714 2.22558 0.0808022 2.42074 0.22781C2.61591 0.374818 2.75827 0.581025 2.82656 0.815625L3.39609 2.8125H15.5883C15.6754 2.81241 15.7614 2.83256 15.8394 2.87136C15.9174 2.91016 15.9853 2.96655 16.0378 3.03609C16.0903 3.10563 16.1259 3.18641 16.1419 3.27207C16.1578 3.35773 16.1536 3.44592 16.1297 3.52969ZM14.843 3.9375H3.71953L5.37188 9.71719C5.40551 9.83478 5.47656 9.93821 5.57425 10.0118C5.67195 10.0854 5.79097 10.1251 5.91328 10.125H12.6492C12.7715 10.1251 12.8905 10.0854 12.9882 10.0118C13.0859 9.93821 13.157 9.83478 13.1906 9.71719L14.843 3.9375Z" fill="currentColor"/>
+              </svg>
+              {%- if cart != empty -%}
+                {% if cart.item_count > 0 %}
+                  <div class="cart-count-bubble">
+                    {%- if cart.item_count < 100 -%}
+                      <span aria-hidden="true">{{ cart.item_count }}</span>
+                    {%- endif -%}
+                  </div>
+                {% endif %}
+              {%- endif -%}
+            </button>
+          {%- else -%}
+            <a href="{{- routes.cart_url -}}" class="cart">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 15" fill="none">
+                <path d="M6.75 13.5C6.75 13.7225 6.68402 13.94 6.5604 14.125C6.43679 14.31 6.26109 14.4542 6.05552 14.5394C5.84995 14.6245 5.62375 14.6468 5.40552 14.6034C5.18729 14.56 4.98684 14.4528 4.8295 14.2955C4.67217 14.1382 4.56502 13.9377 4.52162 13.7195C4.47821 13.5012 4.50049 13.275 4.58564 13.0695C4.67078 12.8639 4.81498 12.6882 4.99998 12.5646C5.18499 12.441 5.4025 12.375 5.625 12.375C5.92337 12.375 6.20952 12.4935 6.4205 12.7045C6.63147 12.9155 6.75 13.2016 6.75 13.5ZM12.9375 12.375C12.715 12.375 12.4975 12.441 12.3125 12.5646C12.1275 12.6882 11.9833 12.8639 11.8981 13.0695C11.813 13.275 11.7907 13.5012 11.8341 13.7195C11.8775 13.9377 11.9847 14.1382 12.142 14.2955C12.2993 14.4528 12.4998 14.56 12.718 14.6034C12.9363 14.6468 13.1625 14.6245 13.368 14.5394C13.5736 14.4542 13.7493 14.31 13.8729 14.125C13.9965 13.94 14.0625 13.7225 14.0625 13.5C14.0625 13.2016 13.944 12.9155 13.733 12.7045C13.522 12.4935 13.2359 12.375 12.9375 12.375ZM16.1297 3.52969L14.2734 10.0266C14.1715 10.3788 13.9581 10.6884 13.6652 10.909C13.3724 11.1296 13.0159 11.2492 12.6492 11.25H5.91328C5.54663 11.2492 5.19013 11.1296 4.89727 10.909C4.6044 10.6884 4.39099 10.3788 4.28906 10.0266L2.43281 3.53672V3.52266L1.74375 1.125H0.5625C0.413316 1.125 0.270242 1.06574 0.164752 0.960248C0.0592632 0.854758 0 0.711684 0 0.5625C0 0.413316 0.0592632 0.270242 0.164752 0.164752C0.270242 0.0592632 0.413316 0 0.5625 0H1.74375C1.98809 0.000885714 2.22558 0.0808022 2.42074 0.22781C2.61591 0.374818 2.75827 0.581025 2.82656 0.815625L3.39609 2.8125H15.5883C15.6754 2.81241 15.7614 2.83256 15.8394 2.87136C15.9174 2.91016 15.9853 2.96655 16.0378 3.03609C16.0903 3.10563 16.1259 3.18641 16.1419 3.27207C16.1578 3.35773 16.1536 3.44592 16.1297 3.52969ZM14.843 3.9375H3.71953L5.37188 9.71719C5.40551 9.83478 5.47656 9.93821 5.57425 10.0118C5.67195 10.0854 5.79097 10.1251 5.91328 10.125H12.6492C12.7715 10.1251 12.8905 10.0854 12.9882 10.0118C13.0859 9.93821 13.157 9.83478 13.1906 9.71719L14.843 3.9375Z" fill="currentColor"/>
+              </svg>
+              {%- if cart != empty -%}
+                {% if cart.item_count > 0 %}
+                  <div class="cart-count-bubble">
+                    {%- if cart.item_count < 100 -%}
+                      <span aria-hidden="true">{{ cart.item_count }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            </a>
+          {%- endunless -%}
+        </div>
+        <div
+          class="sub_header"
+          id="sub_header"
+          aria-hidden="true"
+          style="
+            --hdr-h: 169px;
+            --z-sticky: 9999;
+            --z-overlay: 9997;
+            --z-drawer: 9998;
+            --logo-width-xl: {{ settings.logo_width | append: 'px' }};
+            --logo-width-xs: {{ settings.logo_mobwidth | append: 'px' }};
+          "
+        >
+          <div class="menu-top_header">
+            <div class="menu-top_label word--break">Menu</div>
+            <div class="menu-top_close">
+              <button class="menu-burger-close" id="menu_close" aria-label="Close menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 28 28" fill="none">
+                  <path d="M7.46732 22.1654L5.83398 20.532L12.3673 13.9987L5.83398 7.46536L7.46732 5.83203L14.0007 12.3654L20.534 5.83203L22.1673 7.46536L15.634 13.9987L22.1673 20.532L20.534 22.1654L14.0007 15.632L7.46732 22.1654Z" fill="black"/>
+                </svg>
+              </button>
+              <a href=""></a>
+            </div>
+          </div>
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'slider' %}
+                {% if block.settings.show_slider %}
+                  {% if block.settings.product_list != blank %}
+                    <div class="sub_header-slider">
+                      <div class="title-slider">
+                        {{ block.settings.title_slider }}
+                        <span class="control_sub-header">
+                          <div class="swiper-b-prev">{% render 'swiper-arrow-left-n' %}</div>
+                          <div class="swiper-b-next">{% render 'swiper-arrow-right-n' %}</div>
+                        </span>
+                      </div>
+                      <div class="product-list">
+                        <div class="swiper swiper_menu">
+                          <div class="swiper-wrapper">
+                            {% for product in block.settings.product_list %}
+                              {% if product %}
+                                <div class="swiper-slide">
+                                  <div class="product-item-s">
+                                    <a href="{{ product.url }}">
+                                      {% if product.featured_image %}
+                                        {%- liquid
+                                          assign max_width = product.featured_image.width
+                                          if product.featured_image > 140
+                                            assign max_width = 140
+                                          endif
+                                          assign image_height = max_width | divided_by: product.featured_image.aspect_ratio | round
+
+                                          capture image_alt
+                                            if product.featured_image.alt != blank
+                                              echo product.featured_image.alt
+                                            else
+                                              echo product.title | escape
+                                            endif
+                                          endcapture
+
+                                          capture sizes_attr
+                                            echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 10.98vw'
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          product.featured_image
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            sizes: sizes_attr,
+                                            alt: image_alt,
+                                            class: ''
+                                        -}}
+                                      {% else %}
+                                        {%- render 'placeholder-svgs',
+                                          type: 'product',
+                                          index: placeholder_index,
+                                          class: ''
+                                        -%}
+                                      {% endif %}
+                                      {% if block.settings.show_reviews %}
+                                        <div class="product-reviews">
+                                          <span>
+                                            {%- for i in (1..block.settings.star_count) -%}
+                                              {% render 'review-stars' %}
+                                            {%- endfor -%}
+                                          </span>
+                                          {{ block.settings.review_text }}
+                                        </div>
+                                      {% endif %}
+                                      <h3>{{ product.title }}</h3>
+                                      {%- assign variant = product.selected_or_first_available_variant -%}
+                                      <span class="price">{{ variant.price | money }}</span>
+                                    </a>
+                                  </div>
+                                </div>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="sub_header-slider">
+                      <div class="title-slider">
+                        {{ block.settings.title_slider }}
+                        <span class="control_sub-header">
+                          <div class="swiper-b-prev">{% render 'swiper-arrow-left-n' %}</div>
+                          <div class="swiper-b-next">{% render 'swiper-arrow-right-n' %}</div>
+                        </span>
+                      </div>
+                      <div class="product-list">
+                        <div class="swiper swiper_menu">
+                          <div class="swiper-wrapper">
+                            {% for placeholder_block in (1..4) %}
+                              <div class="swiper-slide">
+                                <div class="product-item-s">
+                                  <a>
+                                    {%- render 'placeholder-svgs', type: 'hero', index: forloop.index, class: '' -%}
+                                    {% if block.settings.show_reviews %}
+                                      <div class="product-reviews">
+                                        <span>
+                                          {%- for i in (1..block.settings.star_count) -%}
+                                            {% render 'review-stars' %}
+                                          {%- endfor -%}
+                                        </span>
+                                        {{ block.settings.review_text }}
+                                      </div>
+                                    {% endif %}
+                                    <h3>Product title</h3>
+                                    <span class="price">$100</span>
+                                  </a>
+                                </div>
+                              </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+              {% when 'collection' %}
+                {% if block.settings.show_collection %}
+                  {% if block.settings.collection_list != blank %}
+                    {% if block.settings.collection_styling == 'noporuduct' %}
+                      <div class="sub_header-collection not-product-collection">
+                        <div class="collection-list">
+                          {% for collection in block.settings.collection_list limit: block.settings.limit %}
+                            {%- liquid
+                              assign placeholder_index = forloop.index | modulo: 4
+                              if placeholder_index == 0
+                                assign placeholder_index = 4
+                              endif
+                            -%}
+                            {% if collection %}
+                              <div class="collection-item">
+                                <a href="{{ collection.url }}">
+                                  {% if collection.image %}
+                                    {%- liquid
+                                      assign max_width = collection.image.width
+                                      if collection.image > 140
+                                        assign max_width = 140
+                                      endif
+                                      assign image_height = max_width | divided_by: collection.image.aspect_ratio | round
+
+                                      capture image_alt
+                                        if collection.image.alt != blank
+                                          echo collection.image.alt
+                                        else
+                                          echo collection.title | escape
+                                        endif
+                                      endcapture
+
+                                      capture sizes_attr
+                                        echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 10.98vw'
+                                      endcapture
+                                    -%}
+                                    {{-
+                                      collection.image
+                                      | image_url: width: max_width
+                                      | image_tag:
+                                        loading: 'lazy',
+                                        width: max_width,
+                                        height: image_height,
+                                        sizes: sizes_attr,
+                                        alt: image_alt,
+                                        class: ''
+                                    -}}
+                                  {% else %}
+                                    {%- render 'placeholder-svgs',
+                                      type: 'collection',
+                                      index: placeholder_index,
+                                      class: ''
+                                    -%}
+                                  {% endif %}
+                                  <div class="collection-content-box">
+                                    <h3>{{ collection.title }}</h3>
+                                    {%- if collection.description != blank
+                                      and block.settings.collection_text == blank
+                                    -%}
+                                      <p>{{ collection.description | strip_html | truncate: 65 }}</p>
+                                    {%- endif -%}
+                                    {%- if block.settings.collection_text != blank -%}
+                                      <p>{{ block.settings.collection_text }}</p>
+                                    {%- endif -%}
+                                  </div>
+                                </a>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% else %}
+                      <div class="sub_header-collection collection-toogle">
+                        <div class="collection-list">
+                          {% for collection in block.settings.collection_list limit: block.settings.limit %}
+                            {%- liquid
+                              assign placeholder_index = forloop.index | modulo: 4
+                              if placeholder_index == 0
+                                assign placeholder_index = 4
+                              endif
+                            -%}
+                            {% if collection %}
+                              <div class="collection-item" data-open="false">
+                                <a
+                                  href="{{ collection.url }}"
+                                  class="collection-toggle"
+                                  data-collection-toggle
+                                  role="button"
+                                  aria-expanded="false"
+                                  aria-controls="listprod-{{ section.id }}-{{ forloop.index }}"
+                                >
+                                  {% if collection.image %}
+                                    {%- liquid
+                                      assign max_width = collection.image.width
+                                      if collection.image > 140
+                                        assign max_width = 140
+                                      endif
+                                      assign image_height = max_width | divided_by: collection.image.aspect_ratio | round
+
+                                      capture image_alt
+                                        if collection.image.alt != blank
+                                          echo collection.image.alt
+                                        else
+                                          echo collection.title | escape
+                                        endif
+                                      endcapture
+
+                                      capture sizes_attr
+                                        echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 10.98vw'
+                                      endcapture
+                                    -%}
+                                    {{-
+                                      collection.image
+                                      | image_url: width: max_width
+                                      | image_tag:
+                                        loading: 'lazy',
+                                        width: max_width,
+                                        height: image_height,
+                                        sizes: sizes_attr,
+                                        alt: image_alt,
+                                        class: ''
+                                    -}}
+                                  {% else %}
+                                    {%- render 'placeholder-svgs',
+                                      type: 'collection',
+                                      index: placeholder_index,
+                                      class: ''
+                                    -%}
+                                  {% endif %}
+                                  <div class="collection-info">
+                                    <div class="collection-content-box">
+                                      <h3>{{ collection.title }}</h3>
+                                      {%- if collection.description != blank
+                                        and block.settings.collection_text == blank
+                                      -%}
+                                        <p>{{ collection.description | strip_html | truncate: 65 }}</p>
+                                      {%- endif -%}
+                                      {%- if block.settings.collection_text != blank -%}
+                                        <p>{{ block.settings.collection_text }}</p>
+                                      {%- endif -%}
+                                    </div>
+                                    <span class="btn_collection-toogle" aria-hidden="true">+</span>
+                                  </div>
+                                </a>
+                                <div
+                                  class="collection-item_listprod"
+                                  id="listprod-{{ section.id }}-{{ forloop.index }}"
+                                >
+                                  {% for product in collection.products limit: 3 %}
+                                    <a href="{{ product.url }}" class="collection-item_product">
+                                      <svg
+                                        width="21"
+                                        height="13"
+                                        viewBox="0 0 21 13"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                      >
+                                        <path d="M20.5303 7.03033C20.8232 6.73744 20.8232 6.26256 20.5303 5.96967L15.7574 1.1967C15.4645 0.903806 14.9896 0.903806 14.6967 1.1967C14.4038 1.48959 14.4038 1.96447 14.6967 2.25736L18.9393 6.5L14.6967 10.7426C14.4038 11.0355 14.4038 11.5104 14.6967 11.8033C14.9896 12.0962 15.4645 12.0962 15.7574 11.8033L20.5303 7.03033ZM0 7.25H20V5.75H0V7.25Z" fill="#000"/>
+                                      </svg>
+                                      <h5>{{ product.title }}</h5>
+                                    </a>
+                                    {% if forloop.last %}
+                                      <a href="{{ collection.url }}" class="collection-item_product">
+                                        <svg
+                                          width="21"
+                                          height="13"
+                                          viewBox="0 0 21 13"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          aria-hidden="true"
+                                        >
+                                          <path d="M20.5303 7.03033C20.8232 6.73744 20.8232 6.26256 20.5303 5.96967L15.7574 1.1967C15.4645 0.903806 14.9896 0.903806 14.6967 1.1967C14.4038 1.48959 14.4038 1.96447 14.6967 2.25736L18.9393 6.5L14.6967 10.7426C14.4038 11.0355 14.4038 11.5104 14.6967 11.8033C14.9896 12.0962 15.4645 12.0962 15.7574 11.8033L20.5303 7.03033ZM0 7.25H20V5.75H0V7.25Z" fill="#000"/>
+                                        </svg>
+                                        <h5>SHOP ALL {{ collection.title }}</h5>
+                                      </a>
+                                    {% endif %}
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% else %}
+                    {% if block.settings.collection_styling == 'noporuduct' %}
+                      <div class="sub_header-collection not-product-collection">
+                        <div class="collection-list">
+                          {% for placeholder_block in (1..3) %}
+                            {%- liquid
+                              assign placeholder_index = forloop.index | modulo: 4
+                              if placeholder_index == 0
+                                assign placeholder_index = 4
+                              endif
+                            -%}
+                            <div class="collection-item">
+                              <a>
+                                {%- render 'placeholder-svgs',
+                                  type: 'collection',
+                                  index: placeholder_index,
+                                  class: ''
+                                -%}
+                                <div class="collection-content-box">
+                                  <h3>Collection title</h3>
+                                  <p>{{ block.settings.collection_text }}</p>
+                                </div>
+                              </a>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% else %}
+                      <div class="sub_header-collection collection-toogle">
+                        <div class="collection-list">
+                          {% for placeholder_block in (1..3) %}
+                            {%- liquid
+                              assign placeholder_index = forloop.index | modulo: 4
+                              if placeholder_index == 0
+                                assign placeholder_index = 4
+                              endif
+                            -%}
+                            <div class="collection-item" data-open="false">
+                              <a
+                                class="collection-toggle"
+                                data-collection-toggle
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="listprod-{{ section.id }}-{{ forloop.index }}"
+                              >
+                                {%- render 'placeholder-svgs',
+                                  type: 'collection',
+                                  index: placeholder_index,
+                                  class: ''
+                                -%}
+                                <div class="collection-info">
+                                  <div class="collection-content-box">
+                                    <h3>Collection title</h3>
+                                    {%- if block.settings.collection_text != blank -%}
+                                      <p>{{ block.settings.collection_text }}</p>
+                                    {%- endif -%}
+                                  </div>
+                                  <span class="btn_collection-toogle" aria-hidden="true">+</span>
+                                </div>
+                              </a>
+                              <div class="collection-item_listprod" id="listprod-{{ section.id }}-{{ forloop.index }}">
+                                {% for placeholder_block in (1..3) %}
+                                  <a class="collection-item_product">
+                                    <svg
+                                      width="21"
+                                      height="13"
+                                      viewBox="0 0 21 13"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      aria-hidden="true"
+                                    >
+                                      <path d="M20.5303 7.03033C20.8232 6.73744 20.8232 6.26256 20.5303 5.96967L15.7574 1.1967C15.4645 0.903806 14.9896 0.903806 14.6967 1.1967C14.4038 1.48959 14.4038 1.96447 14.6967 2.25736L18.9393 6.5L14.6967 10.7426C14.4038 11.0355 14.4038 11.5104 14.6967 11.8033C14.9896 12.0962 15.4645 12.0962 15.7574 11.8033L20.5303 7.03033ZM0 7.25H20V5.75H0V7.25Z" fill="#000"/>
+                                    </svg>
+                                    <h5>Product title</h5>
+                                  </a>
+                                  {% if forloop.last %}
+                                    <a class="collection-item_product">
+                                      <svg
+                                        width="21"
+                                        height="13"
+                                        viewBox="0 0 21 13"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                      >
+                                        <path d="M20.5303 7.03033C20.8232 6.73744 20.8232 6.26256 20.5303 5.96967L15.7574 1.1967C15.4645 0.903806 14.9896 0.903806 14.6967 1.1967C14.4038 1.48959 14.4038 1.96447 14.6967 2.25736L18.9393 6.5L14.6967 10.7426C14.4038 11.0355 14.4038 11.5104 14.6967 11.8033C14.9896 12.0962 15.4645 12.0962 15.7574 11.8033L20.5303 7.03033ZM0 7.25H20V5.75H0V7.25Z" fill="#000"/>
+                                      </svg>
+                                      <h5>SHOP ALL Collection title</h5>
+                                    </a>
+                                  {% endif %}
+                                {% endfor %}
+                              </div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% when 'menu' %}
+                {% if block.settings.menu %}
+                  <div class="sub_header-menu">
+                    <nav class="custom-menu" aria-label="Header menu">
+                      <ul>
+                        {% for link in linklists[block.settings.menu].links %}
+                          <li>
+                            <a href="{{ link.url }}">{{ link.title }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </nav>
+                  </div>
+                {% endif %}
+
+              {% when 'review' %}
+                <div class="sub_header-review">
+                  <div
+                    class="testimonial-card"
+                    style="
+                      --review-bg: {{ block.settings.review_bg_color }};
+                      --review-fg: {{ block.settings.review_text_color }};
+                      overflow:hidden;border-radius:{{ block.settings.container_radius }}px;
+                      {% if block.settings.container_styling == 'shadow' %}box-shadow: {{ block.settings.box_shadow_offset }}px {{ block.settings.box_shadow_offset }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color }};{% endif %}
+                      {% if block.settings.container_styling == 'card' %}border: {{ block.settings.card_border }}px solid {{ block.settings.card_border_color }};{% endif %}
+                      display:flex;flex-wrap:wrap;gap:13px;
+                    "
+                  >
+                    <div class="testimonial_m-header" style="display:flex;align-items:flex-start;gap:12px;">
+                      {% if block.settings.photo %}
+                        {%- liquid
+                          assign max_width = block.settings.photo.width
+                          if block.settings.photo > 47
+                            assign max_width = 47
+                          endif
+                          assign image_height = max_width | divided_by: block.settings.photo.aspect_ratio | round
+
+                          capture image_alt
+                            if block.settings.photo.alt != blank
+                              echo block.settings.photo.alt
+                            else
+                              echo 'Customer photo'
+                            endif
+                          endcapture
+                        -%}
+                        {{-
+                          block.settings.photo
+                          | image_url: width: max_width
+                          | image_tag:
+                            loading: 'lazy',
+                            width: max_width,
+                            height: image_height,
+                            alt: image_alt,
+                            class: 'testimonial-photo'
+                        -}}
+                      {% endif %}
+                      <div class="testimonial-footer" style="line-height:18px;">
+                        <div class="testimonial-stars">
+                          {% for i in (1..5) %}
+                            {% if i <= block.settings.rating -%}
+                              <span class="star">★</span>
+                            {%- else -%}
+                              <span class="star empty">☆</span>
+                            {%- endif %}
+                          {% endfor %}
+                        </div>
+                        <strong>{{ block.settings.name }}</strong>
+                        {% if block.settings.verified %}
+                          <div class="verified-w">
+                            <span class="verified-label" style="font-size:9px;">VERIFIED BUYER</span>
+                          </div>
+                        {% endif %}
+                        <p class="testimonial-text" style="font-size:13px;line-height:20px;">
+                          “ {{ block.settings.testimonial }} ”
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+        <div
+          id="menu-overlay"
+          class="menu-overlay"
+          aria-hidden="true"
+          style="
+            --hdr-h: 169px;
+            --z-sticky: 9999;
+            --z-overlay: 9997;
+            --z-drawer: 9998;
+          "
+        ></div>
+        {% if section.settings.enable_search %}
+          <div class="hearch-search-form-wrapper" id="search-modal" hidden>
+            <div class="hearch-search-form-overlay"></div>
+            <div class="hearch-search-form">
+              {%- if settings.predictive_search_enabled -%}
+                <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+              {%- endif -%}
+              <form
+                action="{{ routes.search_url }}"
+                method="get"
+                role="search"
+                class="header__search search"
+                novalidate
+              >
+                {% if section.settings.search_only_products -%}
+                  <input type="hidden" name="type" value="product">
+                {%- endif %}
+                <input
+                  class="form-input"
+                  id="js-search-input"
+                  type="search"
+                  name="q"
+                  placeholder="{{ 'general.search.search' | t }}"
+                  autocomplete="off"
+                >
+                <button
+                  type="button"
+                  class="form-icon"
+                  id="js-search-icon"
+                  aria-label="{{ 'general.search.search' | t }}"
+                >
+                  <span class="material-icons" aria-hidden="true">search</span>
+                </button>
+                {%- if settings.predictive_search_enabled -%}
+                  <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                    <div class="predictive-search__loading-state">
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        role="presentation"
+                        class="spinner"
+                        viewBox="0 0 66 66"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                {%- endif -%}
+              </form>
+              {%- if settings.predictive_search_enabled -%}</predictive-search>{%- endif -%}
+              <button type="button" class="close-search-popup" aria-label="{{ 'accessibility.close' | t }}">
+                <span class="material-icons" aria-hidden="true">close</span>
+              </button>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {%- unless settings.section_enable_sticky == 'none' -%}
+    </sticky-block>
+  {%- endunless -%}
+</div>
+{%- javascript -%}
+  class StickyBlock extends HTMLElement {
+    constructor() {
+      super();
+    }
+    connectedCallback() {
+      if (!this.dataset.refBlock && !this.dataset.behavior) return;
+      const stickyHide = () => {
+        this.setAttribute('data-revealed', false);
+        if (this.dataset.hasHidden === 'true') this.setAttribute('aria-hidden', true);
+        if (this.dataset.bodyClass) document.body.classList.remove(this.dataset.bodyClass);
+        if (this.height) {
+          this.style.removeProperty('height');
+          if (this.dataset.bodyClass) document.body.style.removeProperty('--page-header-height');
+        }
+      };
+      const initialize = () => {
+        this.behavior = this.dataset.behavior;
+        this.spacer = this.dataset.spacer;
+        this.endBounds = document.body.offsetHeight + this.offsetHeight;
+        if (this.behavior) {
+          switch (this.behavior) {
+            case 'downwards':
+              window.addEventListener('scroll', onDownwardScroll.bind(this));
+              break;
+            case 'upwards':
+              window.addEventListener('scroll', onUpwardScroll.bind(this));
+              break;
+            case 'stacked':
+              window.addEventListener('scroll', onStackedScroll.bind(this));
+              break;
+            case 'observer':
+              window.addEventListener('scroll', onObservedScroll.bind(this));
+              break;
+            default:
+              break;
+          }
+        }
+        this.refBlock = document.querySelector(this.dataset.refBlock);
+        if (!this.refBlock) return;
+        this.refBoundings = this.refBlock.getBoundingClientRect();
+        this.offset = this.dataset.offset ? parseFloat(this.dataset.offset) : 0;
+        this.threshold = this.refBlock.offsetTop + this.refBoundings.height + this.offset;
+        this.previousScrollAmount = window.screenY;
+        this.percent = this.dataset.pagePercentage ? this.dataset.pagePercentage : null;
+        if (this.spacer) this.height = this.refBlock.offsetHeight;
+      };
+      const onObservedScroll = () => {
+        let revealedAttr = true;
+        const handleObserver = (entries, observer) => {
+          observer.unobserve(this);
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              revealedAttr = false;
+            } else {
+              revealedAttr = true;
+            }
+            setStickyStatus(revealedAttr);
+          });
+        };
+        new IntersectionObserver(handleObserver, { rootMargin: '0px 0px -60px 0px' }).observe(this);
+      };
+      const onDownwardScroll = () => {
+        let revealedAttr = false;
+        if (this.percent) {
+          const pageHeight = document.documentElement.offsetHeight;
+          const threshold = (pageHeight * parseFloat(this.percent)) / 100;
+          this.threshold = threshold;
+        }
+        if (window.scrollY > this.threshold) revealedAttr = true;
+        // dropdownClose();
+        setStickyStatus(revealedAttr);
+      };
+      const onUpwardScroll = () => {
+        let revealedAttr = false;
+        const threshold = this.height ? this.height : this.refBlock.offsetHeight;
+
+        if (window.scrollY > this.previousScrollAmount) {
+          revealedAttr = false;
+        } else if (window.scrollY < this.previousScrollAmount) {
+          revealedAttr = true;
+          // dropdownClose();
+          if (window.scrollY < threshold) revealedAttr = false;
+        }
+        setStickyStatus(revealedAttr);
+        this.previousScrollAmount = window.scrollY;
+      };
+      const onStackedScroll = () => {
+        let revealedAttr = false;
+        if (this.refBoundings.y < 0) this.refBoundings.y += window.scrollY;
+        if (this.refBoundings.y < window.scrollY) revealedAttr = true;
+        // dropdownClose();
+        setStickyStatus(revealedAttr);
+      };
+      const setStickyStatus = (revealed) => {
+        if (this.dataset.hideOnEnd === 'true')
+          if (window.innerHeight + window.scrollY >= this.endBounds) return stickyHide();
+        if (revealed) {
+          this.setAttribute('data-revealed', true);
+          if (this.dataset.hasHidden === 'true') this.removeAttribute('aria-hidden');
+          if (this.dataset.bodyClass) document.body.classList.add(this.dataset.bodyClass);
+          if (this.height) {
+            this.style.height = this.height + 'px';
+            if (this.dataset.bodyClass) document.body.style.setProperty('--page-header-height', this.height + 'px');
+          }
+          return;
+        }
+        stickyHide();
+      };
+      const setTempoStatus = (flag, refContainer) => {
+        const refElement = document.querySelector(refContainer);
+        if (!refElement) return;
+        refElement.style.transform = flag ? 'translateY(0%)' : 'translateY(-100%)';
+      };
+      this.setTempoStatus = setTempoStatus;
+      this.setStickyStatus = setStickyStatus;
+      this.initLoad = setTimeout(initialize.bind(this), 100);
+      document.addEventListener('DOMContentLoaded', function () {
+        this.initLoad;
+      });
+    }
+  }
+  if (!customElements.get('sticky-block')) {
+    customElements.define('sticky-block', StickyBlock);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const updateHeaderHeight = () => {
+      const announcementBars = document.querySelectorAll('.announcement-bar');
+      const pageHeader = document.querySelector('.page-header');
+      let totalHeight = 0;
+      announcementBars.forEach((bar) => {
+        totalHeight += bar.offsetHeight || 0;
+      });
+
+      if (pageHeader) {
+        totalHeight += pageHeader.offsetHeight || 0;
+      }
+      document.body.style.setProperty('--header-total-height', `${totalHeight}px`);
+    };
+
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    const observer = new MutationObserver(updateHeaderHeight);
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+{%- endjavascript -%}
+
+<script>
+  (function(){
+    const root = document.querySelector('.page-header');
+    if(!root) return;
+
+    const burger  = root.querySelector('#menu_burger');
+    const drawer  = root.querySelector('#sub_header');
+    const overlay = root.querySelector('#menu-overlay');
+
+    const openDrawer = () => {
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden','false');
+      overlay.classList.add('active');
+      document.body.classList.add('no-scroll');
+      burger?.classList.add('open');
+      burger?.setAttribute('aria-expanded','true');
+    };
+    const closeDrawer = () => {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden','true');
+      overlay.classList.remove('active');
+      document.body.classList.remove('no-scroll');
+      burger?.classList.remove('open');
+      burger?.setAttribute('aria-expanded','false');
+    };
+
+    burger?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      drawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
+    });
+    const closeBtn = root.querySelector('#menu_close');
+    closeBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeDrawer();
+    });
+    overlay?.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeDrawer(); });
+
+    // Collection toggle (event delegation)
+    root.addEventListener('click', (e)=>{
+      const a = e.target.closest('[data-collection-toggle]');
+      if(!a) return;
+      e.preventDefault();
+      const item = a.closest('.collection-item');
+      const isOpen = item?.getAttribute('data-open') === 'true';
+      item?.setAttribute('data-open', String(!isOpen));
+      a.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Swiper init (guarded)
+    const swiperEl = root.querySelector('.swiper_menu');
+    if (swiperEl && window.Swiper) {
+      new Swiper(swiperEl, {
+        slidesPerView: 'auto',
+        spaceBetween: 15,
+        navigation: {
+          nextEl: "#shopify-section-{{section.id}} .swiper-b-next",
+          prevEl: "#shopify-section-{{section.id}} .swiper-b-prev",
+        },
+      });
+    }
+
+    // Search
+    {% if section.settings.enable_search %}
+    const searchBtn = root.querySelector('#js-search-toggle');
+    const searchWrap = document.getElementById('search-modal');
+    const searchClose = searchWrap?.querySelector('.close-search-popup');
+    const searchInput = searchWrap?.querySelector('#js-search-input');
+
+    const openSearch = ()=>{
+      if(!searchWrap) return;
+      searchWrap.hidden = false;
+      document.body.classList.add('no-scroll');
+      searchBtn?.setAttribute('aria-expanded','true');
+      setTimeout(()=>searchInput?.focus(), 0);
+    };
+    const closeSearch = ()=>{
+      if(!searchWrap) return;
+      searchWrap.hidden = true;
+      document.body.classList.remove('no-scroll');
+      searchBtn?.setAttribute('aria-expanded','false');
+    };
+
+    searchBtn?.addEventListener('click', openSearch);
+    searchClose?.addEventListener('click', closeSearch);
+    searchWrap?.addEventListener('click', (e)=>{ if(e.target === searchWrap) closeSearch(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeSearch(); });
+    {% endif %}
+
+    // Real-time cart count update
+    const updateCartCount = () => {
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          const itemCount = cart.item_count || 0;
+          const cartCountBubbles = document.querySelectorAll('.cart-count-bubble');
+
+          cartCountBubbles.forEach(bubble => {
+            const countSpan = bubble.querySelector('span[aria-hidden="true"]');
+            const visuallyHiddenSpan = bubble.querySelector('.visually-hidden');
+
+            if (countSpan) {
+              if (itemCount > 0 && itemCount < 100) {
+                countSpan.textContent = itemCount;
+              } else if (itemCount >= 100) {
+                countSpan.textContent = '99+';
+              } else {
+                countSpan.textContent = '';
+              }
+            }
+
+            if (visuallyHiddenSpan) {
+              visuallyHiddenSpan.textContent = itemCount;
+            }
+
+            // Show/hide bubble based on count
+            if (itemCount > 0) {
+              bubble.style.display = 'flex';
+            } else {
+              bubble.style.display = 'none';
+            }
+          });
+        })
+        .catch(err => console.error('Failed to fetch cart:', err));
+    };
+
+    // Listen for cart updates
+    document.addEventListener('cart:updated', updateCartCount);
+
+    // Listen for CartJS events if available
+    if (typeof jQuery !== 'undefined') {
+      jQuery(document).on('cart.requestComplete', updateCartCount);
+    }
+
+    // Update on page load
+    updateCartCount();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "page-header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_logo_left",
+      "default": false,
+      "label": "Show logo on left"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "default": true,
+      "label": "Enable search"
+    },
+    {
+      "type": "checkbox",
+      "id": "search_only_products",
+      "label": "Search only products",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 17
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "mob_background_color",
+      "label": "Mobile background color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "mob_text_color",
+      "label": "Mobile title color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Mega menu settings"
+    },
+    {
+      "type": "select",
+      "id": "mega_menu_typography",
+      "label": "Mega menu typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "mega_bdr_color",
+      "label": "Border color",
+      "default": "#DFDFDF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slider",
+      "name": "Slider",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_slider",
+          "label": "Show slider",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title_slider",
+          "label": "Title",
+          "default": "Best Sellers"
+        },
+        {
+          "type": "product_list",
+          "id": "product_list",
+          "label": "Products",
+          "limit": 12
+        },
+        {
+          "type": "checkbox",
+          "id": "show_reviews",
+          "label": "Show review stars",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "star_count",
+          "label": "Star count",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "10 reviews"
+        }
+      ]
+    },
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_collection",
+          "label": "Show collection",
+          "default": true
+        },
+        {
+          "type": "collection_list",
+          "id": "collection_list",
+          "label": "Collections",
+          "limit": 5
+        },
+        {
+          "type": "text",
+          "id": "collection_text",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "collection_styling",
+          "label": "Collection styling",
+          "options": [
+            {
+              "value": "noporuduct",
+              "label": "Not product"
+            },
+            {
+              "value": "product",
+              "label": "Open product"
+            }
+          ],
+          "default": "noporuduct"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "testimonial",
+          "label": "Testimonial text",
+          "default": "Have been buying these for years !! Really like the bigger size of the Gummies now ! Appreciate it Joe V. 🙌"
+        },
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Customer photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Michael"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified buyer",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating (0–5)",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 4
+        },
+        {
+          "type": "color",
+          "id": "review_bg_color",
+          "label": "Review card background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "review_text_color",
+          "label": "Review text color",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Cards settings"
+        },
+        {
+          "type": "select",
+          "id": "container_styling",
+          "label": "Container styling",
+          "options": [
+            {
+              "value": "no_card",
+              "label": "No card"
+            },
+            {
+              "value": "card",
+              "label": "Card"
+            },
+            {
+              "value": "shadow",
+              "label": "Shadow"
+            }
+          ],
+          "default": "card"
+        },
+        {
+          "type": "range",
+          "id": "box_shadow_offset",
+          "label": "Box shadow offset",
+          "min": -10,
+          "max": 10,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "box_shadow_blur",
+          "label": "Box shadow blur",
+          "min": 0,
+          "max": 15,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "box_shadow_spread",
+          "label": "Box shadow spread",
+          "min": 0,
+          "max": 15,
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "box_shadow_color",
+          "label": "Box shadow color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "card_border",
+          "label": "Card border",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "card_border_color",
+          "label": "Card border color",
+          "default": "#000"
+        },
+        {
+          "type": "range",
+          "id": "container_radius",
+          "label": "Container corner radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "default": 10
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

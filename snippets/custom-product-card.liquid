@@ -1,0 +1,218 @@
+{%- assign current_variant = product_card_product.selected_or_first_available_variant -%}
+{%- liquid 
+    capture loading_attr
+    if section.index < 3
+      if forloop.index == 1
+        echo 'eager'
+        else
+          echo 'lazy'
+      endif
+      else
+        echo 'lazy'
+    endif
+  endcapture
+-%}
+<div class="pure-u-1-2 {% if enable_filtering %}pure-u-lg-1-3{% else %}pure-u-lg-1-4{% endif %}">
+    <div class="product">
+        {% if product_card_product.tags.size > 0 %}
+            {% for tag in product_card_product.tags %}
+                {% if tag contains "badge-" %}
+                    {% assign badgeName = tag | replace: "badge-", "" %}
+                    {% if badgeName != blank %}
+                        {% if badgeName == "Best Seller" %}
+                            <div class="product__badge">
+                                <span class="badge badge--dark badge--large badge--icon-left"><span>⚡</span>{{badgeName}}</span>
+                            </div>
+                        {% elsif badgeName == "Limited Stock" %}
+                            <div class="product__badge">
+                                <span class="badge badge--danger badge--large badge--icon-left"><span class="material-icons-outlined">timer</span>{{badgeName}}</span>
+                            </div>
+                        {% elsif badgeName == "New Arrival" %}
+                            <div class="product__badge">
+                                <span class="badge badge--info badge--large badge--icon-left"><span class="material-icons-outlined">timer</span>{{badgeName}}</span>
+                            </div>
+                        {% else %}
+                            <div class="product__badge">
+                                <span class="badge badge--dark badge--large badge--icon-left"><span>⚡</span>{{badgeName}}</span>
+                            </div>
+                        {% endif %}
+                        {% break %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if product_card_product.featured_media != blank %}
+            <div class="product__image-container">
+                <a href="{{ product_card_product.url | within: collection }}" data-replace-url="{{ product_card_product.url | within: collection }}" aria-label="{{ product_card_product.title }}" class="product__image ratio1by1">
+                    {%- liquid
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw), (max-width: 767px) calc(50vw), (max-width: 1199px) 25vw, 33vw, 50vw'
+                        endcapture
+  
+                        capture image_alt
+                          unless product.title == blank
+                            echo product.title
+                            else
+                              echo product_card_product.featured_media.alt
+                          endunless
+                        endcapture
+                        
+                        assign max_width = product_card_product.featured_media.width
+                        if product_card_product.featured_media.width > 1200
+                        assign max_width = 1200
+                        endif
+                        assign image_height = max_width | divided_by: product_card_product.featured_media.aspect_ratio | round
+                      -%}
+                      {{-
+                        product_card_product.featured_media
+                        | image_url: width: max_width
+                        | image_tag: loading: loading_attr, width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: 'original-image pure-img'
+                      -}}
+                    {%- if product_card_product.media[1] != nil and show_secondary_image -%}
+                        {%- liquid
+                            capture sizes_attr
+                              echo '(max-width: 415px) calc(100vw), (max-width: 767px) calc(50vw), (max-width: 1199px) 25vw, 33vw, 50vw'
+                            endcapture
+      
+                            capture image_alt
+                              unless product.title == blank
+                                echo product.title
+                                else
+                                  echo product_card_product.media[1].alt
+                              endunless
+                            endcapture
+                            
+                            assign max_width = product_card_product.media[1].width
+                            if product_card_product.media[1].width > 1200
+                            assign max_width = 1200
+                            endif
+                            assign image_height = max_width | divided_by: product_card_product.media[1].aspect_ratio | round
+                          -%}
+                          {{-
+                            product_card_product.media[1]
+                            | image_url: width: max_width
+                            | image_tag: loading: loading_attr, width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: 'pure-img hover-secondary-image'
+                          -}}
+                    {%- endif -%}
+                </a>
+            </div>
+        {% else %}
+            <div class="product__image-container">
+                <a href="{{ product_card_product.url | within: collection }}" data-replace-url="{{ product_card_product.url | within: collection }}" aria-label="{{ product_card_product.title }}" class="product__image ratio1by1">
+                    <img data-src="{{ 'bg-gray-img.jpg' | asset_url }}" class="lazyload pure-img" alt="" />  
+                </a>
+            </div>
+        {% endif %}
+        <div class="product__detail">
+            {%- if show_rating -%}
+                <div class="rating">
+                    <span class="shopify-product-reviews-badge" data-id="{{ product_card_product.id }}"></span>
+                </div>
+            {% endif %}
+            <a href="{{ product_card_product.url | within: collection }}" class="product__title">{{ product_card_product.title | escape }}</a>
+            {%- if show_vendor -%}
+                <div class="product__vendor">
+                    <p>{{ product_card_product.vendor }}</p>
+                </div>
+            {%- endif -%}
+            <div class="product__meta">
+                <div class="product__price">
+                    {% if product_card_product.price_varies %}
+                        <span class="product__price-original">{{ product_card_product.price_min | money }} - {{ product_card_product.price_max | money }}</span>
+                    {% else %}
+                        {%- if current_variant.compare_at_price > current_variant.price -%}
+                        <span class="product__price-sale">{{current_variant.compare_at_price | money }}</span>
+                        {%- endif -%}
+                        <span class="product__price-original">{{ current_variant.price | money}}</span>
+                    {% endif %}
+                </div>
+                {%- if current_variant.compare_at_price > current_variant.price -%}
+                    {% assign productPerSave =  current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0' | plus: 0 %}
+                    {% if productPerSave > 0 %}
+                        <span class="badge">Save {{productPerSave}}%</span>
+                    {% endif %}
+                {%- endif -%}
+            </div>
+            {% if product_card_product.has_only_default_variant %}
+            {% else %}
+                {% capture "form_classes" -%}
+                    product-form {%- if current_variant.available == false %} product-form--variant-sold-out {%- endif -%}
+                {%- endcapture %}
+                <div method="post" action="/cart/add" id="product_form_{{ product_card_product.id }}" accept-charset="UTF-8" class="product-form" enctype="multipart/form-data" novalidate="novalidate" data-product-form="">
+                    {% for option in product_card_product.options_with_values %}
+                        {% assign optionName = option.name | downcase | handleize %}
+                        {% if optionName == "color" or optionName == "colour" %}
+                            <div class="product__{{optionName}} product__options product__{{optionName}}--small">
+                                <label class="form-label fw-700">{{option.name}}</label>
+                                <div class="radio-product-options radio-product-color-options">
+                                    {% for value in option.values %}
+                                        {% assign optionValue = value | downcase | handleize %}
+                                        {% assign optionId = optionName | append: "-option-" | append: optionValue %}
+                                        {% assign optionImageName = "option-"| append: optionValue | append: ".jpg" %}
+                                        <div class="custom-radio">
+                                            <input type="radio" id="{{optionId}}-{{ product_card_product.id }}{% if is_related_products %}-related{% endif %}" class="option-radio" name="option-{{optionName}}-{{ product_card_product.id }}" value="{{value}}" {% if option.selected_value == value %}checked="checked"{% endif %} />
+                                            <label for="{{optionId}}-{{ product_card_product.id }}{% if is_related_products %}-related{% endif %}" style="background-image: url('{{optionImageName | file_url }}');">
+                                                <span class="option-value-name">{{value}}</span>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="product__{{optionName}} product__options">
+                                <label class="form-label fw-700">{{option.name}}</label>
+                                <div class="radio-product-options">
+                                {% for value in option.values %}
+                                    {% assign optionValue = value | downcase | handleize %}
+                                    {% assign optionId = optionName | append: "-option-" | append: optionValue %}
+                                        <div class="custom-radio">
+                                            <input type="radio" id="{{optionId}}-{{ product_card_product.id }}{% if is_related_products %}-related{% endif %}" class="option-radio" name="option-{{optionName}}-{{ product_card_product.id }}" value="{{value}}" {% if option.selected_value == value %}checked="checked"{% endif %} />
+                                            <label for="{{optionId}}-{{ product_card_product.id }}{% if is_related_products %}-related{% endif %}">
+                                                <span class="option-value-name">{{value}}</span>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% comment %} 
+                                <select class="form-select js-product-size">
+                                    {% for value in option.values %}
+                                        <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %} data-filter="{{ value | escape }}">{{ value | escape }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% endcomment %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="select" style="display: none !important;">
+                      <select name="id" id="ProductSelect-{{ product_card_product.id }}" data-current-variant-id="{{ current_variant.id }}" class="product-form__variants no-js">
+                        {% for variant in product_card_product.variants %}
+                          <option value="{{variant.id}}" 
+                            data-availability="{% unless variant.available %}false{% else %}true{% endunless %}" 
+                            data-available="{% if variant.available %}true{% else %}false{% endif %}" 
+                            {% if current_variant.id == variant.id %}
+                            selected="selected"
+                            {% endif %}
+                            {% if variant.inventory_quantity < 1 %}
+                            data-available = false
+                            {% else %}
+                            data-available = true
+                            {% endif %}
+                            data-option1="{{variant.option1 }}"
+                            data-option2="{{variant.option2 }}"
+                            data-option3="{{variant.option3 }}" 
+                            data-match="{{variant.title }}"
+                            data-inventory="{{variant.inventory_quantity}}" 
+                            data-inventory-management="{{variant.inventory_management}}" 
+                            data-is-sale-price="{% if variant.compare_at_price > variant.price %}true{% else %}false{% endif %}"
+                            data-sale-price="{{variant.price}}"
+                            data-old-price="{% if variant.compare_at_price > variant.price %}{{variant.compare_at_price}}{% endif %}"
+                            data-original-image="{{variant.image.src | img_url : 'master'}}" 
+                          data-image-name="{{variant.image.src}}">{{variant.title}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

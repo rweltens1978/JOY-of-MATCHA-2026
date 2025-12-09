@@ -1,0 +1,70 @@
+<section class="account-page">
+    <div class="container">
+        <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+            <div class="text-center mb-20 mb-md-50">
+                <h1 class="title">{{ 'customer.account.title' | t }}</h1>
+                <h4 class="subtitle"><a href="{{ routes.account_logout_url }}">{{ 'customer.log_out' | t }}</a></h4>
+            </div>
+            <div class="pure-g ">
+                <div class="pure-u-1 pure-u-md-1 pure-u-xl-2-3 pure-u-lg-2-3 mb-10 mb-lg-20">
+                    <label class="table-label mb-10 mb-md-20 d-block fw-700 text-4">{{ 'customer.orders.title' | t }}</label>
+                    {% paginate customer.orders by 20 %}
+                        {%- if customer.orders.size > 0 -%}
+                            <div class="tableResponsive">
+                                <table class="pure-table pure-table-horizontal mb-30 mb-md-0">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'customer.orders.order_number' | t }}</th>
+                                            <th>{{ 'customer.orders.date' | t }}</th>
+                                            <th class="text-center">{{ 'customer.orders.payment_status' | t }}</th>
+                                            <th class="text-center">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                                            <th class="text-center">{{ 'customer.orders.total' | t }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%- for order in customer.orders -%}
+                                            <tr>
+                                                <td><a href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">{{ order.name }}</a></td>
+                                                <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                                                <td class="text-center">
+                                                {% if order.financial_status_label == "Paid" %}
+                                                    <span class="badge ">{{ order.financial_status_label }}</span>
+                                                {% else %}
+                                                    <span class="badge badge--danger">{{ order.financial_status_label }}</span>
+                                                {% endif %}
+                                                </td>
+                                                <td class="text-center">{{ order.fulfillment_status_label }}</td>
+                                                <td class="text-center">{{ order.total_price | money_with_currency }}</td>
+                                            </tr>
+                                        {%- endfor -%}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {%- else -%}
+                            <p>{{ 'customer.orders.none' | t }}</p>
+                        {%- endif -%}
+                        {%- if paginate.pages > 1 -%}
+                            {% render 'pagination', paginate: paginate %}
+                        {%- endif -%}
+                    {% endpaginate %}
+                </div>
+                <div class="pure-u-1 pure-u-md-1 pure-u-xl-1-3 pure-u-lg-1-3">
+                    <label class="table-label mb-10 mb-md-20 d-block fw-700 text-4">{{ 'customer.account.details' | t }}</label>
+                    <div class="account-page__details-box">
+                        {% if customer.default_address != blank %}
+                            {{ customer.default_address | format_address }}
+                        {% endif %}
+                        <a href="{{ routes.account_addresses_url }}" class="link-item mb-10 text-2 fw-700 text-grey">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "Account",
+  "settings": [
+  ]
+}
+{% endschema %}

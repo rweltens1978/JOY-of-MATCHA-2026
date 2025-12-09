@@ -1,0 +1,32 @@
+{% if section.settings.icon_check != blank %}
+  {%- liquid
+    assign max_width = section.settings.icon_check.width
+    if section.settings.icon_check > 24
+        assign max_width = 24
+    endif
+    assign image_height = max_width | divided_by: section.settings.icon_check.aspect_ratio | round
+
+    capture image_alt
+      if section.settings.icon_check.alt != blank
+        echo section.settings.icon_check.alt
+      else
+        echo 'image_alternative.static' | t
+      endif
+    endcapture
+
+    capture sizes_attr
+      echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 30px), (max-width: 1199px) 59.216vw'
+    endcapture
+  -%}
+  {{-
+    section.settings.icon_check
+    | image_url: width: max_width
+    | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: ''
+  -}}
+{% else %}
+<svg width="56" height="56" viewBox="0 0 48 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="23.9993" cy="24.7376" r="15.2727" fill="white"/>
+<path d="M20.7346 34.2698L37.1846 17.8198L33.918 14.5531L20.7346 27.7365L14.0846 21.0865L10.818 24.3531L20.7346 34.2698ZM24.0013 46.8698C20.7735 46.8698 17.7402 46.2573 14.9013 45.0323C12.0624 43.8073 9.59297 42.1448 7.49297 40.0448C5.39297 37.9448 3.73047 35.4754 2.50547 32.6365C1.28047 29.7976 0.667969 26.7642 0.667969 23.5365C0.667969 20.3087 1.28047 17.2754 2.50547 14.4365C3.73047 11.5976 5.39297 9.12813 7.49297 7.02813C9.59297 4.92813 12.0624 3.26563 14.9013 2.04063C17.7402 0.815625 20.7735 0.203125 24.0013 0.203125C27.2291 0.203125 30.2624 0.815625 33.1013 2.04063C35.9402 3.26563 38.4096 4.92813 40.5096 7.02813C42.6096 9.12813 44.2721 11.5976 45.4971 14.4365C46.7221 17.2754 47.3346 20.3087 47.3346 23.5365C47.3346 26.7642 46.7221 29.7976 45.4971 32.6365C44.2721 35.4754 42.6096 37.9448 40.5096 40.0448C38.4096 42.1448 35.9402 43.8073 33.1013 45.0323C30.2624 46.2573 27.2291 46.8698 24.0013 46.8698Z" fill="{{ section.settings.icon_check_color }}"/>
+</svg>
+{% endif %}
+

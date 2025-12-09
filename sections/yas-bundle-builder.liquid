@@ -1,0 +1,1442 @@
+{%- liquid
+  assign section_prefix_class = 'bundle-builder'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .bundle-builder :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+
+{%- stylesheet -%}
+  .bundle-builder a,
+  .bundle-builder .add-to-bundle,
+  .bundle-builder .bundle-checkout-btn {
+    transition: all 0.3s ease;
+  }
+
+  .bundle-builder .add-to-bundle .icon_cart-btns,
+  .featured-bundle-builder .bundle-checkout-btn .icon_cart-btns {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .bundle-builder .add-to-bundle .icon_cart-btns img,
+  .featured-bundle-builder .bundle-checkout-btn img {
+    position: relative !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bundle-builder .price {
+    margin-bottom: 10px;
+  }
+
+  .featured-bundle-builder .bundle-checkout-btn .bundle-builder_payment-icons {
+    display: flex !important;
+    gap: 5px !important;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+  }
+
+  .bundle-builder_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .bundle-builder_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .bundle-builder_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .bundle-builder_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .bundle-builder_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .bundle-builder_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .bundle-builder_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .bundle-builder_wrapper.inner-padding .container,
+  .bundle-builder_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .bundle-builder a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .bundle-builder .add-to-bundle:hover,
+  .bundle-builder .bundle-checkout-btn:hover {
+    color: var(--atc-background-color);
+    background-color: var(--atc-color);
+    border: 1px solid var(--atc-background-color);
+  }
+
+  .bundle-builder .add-to-bundle:hover svg path,
+  .bundle-builder .bundle-checkout-btn:hover svg path {
+    fill: var(--atc-background-color);
+  }
+
+  @media (max-width: 768px) {
+    .featured-bundle-builder {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .bundle-builder_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .bundle-builder_wrapper.inner-padding .container,
+    .bundle-builder_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .bundle-builder_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .featured-bundle-builder {
+      display: var(--display-value);
+    }
+  }
+
+  .bundle-builder {
+    color: var(--text-color);
+  }
+
+  .bundle-builder .heading {
+    margin-bottom: 50px;
+  }
+
+  .bundle-builder_content-wrapper {
+    display: block;
+    position: relative;
+  }
+
+  .bundle-builder .title h2,
+  .bundle-builder .title h1,
+  .bundle-builder .title h3,
+  .bundle-builder .title p {
+    font-size: var(--heading-size);
+    line-height: 110%;
+    font-weight: 700;
+    text-transform: var(--text-transform);
+    color: var(--text-color);
+    margin: 0;
+    text-align: var(--heading-align);
+    margin-bottom: 16px;
+  }
+
+  .bundle-builder .subtitle h2,
+  .bundle-builder .subtitle h3,
+  .bundle-builder .subtitle h1,
+  .bundle-builder .subtitle p {
+    font-size: 24px;
+    line-height: 150%;
+    font-weight: 500;
+    color: var(--subtitle-color);
+    text-align: var(--subtitle-align);
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .bundle-builder .uppertitle {
+    display: flex;
+    justify-content: var(--justify-align);
+    align-items: center;
+    margin: 0 0 14.5px 0;
+  }
+
+  .bundle-builder .uppertitle svg path {
+    fill: var(--star-color);
+  }
+  .bundle-builder .uppertitle .star_span {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+  }
+
+  .bundle-builder .uppertitle h2,
+  .bundle-builder .uppertitle h3,
+  .bundle-builder .uppertitle h4,
+  .bundle-builder .uppertitle p {
+    color: var(--uptitle-color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+    margin: 0;
+  }
+
+  .bundle-builder .product-item {
+    border-radius: var(--corner-radius);
+    background-color: var(--card-bg);
+    box-shadow: var(--box-shadow);
+    border: var(--border-solid);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .bundle-builder .product-info {
+    padding: var(--card-padding);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bundle-builder .product-title {
+    text-transform: var(--card-transform);
+    text-align: left;
+  }
+
+  .add-to-bundle svg {
+    flex-shrink: 0;
+  }
+
+  .bundle-builder .bundle-checkout-btn,
+  .bundle-builder .add-to-bundle {
+    border-radius: var(--border-radius-atc);
+    border: var(--border-atc-solid);
+    color: var(--atc-color);
+    background-color: var(--atc-background-color);
+  }
+
+  .bundle-builder .bundle-checkout-btn svg path,
+  .bundle-builder .add-to-bundle svg path {
+    fill: var(--fill-color);
+  }
+
+  .bundle-builder .bundle-qty-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 700;
+    width: 100%;
+    border: 1px solid #000;
+    border-radius: var(--btn-radius);
+    background-color: #fff;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    .featured-bundle-builder {
+      display: var(--xs-display-value);
+    }
+
+    .bundle-builder .subtitle h2,
+    .bundle-builder .subtitle h3,
+    .bundle-builder .subtitle h1,
+    .bundle-builder .subtitle p {
+      font-size: 20px;
+      line-height: 150%;
+      font-weight: 500;
+    }
+
+    .bundle-builder .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .featured-bundle-builder .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+{%- endstylesheet -%}
+
+<section
+  class="featured-bundle-builder {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+      {% if section.settings.column_prod_mob %}
+        --column-count: {{ section.settings.column_prod_mob }};
+      {% else %}
+        --column-count: 2;
+      {% endif %}
+      --xs-padding-x: {{ section.settings.padding_lr_mob }}px;
+      --xs-padding-y: {{ section.settings.padding_tb_mob }}px;
+      --btn-radius: {{ section.settings.btn_radius }}px;
+      {% if section.settings.setting_btn == 'global' %}
+        --fill-color: {{ settings.button_text_color }};
+      {% else %}
+        --fill-color: {{ section.settings.button_text_color }};
+      {% endif %}
+      {% if section.settings.setting_btn == 'global' %}
+      --border-radius-atc: {{ settings.button_radius }}px;
+      --border-atc-solid: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --atc-color: {{ settings.button_text_color }};
+      --atc-background-color: {{ settings.button_color }};
+    {% else %}
+      --border-radius-atc: {{ section.settings.button_radius }}px;
+      --border-atc-solid: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --atc-color: {{ section.settings.button_text_color }};
+      --atc-background-color: {{ section.settings.button_color }};
+    {% endif %}
+    --card-transform: {{ section.settings.card_title_typography }};
+    --card-padding: {{ section.settings.card_padding }}px;;
+    {% if section.settings.container_styling == 'card' %}
+      --border-solid: {{ section.settings.card_border }}px solid {{ section.settings.card_border_color }};
+    {% else %}
+      --border-solid: none;
+    {% endif %}
+    {% if section.settings.container_styling == 'shadow' %}
+      --box-shadow: {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_blur }}px {{ section.settings.box_shadow_spread }}px {{ section.settings.box_shadow_color }};
+    {% else %}
+      --box-shadow: none;
+    {% endif %}
+    --card-bg: {{ section.settings.card_background }};
+    --corner-radius: {{ section.settings.container_radius }}px;
+    --uptitle-color: {{ section.settings.uppertitle_color }};
+    --star-color: {{ section.settings.star_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+       --justify-align: flex-start;
+      {% when 'center' %}
+       --justify-align: center;
+      {% when 'right' %}
+       --justify-align: flex-end;
+    {% endcase %}
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+        --subtitle-align: left;
+      {% when 'center' %}
+        --subtitle-align: center;
+      {% when 'right' %}
+        --subtitle-align: right;
+    {% endcase %}
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+       --heading-align: left;
+      {% when 'center' %}
+       --heading-align: center;
+      {% when 'right' %}
+       --heading-align: right;
+    {% endcase %}
+    --text-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+       --heading-size: 28px;
+      {% when 'medium' %}
+       --heading-size: 40px;
+      {% when 'large' %}
+       --heading-size: 48px;
+    {% endcase %}
+    --page-width-value: {{ settings.page_width }}px;
+    --xl-padding-x: {{ section.settings.padding_lr_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_tb_desk }}px;
+    --text-color: {{ section.settings.text_color }};
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+       --xs-display-value: block;
+      {% when 'mobile_only' %}
+       --xs-display-value: block;
+      {% when 'desktop_only' %}
+       --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+       --display-value: block;
+      {% when 'mobile_only' %}
+       --display-value: none;
+      {% when 'desktop_only' %}
+       --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.uppertitle != blank or section.settings.subtitle or section.settings.title != blank -%}
+          <div
+            class="heading"
+            style="
+              {% if section.settings.section_width == 'contained-container' %}
+                margin: 0 10%;
+              {% endif %}
+            "
+          >
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle word--break">
+                <span class="star_span">
+                  {%- for i in (1..5) -%}
+                    {%- render 'star_comparison' -%}
+                  {%- endfor -%}
+                </span>
+                {{- section.settings.uppertitle }}
+              </div>
+            {% endif %}
+            <div class="title word--break">
+              {%- if section.settings.title != blank -%}
+                {{ section.settings.title }}
+              {%- endif -%}
+            </div>
+            <div class="subtitle word--break">
+              {%- if section.settings.subtitle != blank -%}
+                {{ section.settings.subtitle }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="bundle-layout">
+          <div class="products-grid">
+            {% for block in section.blocks %}
+              {% assign product = block.settings.product %}
+              {% if product != blank %}
+                <div
+                  class="product-item"
+                  {{ block.shopify_attributes }}
+                  data-id="{{ product.variants.first.id }}"
+                  data-title="{{ product.title }}"
+                  {%- assign variant = product.selected_or_first_available_variant -%}
+                  data-price="{{ variant.price }}"
+                  {% if section.settings.card_clickable == true %}
+                    data-url="{{ product.url }}"
+                  {% endif %}
+                >
+                  <div class="product-image-wrapper {% if section.settings.secondary_image_highlight and product.images[1] %}has_second-img{% endif %}">
+                    {% if product.images[1] != blank %}
+                      {%- liquid
+                        assign max_width = product.featured_image.width
+                        if product.featured_image > 300
+                          assign max_width = 300
+                        endif
+                        assign image_height = max_width | divided_by: product.featured_image.aspect_ratio | round
+
+                        capture image_alt
+                          if product.featured_image.alt != blank
+                            echo product.featured_image.alt
+                          else
+                            echo product.title
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 21.412vw'
+                        endcapture
+                      -%}
+                      {{-
+                        product.featured_image
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          sizes: sizes_attr,
+                          alt: image_alt,
+                          class: 'primary-image'
+                      -}}
+                    {% else %}
+                      {%- render 'placeholder-svgs', type: 'collection', index: 1, class: 'primary-image' -%}
+                    {% endif %}
+                    {% if section.settings.secondary_image_highlight and product.images[1] %}
+                      {%- liquid
+                        assign max_width = product.images[1].width
+                        if product.images[1] > 300
+                          assign max_width = 300
+                        endif
+                        assign image_height = max_width | divided_by: product.images[1].aspect_ratio | round
+
+                        capture image_alt
+                          if product.images[1].alt != blank
+                            echo product.images[1].alt
+                          else
+                            echo 'Secondary image'
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 21.412vw'
+                        endcapture
+                      -%}
+                      {{-
+                        product.images[1]
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          sizes: sizes_attr,
+                          alt: image_alt,
+                          class: 'secondary-image'
+                      -}}
+                    {% endif %}
+                  </div>
+                  <div class="product-info">
+                    {% if section.settings.show_reviews %}
+                      <div class="product-reviews">
+                        <span>
+                          {%- for i in (1..block.settings.star_count) -%}
+                            {%- render 'review-stars' -%}
+                          {%- endfor -%}
+                        </span>
+                        {{ block.settings.review_text }}
+                      </div>
+                    {% endif %}
+                    <h3
+                      class="product-title"
+                      style="
+                                                    {% if section.settings.card_title_line %}
+                          display: -webkit-box;
+                          -webkit-line-clamp: 2;
+                          -webkit-box-orient: vertical;
+                          overflow: hidden;
+                        {% else %}
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        {% endif %};
+                      "
+                    >
+                      {{ product.title }}
+                    </h3>
+                    <span class="description">{{ product.description | truncate: 55 | strip_html }}</span>
+                    {% if section.settings.show_price %}
+                      <p class="price">
+                        {%- assign variant = product.selected_or_first_available_variant -%}
+                        {% if variant.compare_at_price > variant.price %}
+                          <span class="product-compare-price">{{ variant.compare_at_price | money }}</span>
+                        {% endif %}
+                        <span class="product-price">{{ variant.price | money }}</span>
+                      </p>
+                    {% endif %}
+                    <div
+                      class="add-to-bundle-wrapper"
+                      data-button-html='<button class="btn add-to-bundle">{{ section.settings.text_btn_card }}{% if section.settings.show_arrow == true %}{% render "icon_arrow_submit2" %}{% endif %}</button>'
+                    >
+                      <button class="btn add-to-bundle word--break">
+                        {{ section.settings.text_btn_card }}
+                        {% if section.settings.show_arrow == true %}
+                          {% if section.settings.icon != blank %}
+                            <i class="icon_cart-btns">
+                              {%- liquid
+                                assign max_width = section.settings.icon.width
+                                if section.settings.icon > 150
+                                  assign max_width = 150
+                                endif
+                                assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                                capture image_alt
+                                  if section.settings.icon.alt != blank
+                                    echo section.settings.icon.alt
+                                  else
+                                    echo 'Icon' | escape
+                                  endif
+                                endcapture
+                              -%}
+                              {{-
+                                section.settings.icon
+                                | image_url: width: max_width
+                                | image_tag:
+                                  loading: 'lazy',
+                                  width: max_width,
+                                  height: image_height,
+                                  alt: image_alt,
+                                  class: ''
+                              -}}
+                            </i>
+                          {% elsif section.settings.icon_alt != blank %}
+                            <i class="icon_cart-btns material-symbols-outlined">
+                              {{ section.settings.icon_alt }}
+                            </i>
+                          {% else %}
+                            <i class="icon_cart-btns">
+                              {% render 'icon_arrow_submit2' %}
+                            </i>
+                          {% endif %}
+                        {% endif %}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <span id="money-format-template" style="display:none;">
+            {{ 1234 | money }}
+          </span>
+          <span id="currency-symbol" style="display:none;">
+            {{ cart.currency.symbol }}
+          </span>
+
+          <div id="bundle-summary" class="bundle-summary">
+            <div class="bundle-header">
+              <h2>Your Bundle</h2>
+              <p class="bundle-subtitle">Lorem Ipsum Dolor Sit Amet, Consectetu</p>
+              <div class="bundle-pricing-line">
+                <span class="bundle-old-price" id="bundle-old-price"></span>
+                <span class="bundle-current-price" id="bundle-current-price"></span>
+                <span class="bundle-save" id="bundle-save-amount"></span>
+              </div>
+            </div>
+
+            <div class="bundle-product-block">
+              <div class="bundle-title-line">
+                <strong>Lorem Ipsum Dolor</strong>
+              </div>
+              <ul id="bundle-list" class="bundle-list"></ul>
+            </div>
+
+            <div class="bundle-total" id="bundle-pricing"></div>
+
+            <button
+              class="bundle-checkout-btn"
+              id="checkout-bundle"
+              disabled
+            >
+              GET YOUR BUNDLE NOW
+              {% if section.settings.show_arrow == true %}
+                {% if section.settings.icon != blank %}
+                  <i class="icon_cart-btns">
+                    {%- liquid
+                      assign max_width = section.settings.icon.width
+                      if section.settings.icon > 150
+                        assign max_width = 150
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon.alt != blank
+                          echo section.settings.icon.alt
+                        else
+                          echo 'Icon' | escape
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  </i>
+                {% elsif section.settings.icon_alt != blank %}
+                  <i class="icon_cart-btns material-symbols-outlined">
+                    {{ section.settings.icon_alt }}
+                  </i>
+                {% else %}
+                  <i class="icon_cart-btns">
+                    {% render 'icon_arrow_submit2' %}
+                  </i>
+                {% endif %}
+              {% endif %}
+            </button>
+
+            <div class="payment-methods">
+              <div class="payment-secure">
+                {% render 'icon-secure-prod' %}
+                <div class="payment-secure-text">
+                  <p><strong>100% Secure Checkout</strong></p>
+                  <p>Guaranteed Secure</p>
+                </div>
+              </div>
+              {% assign icons_count = 0 %}
+              {% capture icons %}
+                {% for i in (1..7) %}
+                  {% assign key    = 'payment_icon_' | append: i %}
+                  {% assign altkey = 'payment_icon_' | append: i | append: '_alt' %}
+                  {% assign icon   = settings[key] %}
+                  {% if icon %}
+                    {% assign icons_count = icons_count | plus: 1 %}
+                    <li>
+                    {%- liquid
+                      assign max_width = icon.width
+                      if icon > 72
+                          assign max_width = 72
+                      endif
+                      assign image_height = max_width | divided_by: icon.aspect_ratio | round
+
+                      capture image_alt
+                        if icon.alt != blank
+                          echo icon.alt
+                        elsif icon.alt == blank
+                          echo 'Payment method'
+                        else
+                          echo settings[altkey]
+                        endif
+                      endcapture
+
+                      capture sizes_attr
+                        echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 4.706vw'
+                      endcapture
+                    -%}
+                    {{-
+                      icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: 'payicon'
+                    -}}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {% endcapture %}
+              {% if section.settings.show_payment_icons %}
+                <ul class="bundle-builder_payment-icons common_payment-icns">
+                  {{ icons }}
+                  {%- for type in shop.enabled_payment_types -%}
+                    <li>
+                      {{ type | payment_type_svg_tag }}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if(document.querySelectorAll('#shopify-section-{{section.id}} .products-grid .product-item'))
+    {
+      var localStorageKey = 'bundleData';
+      var bundleData = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+      if(bundleData.length > 0)
+      {
+        var productItems = document.querySelectorAll('#shopify-section-{{section.id}} .products-grid .product-item');
+        if (productItems.length > 0) {
+          productItems.forEach((productItem, index) => {
+            setTimeout(() => {
+              var productId = productItem.dataset.id;
+              var product = bundleData.find(item => item.id === productId);
+              if (product) {
+                var quantity = product.quantity;
+                quantity = parseFloat(quantity);
+                for (let i = 1; i <= quantity; i++) {
+                  setTimeout(() => {
+                    if (i === 1) {
+                      var addToBundleBtn = productItem.querySelector('.btn.add-to-bundle');
+                      if (addToBundleBtn) {
+                        addToBundleBtn.click();
+                      }
+                    } else if (i > 1) {
+                      var qtyControl = productItem.querySelector('.bundle-qty-control .bundle-qty-plus');
+                      if (qtyControl) {
+                          qtyControl.click();
+                      }
+                    }
+                  }, i * 50);
+                }
+              }
+            }, index * 50);
+          });
+        }
+      }
+    }
+
+
+    const bundleItems = {}; // key = id, value = { id, title, price, image, quantity }
+    const requiredCount = {{ section.settings.min_products | default: 3 }};
+    const discountCode = "{{ section.settings.discount_code }}";
+    const bundleList = document.getElementById("bundle-list");
+    const bundlePricing = document.getElementById("bundle-pricing");
+    const oldPriceEl = document.getElementById("bundle-old-price");
+    const currentPriceEl = document.getElementById("bundle-current-price");
+    const saveEl = document.getElementById("bundle-save-amount");
+    const checkoutBtn = document.getElementById("checkout-bundle");
+
+    function formatMoney(amount) {
+      const template = document.getElementById("money-format-template")?.innerText || "£12.34";
+      const decimalAmount = (amount).toFixed(2);
+      return template.replace(/12\.34/, decimalAmount);
+    }
+
+    document.addEventListener("click", function (e) {
+      const addBtn = e.target.closest(".add-to-bundle");
+      const plusBtn = e.target.closest(".bundle-qty-plus");
+      const minusBtn = e.target.closest(".bundle-qty-minus");
+      if (addBtn) {
+        const card = addBtn.closest(".product-item");
+        const id = card.dataset.id;
+        const title = card.dataset.title;
+        const price = parseFloat(card.dataset.price) / 100;
+        const image = card.querySelector('.primary-image')?.src || '';
+        bundleItems[id] = { id, title, price, image, quantity: 1 };
+        updateBundleUI();
+        updateBundleData(id, 1, "add");
+        updateProductCard(id);
+      }
+      if (plusBtn) {
+        const id = plusBtn.closest(".bundle-qty-control").dataset.id;
+        if (bundleItems[id]) {
+          bundleItems[id].quantity += 1;
+          var addQuantity = bundleItems[id].quantity;
+          updateBundleUI();
+          updateBundleData(id, addQuantity, "add");
+          updateProductCard(id);
+        }
+      }
+      if (minusBtn) {
+        const id = minusBtn.closest(".bundle-qty-control").dataset.id;
+        if (bundleItems[id]) {
+          bundleItems[id].quantity -= 1;
+          var quantity = bundleItems[id].quantity;
+          if (bundleItems[id].quantity <= 0) {
+            delete bundleItems[id];
+          }
+          updateBundleUI();
+          updateBundleData(id, quantity, "remove");
+          updateProductCard(id);
+        }
+      }
+      if (e.target.closest("#bundle-list li button")) {
+        const id = e.target.closest("li").dataset.id;
+        const quantity = e.target.closest("li").dataset.quantity;
+        delete bundleItems[id];
+        updateBundleUI();
+        updateBundleData(id, 0, "remove");
+        updateProductCard(id);
+      }
+    });
+    function updateBundleData(id, quantity, action) {
+      if (!id || !action) return;
+
+      var key = 'bundleData';
+      let bundleArray = [];
+
+      var existingData = localStorage.getItem(key);
+      if (existingData) {
+        try {
+          bundleArray = JSON.parse(existingData);
+          if (!Array.isArray(bundleArray)) {
+            return;
+          }
+        } catch (e) {
+          return;
+        }
+      }
+
+      var existingIndex = bundleArray.findIndex(item => item.id === id);
+
+      if (action === 'add') {
+        if (existingIndex !== -1) {
+          
+          bundleArray[existingIndex].quantity = quantity;
+        } else {
+          bundleArray.push({ id, quantity });
+        }
+      } else if (action === 'remove') {
+        if (existingIndex !== -1) {
+          if (quantity === 0) {
+            bundleArray.splice(existingIndex, 1);
+          } else {
+            bundleArray[existingIndex].quantity = quantity;
+          }
+        }
+      }
+      localStorage.setItem(key, JSON.stringify(bundleArray));
+    }
+
+    function updateProductCard(id) {
+      const card = document.querySelector(`.product-item[data-id="${id}"]`);
+      if (!card) return;
+      const btnWrapper = card.querySelector(".add-to-bundle-wrapper");
+      if (!btnWrapper) return;
+      btnWrapper.innerHTML = "";
+      if (bundleItems[id]) {
+        btnWrapper.innerHTML = `
+          <div class="bundle-qty-control" data-id="${id}" data-quantity="${bundleItems[id].quantity}">
+            <button class="bundle-qty-minus">−</button>
+            <span class="bundle-qty-number">${bundleItems[id].quantity}</span>
+            <button class="bundle-qty-plus">+</button>
+          </div>
+        `;
+      } else {
+        btnWrapper.innerHTML = `
+          <button class="btn add-to-bundle">Add to Bundle
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.25 4.875H12.05L9.45125 2.27625C9.22962 2.05463 9.125 1.79025 9.125 1.5C9.125 0.9465 9.58231 0.375 10.25 0.375C10.5487 0.375 10.8091 0.483562 11.0262 0.70125L15.5026 5.17763C15.6871 5.36212 15.875 5.58994 15.875 6C15.875 6.41006 15.7181 6.6075 15.5116 6.81394L11.0262 11.2987C10.8091 11.5164 10.5487 11.625 10.25 11.625C9.58175 11.625 9.125 11.0535 9.125 10.5C9.125 10.2098 9.22962 9.94538 9.45125 9.72375L12.05 7.125H1.25C0.629 7.125 0.125 6.621 0.125 6C0.125 5.379 0.629 4.875 1.25 4.875Z" fill="white"></path>
+          </svg>
+          </button>
+        `;
+      }
+    }
+
+    function updateBundleUI() {
+      bundleList.innerHTML = "";
+      let total = 0;
+      let totalItems = 0;
+
+      Object.values(bundleItems).forEach(item => {
+        total += item.price * item.quantity;
+        totalItems += item.quantity;
+        bundleList.innerHTML += `
+          <li data-id="${item.id}" data-quantity="${item.quantity}">
+            <img src="${item.image}" alt="${item.title}">
+            <div class="title">${item.title} ×${item.quantity}</div>
+            <div class="delete">Delete
+            <button title="Remove">X</button></div>
+          </li>
+        `;
+      });
+
+      const discount = totalItems >= requiredCount ? 15 : 0;
+      const final = Math.max(0, total - discount);
+      oldPriceEl.innerHTML = totalItems >= requiredCount ? `For: <del>${formatMoney(total)}</del>` : "";
+      currentPriceEl.textContent = formatMoney(final);
+      saveEl.textContent = totalItems >= requiredCount ? `Save ${formatMoney(discount)}` : "";
+      bundlePricing.textContent = `Total: ${formatMoney(final)}`;
+      checkoutBtn.disabled = totalItems < requiredCount;
+    }
+
+    checkoutBtn.addEventListener("click", async () => {
+      const originalText = checkoutBtn.innerText;
+      checkoutBtn.disabled = true;
+      checkoutBtn.innerText = "Adding...";
+      const items = Object.values(bundleItems);
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        await fetch("/cart/add.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: item.id,
+            quantity: item.quantity
+          })
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+      checkoutBtn.disabled = false;
+      checkoutBtn.innerText = originalText;
+      window.location.href = `/discount/${discountCode}?redirect=/checkout`;
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Bundle Builder Section",
+  "class": "bundle-builder",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle",
+      "default": "<p>Rated 4.9 based on XXX+ Reviews</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Build your own bundle</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>Pick any [number] items and unlock exclusive bundle pricing.</h3>"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Discount code to apply",
+      "default": "BUNDLE15"
+    },
+    {
+      "type": "range",
+      "id": "min_products",
+      "label": "Minimum products to activate bundle",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Show Review Stars",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show Price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_clickable",
+      "label": "Card clickable",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Padding card info",
+      "min": 0,
+      "max": 25,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "card_title_typography",
+      "label": "Card title Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_title_line",
+      "label": "Card title two line",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_image_highlight",
+      "label": "Secondary Image On Hover",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "container_styling",
+      "label": "Container Styling",
+      "options": [
+        { "value": "no_card", "label": "No Card" },
+        { "value": "card", "label": "Card" },
+        { "value": "shadow", "label": "Shadow" }
+      ],
+      "default": "card"
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_offset",
+      "label": "Box shadow offset",
+      "min": -10,
+      "max": 10,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_blur",
+      "label": "Box shadow blur",
+      "min": 0,
+      "max": 15,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_spread",
+      "label": "Box shadow spread",
+      "min": 0,
+      "max": 15,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Box shadow color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "card_border",
+      "label": "Card border",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "container_radius",
+      "label": "Container Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Fonts"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FF8E00"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "header",
+      "content": "Responsive & Padding"
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_desk",
+      "label": "Horizontal Padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_desk",
+      "label": "Vertical Padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_mob",
+      "label": "Horizontal Padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_mob",
+      "label": "Vertical Padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text_btn_card",
+      "label": "Text For Card Buttons",
+      "default": "Add to Bundle"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Button Icon image"
+    },
+    {
+      "type": "text",
+      "id": "icon_alt",
+      "label": "Button Google Icon"
+    },
+    {
+      "type": "select",
+      "id": "setting_btn",
+      "label": "Settings",
+      "options": [
+        { "value": "global", "label": "Global" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "global"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Payment Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "label": "Show Visa",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "label": "Show Mastercard",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_amex",
+      "label": "Show Amex",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_paypal",
+      "label": "Show PayPal",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_amazon",
+      "label": "Show Amazon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shopify_pay",
+      "label": "Show Shopify Pay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_google_pay",
+      "label": "Show Google Pay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_apple_pay",
+      "label": "Show Apple Pay",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Select Product" },
+        { "type": "range", "id": "star_count", "label": "Star count", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "review_text", "label": "Review text", "default": "10 reviews" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Builder",
+      "category": "Product",
+      "blocks": [{ "type": "product" }, { "type": "product" }, { "type": "product" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1107 @@
+{% assign firstarticle = '' %}
+{%- for article in blog.articles -%}
+  {% if forloop.first %}
+    {% assign firstarticle = article %}
+    {% break %}
+  {% endif %}
+{%- endfor -%}
+{% assign postperpage = section.settings.post_per_page %}
+{%- liquid
+
+  assign section_prefix_class = 'main-blog'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+{%- stylesheet -%}
+  .main-blog_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-blog_wrapper {
+    padding: var(--xl-padding-y) 0;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    height: auto;
+  }
+
+  .main-blog_wrapper.outer-padding,
+  .main-blog_wrapper.inner-padding .container {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-blog_wrapper.outer-padding .container,
+  .main-blog_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .article__title,
+  .main-blog_wrapper .article__author .text-2.text-grey,
+  .article__desc,
+  .article__link,
+  .article__meta {
+    color: var(--text-color);
+    transition: all 0.3s ease;
+  }
+
+  .article__link:hover,
+  .article__title:hover {
+    color: var(--link-hover-color);
+  }
+
+  .main-blog_wrapper .article--featured.bg-info-scale-1 {
+    background-color: var(--card-background-color);
+  }
+
+  .main-blog_wrapper .article--featured .article__title,
+  .main-blog_wrapper .article--featured .article__author .text-2.text-grey,
+  .main-blog_wrapper .article--featured .article__desc,
+  .main-blog_wrapper .article--featured .article__link,
+  .main-blog_wrapper .article--featured .article__meta {
+    color: var(--card-text-color);
+  }
+
+  .main-blog_wrapper .article--featured .article__link:hover,
+  .main-blog_wrapper .article--featured .article__title:hover {
+    color: var(--card-link-color);
+  }
+
+  .blog__tab-list li a,
+  .blog__tab-list .tab__item.active{
+    color: var(--tabset-color);
+    transition: all 0.3s ease;
+  }
+
+  .blog__tab-list li a:hover,
+  .blog__tab-list .tab__item.active:hover{
+    color: var(--tabset-hover-color);
+  }
+
+  .blog__tab-list .tab__item:before {
+    content: '';
+    left: 0;
+    width: 0;
+    bottom: 0;
+    opacity: 0;
+    height: 2px;
+    position: absolute;
+    border-bottom: 2px solid var(--tabset-color);
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out; 
+  }
+
+  .tab__list{
+    border-bottom: 1px solid var(--tabset-color);
+  }
+
+  .main-blog_wrapper .pagination__list li{
+    color: var(--pagination-text-color);
+  }
+
+  @media (min-width: 992px) {
+    .main-blog_wrapper.outer-padding:has(.container-fluid),
+    .main-blog_wrapper.outer-padding:has(.container) {
+      padding-left: var(--xl-padding-x);
+      padding-right: var(--xl-padding-x);
+    }
+
+    .main-blog_wrapper.inner-padding .container {
+      --cp-spacer-left: var(--xl-padding-x);
+      --cp-spacer-right: var(--xl-padding-x);
+    }
+  }
+
+  @media (max-width: 991px) {
+    .main-blog_wrapper.outer-padding:has(.container-fluid),
+    .main-blog_wrapper.outer-padding:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-blog_wrapper.inner-padding .container {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-blog_wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+  }
+{%- endstylesheet -%}
+{%- paginate blog.articles by postperpage -%}
+  <div
+    class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %} {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="
+      --text-color: {{ section.settings.text_color }};
+      --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+      --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+      --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+      --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+      --bg-color: {{ section.settings.background_color }};
+      --link-hover-color: {{ section.settings.link_hover_color }};
+      --card-background-color: {{ section.settings.card_background_color }};
+      --card-text-color: {{ section.settings.card_text_color }};
+      --card-link-color: {{ section.settings.card_link_color }};
+      --tabset-color: {{ section.settings.tabset_color }};
+      --tabset-hover-color: {{ section.settings.tabset_hover_color }};
+      --pagination-text-color: {{ section.settings.pagination_text_color }};
+      --custom-width: {{ section.settings.custom_page_width }};
+    "
+  >
+    <div class="{{ section_width }}">
+      <div class="pure-g">
+        <div class="pure-u-1">
+          {% if section.settings.title != blank %}
+            <div class="blog__head text-center">
+              <h1 class="title mb-md-30">{{ section.settings.title }}</h1>
+            </div>
+          {% endif %}
+          {%- if section.settings.enable_tag_categories and blog.all_tags.size > 0 -%}
+            <div class="tabs blog__tab mb-15 mb-md-30">
+              <ul class="tab__list blog__tab-list">
+                <li>
+                  <a href="/blogs/{{ blog.handle }}" class="tab__item {% if current_tags == blank %}active{% endif %}">
+                    {{- section.settings.all_blogs_title -}}
+                  </a>
+                </li>
+                {%- for tag in blog.all_tags -%}
+                  <li>
+                    <a
+                      href="/blogs/{{ blog.handle }}/tagged/{{ tag | handle }}"
+                      class="tab__item {% if current_tags contains tag %}active{% endif %}"
+                    >
+                      {{- tag -}}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if firstarticle.title != blank %}
+        <div class="pure-g">
+          <div class="pure-u-1">
+            <div class="article article--featured bg-info-scale-1 xs-full-width">
+              <figure class="article__img pure-u-1 pure-u-lg-1-2">
+                <a href="{{ firstarticle.url }}" class="ratio4by2">
+                  {% if firstarticle.image != blank %}
+                    {%- liquid
+                      assign max_width = firstarticle.image.width
+                      if firstarticle.image > 1244
+                        assign max_width = 1244
+                      endif
+                      assign image_height = max_width | divided_by: firstarticle.image.aspect_ratio | round
+
+                      capture image_alt
+                        unless firstarticle.image.alt == blank
+                          echo firstarticle.image.alt
+                        else
+                          echo firstarticle.title | escape
+                        endunless
+                      endcapture
+                    -%}
+                    {{-
+                      firstarticle.image
+                      | image_url: width: max_width
+                      | image_tag:
+                        loading: 'eager',
+                        width: max_width,
+                        sizes: '(max-width: 1023px) calc(100vw - 66px), (max-width: 1199px) calc((100vw / 2) - 30px), 32.396vw',
+                        height: image_height,
+                        alt: image_alt,
+                        class: 'pure-img lazyload svg__thumb'
+                    -}}
+                  {% else %}
+                    {%- render 'placeholder-svgs', type: 'blog', index: 1, class: 'object-fit object-fit--absolute' -%}
+                  {% endif %}
+                </a>
+              </figure>
+              <div class="article__content pure-u-1 pure-u-lg-1-3">
+                {% if section.settings.show_date != blank or section.settings.show_author != blank %}
+                  <div class="article__meta d-none d-lg-block">
+                    <div class="article__author">
+                      <span class="text-2">
+                        {%- if section.settings.show_date != blank %}
+                          {{- firstarticle.published_at | time_tag: format: 'date' -}}
+                        {% endif -%}
+                        {%- if section.settings.show_author != blank %} by {{ firstarticle.author -}}{% endif -%}
+                      </span>
+                    </div>
+                  </div>
+                {% endif %}
+                <a href="{{ firstarticle.url }}" class="article__title">{{ firstarticle.title | escape }}</a>
+                {% if section.settings.show_date != blank or section.settings.show_author != blank %}
+                  <div class="article__meta d-block d-lg-none">
+                    <div class="article__author"> 
+                      <span class="text-2">
+                        {%- if section.settings.show_date != blank -%}
+                          {{- firstarticle.published_at | date: '%b %d, %y' -}}
+                        {%- endif -%}
+                        {%- if section.settings.show_author != blank %} by {{ firstarticle.author -}}{% endif -%}
+                      </span>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if firstarticle.excerpt.size > 0 %}
+                  <div class="article__desc">
+                    {{ firstarticle.excerpt }}
+                  </div>
+                {% endif %}
+                <a href="{{ firstarticle.url }}" class="article__link text-2 fw-700 td-none">
+                  {{- section.settings.read_more_text -}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      <div class="pure-g gutter-xl-45">
+        {%- for article in blog.articles -%}
+          {%- liquid
+            assign blogLoopCounter = forloop.index
+
+            assign placeholder_index = forloop.index | modulo: 3
+            if placeholder_index == 0
+              assign placeholder_index = 3
+            endif
+          -%}
+          {% if forloop.first %}
+          {% else %}
+            {%- render 'article-card',
+              article: article,
+              show_date: section.settings.show_date,
+              show_author: section.settings.show_author,
+              posted_on_text: section.settings.posted_on_text,
+              read_more_text: section.settings.read_more_text,
+              placeholder_index: placeholder_index
+            -%}
+          {% endif %}
+          {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+              {% if block.settings.title != blank and block.settings.after_post_number != blank %}
+                {% if block.settings.after_post_number == blogLoopCounter %}
+                  {% if block.settings.size == 'small' %}
+                    <div class="pure-u-1 pure-u-lg-1-3">
+                      <div class="highlight higlight--small xs-full-width">
+                        <div
+                          class="bg-info highlight__inner"
+                          {% if block.settings.background_color != blank %}
+                            style="background-color: {{block.settings.background_color}};"
+                          {% endif %}
+                        >
+                          <div class="highlight__info px-25 px-md-40 py-60 text-center">
+                            {% if block.settings.sub_title != blank %}
+                              <h4 class="subtitle">{{ block.settings.sub_title }}</h4>
+                            {% endif %}
+                            {% if block.settings.title != blank %}
+                              <h2 class="title text-11">{{ block.settings.title }}</h2>
+                            {% endif %}
+                            {% if block.settings.button_link != blank %}
+                              <a href="{{block.settings.button_link}}" class="btn btn--icon-hand">
+                                {{- block.settings.button_text -}}
+                              </a>
+                            {% endif %}
+                            {% if block.settings.show_payment_icons != blank %}
+                              {% if shop.enabled_payment_types != blank %}
+                                <ul class="list list__payment justify-content-center">
+                                  {% for type in shop.enabled_payment_types %}
+                                    <li class="icon--payment">
+                                      {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              {% else %}
+                                {% if settings.payment_icon_1 != blank
+                                  or settings.payment_icon_2 != blank
+                                  or settings.payment_icon_3 != blank
+                                  or settings.payment_icon_4 != blank
+                                  or settings.payment_icon_5 != blank
+                                  or settings.payment_icon_6 != blank
+                                %}
+                                  <ul class="list list__payment justify-content-center">
+                                    {% if settings.payment_icon_1 != blank %}
+                                      <li>
+                                        {%- liquid
+                                          assign max_width = settings.payment_icon_1.width
+                                          if settings.payment_icon_1 > 48
+                                            assign max_width = 48
+                                          endif
+                                          assign image_height = max_width | divided_by: settings.payment_icon_1.aspect_ratio | round
+
+                                          capture image_alt
+                                            unless settings.payment_icon_1.alt == blank
+                                              echo settings.payment_icon_1.alt
+                                            else
+                                              echo firstarticle.title | escape
+                                            endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          settings.payment_icon_1
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            alt: image_alt,
+                                            class: 'pure-img lazyload'
+                                        -}}
+                                      </li>
+                                    {% endif %}
+                                    {% if settings.payment_icon_2 != blank %}
+                                      <li>
+                                        {%- liquid
+                                          assign max_width = settings.payment_icon_2.width
+                                          if settings.payment_icon_2 > 48
+                                            assign max_width = 48
+                                          endif
+                                          assign image_height = max_width | divided_by: settings.payment_icon_2.aspect_ratio | round
+
+                                          capture image_alt
+                                            unless settings.payment_icon_2.alt == blank
+                                              echo settings.payment_icon_2.alt
+                                            else
+                                              echo firstarticle.title | escape
+                                            endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          settings.payment_icon_2
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            alt: image_alt,
+                                            class: 'pure-img lazyload'
+                                        -}}
+                                      </li>
+                                    {% endif %}
+                                    {% if settings.payment_icon_3 != blank %}
+                                      <li>
+                                        {%- liquid
+                                          assign max_width = settings.payment_icon_3.width
+                                          if settings.payment_icon_3 > 48
+                                            assign max_width = 48
+                                          endif
+                                          assign image_height = max_width | divided_by: settings.payment_icon_3.aspect_ratio | round
+
+                                          capture image_alt
+                                            unless settings.payment_icon_3.alt == blank
+                                              echo settings.payment_icon_3.alt
+                                            else
+                                              echo firstarticle.title | escape
+                                            endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          settings.payment_icon_3
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            alt: image_alt,
+                                            class: 'pure-img lazyload'
+                                        -}}
+                                      </li>
+                                    {% endif %}
+                                    {% if settings.payment_icon_4 != blank %}
+                                      <li>
+                                        {%- liquid
+                                          assign max_width = settings.payment_icon_4.width
+                                          if settings.payment_icon_4 > 48
+                                            assign max_width = 48
+                                          endif
+                                          assign image_height = max_width | divided_by: settings.payment_icon_4.aspect_ratio | round
+
+                                          capture image_alt
+                                            unless settings.payment_icon_4.alt == blank
+                                              echo settings.payment_icon_4.alt
+                                            else
+                                              echo firstarticle.title | escape
+                                            endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          settings.payment_icon_4
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            alt: image_alt,
+                                            class: 'pure-img lazyload'
+                                        -}}
+                                      </li>
+                                    {% endif %}
+                                    {% if settings.payment_icon_5 != blank %}
+                                      <li>
+                                        {%- liquid
+                                          assign max_width = settings.payment_icon_5.width
+                                          if settings.payment_icon_5 > 48
+                                            assign max_width = 48
+                                          endif
+                                          assign image_height = max_width | divided_by: settings.payment_icon_5.aspect_ratio | round
+
+                                          capture image_alt
+                                            unless settings.payment_icon_5.alt == blank
+                                              echo settings.payment_icon_5.alt
+                                            else
+                                              echo firstarticle.title | escape
+                                            endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          settings.payment_icon_5
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            alt: image_alt,
+                                            class: 'pure-img lazyload'
+                                        -}}
+                                      </li>
+                                    {% endif %}
+                                    {% if settings.payment_icon_6 != blank %}
+                                      <li>
+                                        {%- liquid
+                                          assign max_width = settings.payment_icon_6.width
+                                          if settings.payment_icon_6 > 48
+                                            assign max_width = 48
+                                          endif
+                                          assign image_height = max_width | divided_by: settings.payment_icon_6.aspect_ratio | round
+
+                                          capture image_alt
+                                            unless settings.payment_icon_6.alt == blank
+                                              echo settings.payment_icon_6.alt
+                                            else
+                                              echo firstarticle.title | escape
+                                            endunless
+                                          endcapture
+                                        -%}
+                                        {{-
+                                          settings.payment_icon_6
+                                          | image_url: width: max_width
+                                          | image_tag:
+                                            loading: 'lazy',
+                                            width: max_width,
+                                            height: image_height,
+                                            alt: image_alt,
+                                            class: 'pure-img lazyload'
+                                        -}}
+                                      </li>
+                                    {% endif %}
+                                  </ul>
+                                {% endif %}
+                              {% endif %}
+                            {% endif %}
+                            {% if block.settings.show_reviews != blank %}
+                              {% if settings.reviews_ratings != blank or settings.reviews_text != blank %}
+                                <div class="rating justify-content-center mb-0">
+                                  {% if settings.reviews_ratings != blank %}
+                                    <span class="rating__star">
+                                      {%- liquid
+                                        assign max_width = settings.reviews_ratings.width
+                                        if settings.reviews_ratings > 30
+                                          assign max_width = 30
+                                        endif
+                                        assign image_height = max_width | divided_by: settings.reviews_ratings.aspect_ratio | round
+
+                                        capture image_alt
+                                          unless settings.reviews_ratings.alt == blank
+                                            echo settings.reviews_ratings.alt
+                                          else
+                                            echo 'image_alternative.static' | t
+                                          endunless
+                                        endcapture
+                                      -%}
+                                      {{-
+                                        settings.reviews_ratings
+                                        | image_url: width: max_width
+                                        | image_tag:
+                                          loading: 'lazy',
+                                          width: max_width,
+                                          sizes: '(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 30px), 35.573vw',
+                                          height: image_height,
+                                          alt: image_alt,
+                                          class: ''
+                                      -}}
+                                    </span>
+                                  {% endif %}
+                                  {% if settings.reviews_text != blank %}
+                                    <span class="rating__text">{{ settings.reviews_text }}</span>
+                                  {% endif %}
+                                </div>
+                              {% endif %}
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% elsif block.settings.size == 'large' %}
+                    <!-- Highlight -->
+                    <div class="pure-u-1 d-none d-lg-block">
+                      <div class="highlight mb-md-60">
+                        <div
+                          class="bg-info"
+                          {% if block.settings.background_color != blank %}
+                            style="background-color: {{block.settings.background_color}};"
+                          {% endif %}
+                        >
+                          <div class="pure-g justify-content-center">
+                            <div class="pure-u-1 pure-u-md-5-8 pure-u-xl-1-2">
+                              <div class="highlight__info px-25 px-md-0 py-90 text-center">
+                                {% if block.settings.sub_title != blank %}
+                                  <h4 class="subtitle">{{ block.settings.sub_title }}</h4>
+                                {% endif %}
+                                {% if block.settings.title != blank %}
+                                  <h2 class="title">{{ block.settings.title }}</h2>
+                                {% endif %}
+                                {% if block.settings.button_link != blank %}
+                                  <a href="{{block.settings.button_link}}" class="btn btn--icon-hand">
+                                    {{- block.settings.button_text -}}
+                                  </a>
+                                {% endif %}
+                                {% if block.settings.show_payment_icons != blank %}
+                                  {% if shop.enabled_payment_types != blank %}
+                                    <ul class="list list__payment justify-content-center">
+                                      {% for type in shop.enabled_payment_types %}
+                                        <li class="icon--payment">
+                                          {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                                        </li>
+                                      {% endfor %}
+                                    </ul>
+                                  {% else %}
+                                    {% if settings.payment_icon_1 != blank
+                                      or settings.payment_icon_2 != blank
+                                      or settings.payment_icon_3 != blank
+                                      or settings.payment_icon_4 != blank
+                                      or settings.payment_icon_5 != blank
+                                      or settings.payment_icon_6 != blank
+                                    %}
+                                      <ul class="list list__payment justify-content-center">
+                                        {% if settings.payment_icon_1 != blank %}
+                                          <li>
+                                            {%- liquid
+                                              assign max_width = settings.payment_icon_1.width
+                                              if settings.payment_icon_1 > 48
+                                                assign max_width = 48
+                                              endif
+                                              assign image_height = max_width | divided_by: settings.payment_icon_1.aspect_ratio | round
+
+                                              capture image_alt
+                                                unless settings.payment_icon_1.alt == blank
+                                                  echo settings.payment_icon_1.alt
+                                                else
+                                                  echo firstarticle.title | escape
+                                                endunless
+                                              endcapture
+                                            -%}
+                                            {{-
+                                              settings.payment_icon_1
+                                              | image_url: width: max_width
+                                              | image_tag:
+                                                loading: 'lazy',
+                                                width: max_width,
+                                                height: image_height,
+                                                alt: image_alt,
+                                                class: 'pure-img lazyload'
+                                            -}}
+                                          </li>
+                                        {% endif %}
+                                        {% if settings.payment_icon_2 != blank %}
+                                          <li>
+                                            {%- liquid
+                                              assign max_width = settings.payment_icon_2.width
+                                              if settings.payment_icon_2 > 48
+                                                assign max_width = 48
+                                              endif
+                                              assign image_height = max_width | divided_by: settings.payment_icon_2.aspect_ratio | round
+
+                                              capture image_alt
+                                                unless settings.payment_icon_2.alt == blank
+                                                  echo settings.payment_icon_2.alt
+                                                else
+                                                  echo firstarticle.title | escape
+                                                endunless
+                                              endcapture
+                                            -%}
+                                            {{-
+                                              settings.payment_icon_2
+                                              | image_url: width: max_width
+                                              | image_tag:
+                                                loading: 'lazy',
+                                                width: max_width,
+                                                height: image_height,
+                                                alt: image_alt,
+                                                class: 'pure-img lazyload'
+                                            -}}
+                                          </li>
+                                        {% endif %}
+                                        {% if settings.payment_icon_3 != blank %}
+                                          <li>
+                                            {%- liquid
+                                              assign max_width = settings.payment_icon_3.width
+                                              if settings.payment_icon_3 > 48
+                                                assign max_width = 48
+                                              endif
+                                              assign image_height = max_width | divided_by: settings.payment_icon_3.aspect_ratio | round
+
+                                              capture image_alt
+                                                unless settings.payment_icon_3.alt == blank
+                                                  echo settings.payment_icon_3.alt
+                                                else
+                                                  echo firstarticle.title | escape
+                                                endunless
+                                              endcapture
+                                            -%}
+                                            {{-
+                                              settings.payment_icon_3
+                                              | image_url: width: max_width
+                                              | image_tag:
+                                                loading: 'lazy',
+                                                width: max_width,
+                                                height: image_height,
+                                                alt: image_alt,
+                                                class: 'pure-img lazyload'
+                                            -}}
+                                          </li>
+                                        {% endif %}
+                                        {% if settings.payment_icon_4 != blank %}
+                                          <li>
+                                            {%- liquid
+                                              assign max_width = settings.payment_icon_4.width
+                                              if settings.payment_icon_4 > 48
+                                                assign max_width = 48
+                                              endif
+                                              assign image_height = max_width | divided_by: settings.payment_icon_4.aspect_ratio | round
+
+                                              capture image_alt
+                                                unless settings.payment_icon_4.alt == blank
+                                                  echo settings.payment_icon_4.alt
+                                                else
+                                                  echo firstarticle.title | escape
+                                                endunless
+                                              endcapture
+                                            -%}
+                                            {{-
+                                              settings.payment_icon_4
+                                              | image_url: width: max_width
+                                              | image_tag:
+                                                loading: 'lazy',
+                                                width: max_width,
+                                                height: image_height,
+                                                alt: image_alt,
+                                                class: 'pure-img lazyload'
+                                            -}}
+                                          </li>
+                                        {% endif %}
+                                        {% if settings.payment_icon_5 != blank %}
+                                          <li>
+                                            {%- liquid
+                                              assign max_width = settings.payment_icon_5.width
+                                              if settings.payment_icon_5 > 48
+                                                assign max_width = 48
+                                              endif
+                                              assign image_height = max_width | divided_by: settings.payment_icon_5.aspect_ratio | round
+
+                                              capture image_alt
+                                                unless settings.payment_icon_5.alt == blank
+                                                  echo settings.payment_icon_5.alt
+                                                else
+                                                  echo firstarticle.title | escape
+                                                endunless
+                                              endcapture
+                                            -%}
+                                            {{-
+                                              settings.payment_icon_5
+                                              | image_url: width: max_width
+                                              | image_tag:
+                                                loading: 'lazy',
+                                                width: max_width,
+                                                height: image_height,
+                                                alt: image_alt,
+                                                class: 'pure-img lazyload'
+                                            -}}
+                                          </li>
+                                        {% endif %}
+                                        {% if settings.payment_icon_6 != blank %}
+                                          <li>
+                                            {%- liquid
+                                              assign max_width = settings.payment_icon_6.width
+                                              if settings.payment_icon_6 > 48
+                                                assign max_width = 48
+                                              endif
+                                              assign image_height = max_width | divided_by: settings.payment_icon_6.aspect_ratio | round
+
+                                              capture image_alt
+                                                unless settings.payment_icon_6.alt == blank
+                                                  echo settings.payment_icon_6.alt
+                                                else
+                                                  echo firstarticle.title | escape
+                                                endunless
+                                              endcapture
+                                            -%}
+                                            {{-
+                                              settings.payment_icon_6
+                                              | image_url: width: max_width
+                                              | image_tag:
+                                                loading: 'lazy',
+                                                width: max_width,
+                                                height: image_height,
+                                                alt: image_alt,
+                                                class: 'pure-img lazyload'
+                                            -}}
+                                          </li>
+                                        {% endif %}
+                                      </ul>
+                                    {% endif %}
+                                  {% endif %}
+                                {% endif %}
+                                {% if block.settings.show_reviews != blank %}
+                                  {% if settings.reviews_ratings != blank or settings.reviews_text != blank %}
+                                    <div class="rating justify-content-center">
+                                      {% if settings.reviews_ratings != blank %}
+                                        <span class="rating__star">
+                                          {%- liquid
+                                            assign max_width = settings.reviews_ratings.width
+                                            if settings.reviews_ratings > 30
+                                              assign max_width = 30
+                                            endif
+                                            assign image_height = max_width | divided_by: settings.reviews_ratings.aspect_ratio | round
+
+                                            capture image_alt
+                                              unless settings.reviews_ratings.alt == blank
+                                                echo settings.reviews_ratings.alt
+                                              else
+                                                echo 'image_alternative.static' | t
+                                              endunless
+                                            endcapture
+                                          -%}
+                                          {{-
+                                            settings.reviews_ratings
+                                            | image_url: width: max_width
+                                            | image_tag:
+                                              loading: 'lazy',
+                                              width: max_width,
+                                              sizes: '(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 30px), 35.573vw',
+                                              height: image_height,
+                                              alt: image_alt,
+                                              class: ''
+                                          -}}
+                                        </span>
+                                      {% endif %}
+                                      {% if settings.reviews_text != blank %}
+                                        <span class="rating__text">{{ settings.reviews_text }}</span>
+                                      {% endif %}
+                                    </div>
+                                  {% endif %}
+                                {% endif %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Highlight -->
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "all_blogs_title",
+      "label": "All blogs title",
+      "default": "Show all"
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more text",
+      "default": "Continue reading"
+    },
+    {
+      "type": "text",
+      "id": "posted_on_text",
+      "label": "Posted on text",
+      "default": "Posted on"
+    },
+    {
+      "type": "number",
+      "id": "post_per_page",
+      "label": "Post per page",
+      "default": 15
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_tag_categories",
+      "label": "Enable tag categories",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "header",
+      "content": "Tabset settings"
+    },
+    {
+      "type": "color",
+      "id": "tabset_color",
+      "label": "Tabset color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tabset_hover_color",
+      "label": "Tabset hover color",
+      "default": "#3f3f3f"
+    },
+    {
+      "type": "header",
+      "content": "Featured blog card"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_link_color",
+      "label": "Card link color",
+      "default": "#3f3f3f"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#3f3f3f"
+    },
+    {
+      "type": "header",
+      "content": "Pagination settings"
+    },
+    {
+      "type": "color",
+      "id": "pagination_text_color",
+      "label": "Pagination text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical padding (Desktop)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical padding (Mobile)",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "number",
+          "id": "after_post_number",
+          "label": "After post number",
+          "info": "Show banner after which post number"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "label": "Size",
+          "default": "small"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "sub_title",
+          "label": "Sub title"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show payment icons"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_reviews",
+          "label": "Show Flash",
+          "default": true
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

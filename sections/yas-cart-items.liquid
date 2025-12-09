@@ -1,0 +1,55 @@
+<ul class="cart-items-list">
+  {% for item in cart.items %}
+    <li class="cart-item">
+      <div class="cart-item-image">
+        {%- liquid
+          assign max_width = item.image.width
+          if item.image > 100
+              assign max_width = 100
+          endif
+          assign image_height = max_width | divided_by: item.image.aspect_ratio | round
+
+          capture image_alt
+            if item.image.alt != blank
+              echo item.image.alt
+            else
+              echo item.product.title
+            endif
+          endcapture
+
+          capture sizes_attr
+            echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 3.93vw'
+          endcapture
+        -%}
+        {{-
+          item.image
+          | image_url: width: max_width
+          | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: ''
+        -}}
+      </div>
+      <div class="cart-item-info">
+        <p class="cart-item-title">{{ item.product.title }}</p>
+        {% if item.variant.title != 'Default Title' %}
+          <p class="cart-item-variant">{{ item.variant.title }}</p>
+        {% endif %}
+        <p class="cart-item-qty">Qty: 
+        <select class="cart-qty-selector" data-line="{{ forloop.index }}">
+          <option value="0">Delete</option>
+          {% for i in (1..10) %}
+            <option value="{{ i }}" {% if item.quantity == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </p>
+      </div>
+      <div class="cart-item-price">
+        {% if item.variant.compare_at_price > item.variant.price %}
+          <span class="old-price">{{ item.variant.compare_at_price | money }}</span>
+          <span class="new-price">{{ item.line_price | money }}</span>
+        {% else %}
+          <span class="new-price">{{ item.line_price | money }}</span>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+

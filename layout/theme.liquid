@@ -1,0 +1,360 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    {% if request.page_type == 'cart' %}
+      <script>
+        if (document.referrer == location.origin + '/') {
+          location.href = '/?cart';
+        }
+      </script>
+    {% endif %}
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {%- assign key = settings.license_key -%}
+    {%- assign api_url = 'https://key.surgetheme.com/key/license_api.php?code=' | append: key -%}
+    {%- assign asset_url = 'https://key.surgetheme.com/key/asset.php?code=' | append: key | append: '&file=' -%}
+
+    <script>
+      // Check license once per browser session
+      (function () {
+        const LICENSE_KEY = '{{ key }}';
+        const API_URL = '{{ api_url }}';
+        const ASSET_BASE = '{{ asset_url }}';
+        const sessionKey = 'theme_license_valid';
+
+        // Helper to show overlay
+        function showOverlay(msg) {
+          const css = `
+          #lic-overlay {
+            position: fixed; inset: 0;
+            background: #fff; color: #333;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; font-size: 2em; z-index: 99999;
+            padding: 2rem;
+          }
+        `;
+          const style = document.createElement('style');
+          style.innerHTML = css;
+          document.head.appendChild(style);
+
+          const div = document.createElement('div');
+          div.id = 'lic-overlay';
+          div.textContent = msg;
+          document.body.appendChild(div);
+        }
+
+        // Initialize page when license is OK
+        function onLicenseOk() {
+          window.LICENSE_OK = true;
+          window.ASSET_BASE = ASSET_BASE;
+          const js = document.createElement('script');
+          js.src = "{{ 'theme.js' | asset_url }}";
+          document.body.appendChild(js);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          // 1) No key {% render 'swiper-arrow-right-n' %} immediate error
+          if (!LICENSE_KEY) {
+            showOverlay('LICENSE KEY NOT PROVIDED.\n' + 'Please enter it in Theme settings.');
+            return;
+          }
+
+          // 2) Already checked in this session?
+          if (sessionStorage.getItem(sessionKey) === 'true') {
+            onLicenseOk();
+            return;
+          }
+
+          // 3) Fetch validation via CORS
+          fetch(API_URL, {
+            method: 'GET',
+            mode: 'cors',
+          })
+            .then(function (res) {
+              return res.json();
+            })
+            .then(function (json) {
+              if (json.valid) {
+                sessionStorage.setItem(sessionKey, 'true'); // cache positive result
+                onLicenseOk();
+              } else {
+                showOverlay('LICENSE INVALID OR INACTIVE.\n' + 'Reason: ' + (json.reason || 'unknown'));
+              }
+            })
+            .catch(function () {
+              showOverlay('NETWORK ERROR.\n' + 'Unable to validate license.');
+            });
+        });
+      })();
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{settings.colors_text}}">
+    <meta name="description" content="Rocket">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+
+    {% style %}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+      :root {
+        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: {{ settings.type_body_font.weight }};
+        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-heading-style: {{ settings.type_header_font.style }};
+        --font-heading-weight: {{ settings.type_header_font.weight }};
+        --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
+        --color-base-background-1: {{ settings.colors_background_1.red }}, {{ settings.colors_background_1.green }}, {{ settings.colors_background_1.blue }};
+        --color-bg-btn: {{ settings.color_bg_btn }};
+        --color-text-btn: {{ settings.color_text_btn }};
+        --payment-terms-background-color: {{ settings.colors_background_1 }};
+        --gradient-base-background-1: {% if settings.gradient_background_1 != blank %}{{ settings.gradient_background_1 }}{% else %}{{ settings.colors_background_1 }}{% endif %};
+        --gradient-base-background-2: {% if settings.gradient_background_2 != blank %}{{ settings.gradient_background_2 }}{% else %}{{ settings.colors_background_2 }}{% endif %};
+        --page-width: {{ settings.page_width | divided_by: 10 }}rem;
+        --cp-width: {{ settings.page_width }};
+        --cp-width-px: {{ settings.page_width }}px;
+        --page-width-margin: {% if settings.page_width == '1600' %}2{% else %}0{% endif %}rem;
+        --bullet-color: {{ settings.color_paginate }};
+        --swiper-pagination-bullet-inactive-color: {{ settings.color_paginate }};
+        --bullet-active-color: {{ settings.color_paginate_active }};
+        --swiper-pagination-color: {{ settings.color_paginate_active }};
+        --swiper-navigation-color: {{ settings.color_arrow }};
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      html {
+        box-sizing: border-box;
+        font-size: 62.5%;
+        height: 100%;
+      }
+
+      .svg-placeholder{
+        pointer-events: none;
+      }
+      body {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-columns: 100%;
+        min-height: 100%;
+        margin: 0;
+        font-size: 1.5rem;
+        /* letter-spacing: 0.06rem; */
+        line-height: 1.8;
+        font-family: var(--font-body-family);
+        font-style: var(--font-body-style);
+        font-weight: var(--font-body-weight);
+      }
+      main{
+        background: {{ settings.colors_background_1 }};
+      }
+      .swiper .swiper-pagination-bullet{
+        background-color: var(--bullet-color);
+        border: none;
+      }
+      .swiper .swiper-pagination-bullet-active{
+        background-color: var(--bullet-active-color);
+      }
+
+      /* {% if settings.width_conteiner_all == 'on' %}
+        .content-wrapper{
+            max-width: {% if settings.width_all_section == 'full' %}100%{% else %}{{ settings.page_width }}px{% endif %} !important;
+        }
+      {% endif %} */
+
+      @media screen and (min-width: 750px) {
+        body {
+          font-size: 1.6rem;
+        }
+      }
+    {% endstyle %}
+
+    {%- unless settings.type_body_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      <link
+        rel="stylesheet"
+        href="{{ 'component-predictive-search.css' | asset_url }}"
+        media="print"
+        onload="this.media='all'"
+      >
+    {%- endif -%}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link href="{{ 'custom-font.css' | asset_url }}" rel="stylesheet">
+    <link href="{{ 'custom-plugins.css' | asset_url }}" rel="stylesheet">
+    <link href="{{ 'custom.css' | asset_url }}" rel="stylesheet">
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'product.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      function debounce(fn, wait) {
+        let t;
+        return (...args) => {
+          clearTimeout(t);
+          t = setTimeout(() => fn.apply(this, args), wait);
+        };
+      }
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.theme = window.theme || {};
+      theme.settings = {
+        moneyFormat: {{ shop.money_format | json }},
+        moneyFormatWithCurrency: {{ shop.money_with_currency_format | json }}
+      };
+      window.routes = {
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}'
+      };
+
+      window.cartStrings = {
+        error: `{{ 'sections.cart.cart_error' | t }}`,
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t }}`,
+        shippingAmount: `{{ settings.free_shipping_message }}`
+      }
+
+      window.variantStrings = {
+        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+        soldOut: `{{ 'products.product.sold_out' | t }}`,
+        unavailable: `{{ 'products.product.unavailable' | t }}`,
+      }
+
+      window.accessibilityStrings = {
+        shareSuccess: `{{ 'general.share.success_message' | t }}`,
+      }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/cart.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/rivets-cart.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+
+    <script>
+      window.THEME_LICENSE_CONFIG = {
+        licenseKey: {{ settings.license_key | json }},
+        storeUrl: {{ settings.store_url | json }},
+        serverUrl: {{ settings.license_server_url | default: 'https://base.surgetheme.com' | json }}
+      };
+
+      window.themeLicenseKey = {{ settings.license_key | json }};
+      window.themeStoreUrl = {{ settings.store_url | json }};
+    </script>
+    <script defer src="{{ 'license-validator.js' | asset_url }}"></script>
+  </head>
+
+  <body class="gradient">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent" style="display:none;">
+      {{ 'accessibility.skip_to_text' | t }}
+    </a>
+    <svg
+      style="display:none"
+      width="0"
+      height="0"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+      <symbol id="ic-star" viewBox="0 0 20 20">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+      </symbol>
+    </svg>
+    <button class="back-to-top">
+      <span class="material-icons">keyboard_arrow_up</span>
+    </button>
+
+    {% sections 'header-group' %}
+    {% sections 'overlay-group' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+    </ul>
+    {%- if settings.predictive_search_enabled -%}
+      <script data-src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    <script src="{{ 'custom-plugin.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cw-speed.min.js' | asset_url }}" defer></script>
+    <style type="text/css">
+      @media only screen and (min-width: 500px) {
+        .dynamic-checkout__content undefined .shopify-cleanslate * {
+          text-align: center !important;
+          width: 100% !important;
+        }
+      }
+    </style>
+
+    <script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+    <!-- Ensure cart-slide.js loads -->
+    <script>
+      (function () {
+        // Only load if not already loaded
+        if (!document.querySelector('script[src*="cart-slide.js"]')) {
+          const script = document.createElement('script');
+          script.src = "{{ 'cart-slide.js' | asset_url }}";
+          script.defer = true;
+          script.onerror = function () {};
+          script.onload = function () {};
+          document.head.appendChild(script);
+        }
+      })();
+    </script>
+    {% render 'license-block-checker' %}
+  </body>
+</html>

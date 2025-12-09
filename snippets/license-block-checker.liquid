@@ -1,0 +1,470 @@
+{% comment %}License Block Checker - Usage: {% render 'license-block-checker' %}{% endcomment %}
+
+{% assign license_key = settings.license_key %}
+{% assign store_url = settings.store_url %}
+
+{% comment %} Check if license key is valid format {% endcomment %}
+{% assign is_valid_format = false %}
+{% if license_key != blank %}
+  {% assign license_length = license_key | size %}
+  {% if license_length >= 10 %}
+    {% assign valid_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-abcdefghijklmnopqrstuvwxyz' %}
+    {% assign has_dash = false %}
+    {% assign has_valid_chars_only = true %}
+
+    {% for i in (0..license_length) %}
+      {% assign char = license_key | slice: i %}
+      {% if char == '-' %}
+        {% assign has_dash = true %}
+      {% endif %}
+      {% unless valid_chars contains char or char == blank %}
+        {% assign has_valid_chars_only = false %}
+        {% break %}
+      {% endunless %}
+    {% endfor %}
+
+    {% if has_dash == true and has_valid_chars_only == true and license_length <= 50 %}
+      {% assign is_valid_format = true %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% comment %} Check if store URL is provided (skip domain matching - JS will handle it) {% endcomment %}
+{% assign is_valid_store_url = false %}
+{% if store_url != blank %}
+  {% comment %} Just check if store URL is not blank - JS validation will verify domain {% endcomment %}
+  {% assign clean_store_url = store_url | downcase | remove: 'https://' | remove: 'http://' | remove: 'www.' | strip %}
+  {% if clean_store_url != blank %}
+    {% assign is_valid_store_url = true %}
+  {% endif %}
+{% endif %}
+
+{% comment %} Show license notice in theme customizer if invalid - NOT on live site {% endcomment %}
+{% assign show_license_notice = false %}
+{% if request.design_mode %}
+  {% comment %} ALWAYS show block in theme editor until validated {% endcomment %}
+  {% assign show_license_notice = true %}
+{% else %}
+  {% comment %} On live site, never show license block to avoid SEO issues {% endcomment %}
+  {% assign show_license_notice = false %}
+{% endif %}
+
+{% if show_license_notice %}
+  <div
+    id="license-required-overlay"
+    class="license-overlay"
+    style="display: block !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 2147483647 !important; background: linear-gradient(135deg, #1C2638 0%, #374151 100%) !important;"
+  >
+    <div
+      class="license-container"
+      style="position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 600px !important;"
+    >
+      <div
+        class="license-notice-box"
+        style="background: white !important; border-radius: 16px !important; padding: 40px !important; text-align: center !important; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;"
+      >
+        <div
+          class="license-icon"
+          style="width: 80px !important; height: 80px !important; background: linear-gradient(135deg, #FF1F5E 0%, #FF608D 100%) !important; border-radius: 50% !important; margin: 0 auto 20px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 48px !important; color: white !important; font-weight: bold !important;"
+        >
+          !
+        </div>
+        <h2
+          class="license-title"
+          style="font-size: 28px !important; font-weight: 700 !important; color: #1C2638 !important; margin: 0 0 16px 0 !important;"
+        >
+          License Activation Required
+        </h2>
+        <p
+          class="license-message"
+          style="font-size: 16px !important; color: #6d7175 !important; margin: 0 0 30px 0 !important;"
+        >
+          {% if license_key == blank %}
+            Please enter your license key in theme settings.
+          {% elsif is_valid_format == false %}
+            Invalid license key format. Please check your license key.
+          {% elsif store_url == blank %}
+            Please enter your store URL in theme settings.
+          {% elsif is_valid_store_url == false %}
+            Invalid store URL format. Please enter a valid URL.
+          {% else %}
+            License validation is in progress...
+          {% endif %}
+        </p>
+        <div
+          class="license-steps"
+          style="text-align: left !important; margin: 30px 0 !important; background: #f8fafc !important; border-radius: 12px !important; padding: 24px !important;"
+        >
+          <div
+            class="license-step"
+            style="display: flex !important; align-items: center !important; margin-bottom: 16px !important; gap: 16px !important;"
+          >
+            <span
+              class="step-number"
+              style="display: inline-flex !important; width: 32px !important; height: 32px !important; background: linear-gradient(135deg, #04A9EC 0%, #0284c7 100%) !important; color: white !important; border-radius: 50% !important; font-weight: 700 !important; align-items: center !important; justify-content: center !important;"
+              >1</span
+            >
+            <span
+              class="step-text"
+              style="font-size: 15px !important; color: #1C2638 !important; font-weight: 500 !important;"
+              >Go to Theme Settings</span
+            >
+          </div>
+          <div
+            class="license-step"
+            style="display: flex !important; align-items: center !important; margin-bottom: 16px !important; gap: 16px !important;"
+          >
+            <span
+              class="step-number"
+              style="display: inline-flex !important; width: 32px !important; height: 32px !important; background: linear-gradient(135deg, #04A9EC 0%, #0284c7 100%) !important; color: white !important; border-radius: 50% !important; font-weight: 700 !important; align-items: center !important; justify-content: center !important;"
+              >2</span
+            >
+            <span
+              class="step-text"
+              style="font-size: 15px !important; color: #1C2638 !important; font-weight: 500 !important;"
+              >Enter your License Key</span
+            >
+          </div>
+          <div
+            class="license-step"
+            style="display: flex !important; align-items: center !important; margin-bottom: 16px !important; gap: 16px !important;"
+          >
+            <span
+              class="step-number"
+              style="display: inline-flex !important; width: 32px !important; height: 32px !important; background: linear-gradient(135deg, #04A9EC 0%, #0284c7 100%) !important; color: white !important; border-radius: 50% !important; font-weight: 700 !important; align-items: center !important; justify-content: center !important;"
+              >3</span
+            >
+            <span
+              class="step-text"
+              style="font-size: 15px !important; color: #1C2638 !important; font-weight: 500 !important;"
+              >Enter your Store URL</span
+            >
+          </div>
+          <div
+            class="license-step"
+            style="display: flex !important; align-items: center !important; margin-bottom: 0 !important; gap: 16px !important;"
+          >
+            <span
+              class="step-number"
+              style="display: inline-flex !important; width: 32px !important; height: 32px !important; background: linear-gradient(135deg, #04A9EC 0%, #0284c7 100%) !important; color: white !important; border-radius: 50% !important; font-weight: 700 !important; align-items: center !important; justify-content: center !important;"
+              >4</span
+            >
+            <span
+              class="step-text"
+              style="font-size: 15px !important; color: #1C2638 !important; font-weight: 500 !important;"
+              >Save and the theme will activate</span
+            >
+          </div>
+        </div>
+        <p
+          class="license-info"
+          style="font-size: 13px !important; color: #6d7175 !important; margin: 24px 0 0 0 !important; padding-top: 24px !important; border-top: 1px solid #E9E9E9 !important;"
+        >
+          <strong style="color: #04A9EC !important;">Note:</strong> This message only appears in the theme editor. Your
+          live site is not affected.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Full screen license block - theme editor only */
+    /* Brand Colors: Folly #FF1F5E, Picton Blue #04A9EC, Oxford Blue #1C2638 */
+    body.theme-editor-active,
+    html.theme-editor-active {
+      overflow: hidden !important;
+    }
+
+    .license-overlay {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: linear-gradient(135deg, #1c2638 0%, #374151 100%) !important;
+      z-index: 2147483647 !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      pointer-events: auto !important;
+    }
+
+    .license-overlay::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #1c2638 0%, #374151 100%);
+      z-index: -1;
+    }
+
+    .license-container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .license-notice-box {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .license-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .license-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1c2638;
+      margin: 0 0 16px 0;
+      line-height: 1.3;
+    }
+
+    .license-message {
+      font-size: 16px;
+      color: #6d7175;
+      margin: 0 0 30px 0;
+      line-height: 1.6;
+    }
+
+    .license-steps {
+      text-align: left;
+      margin: 30px 0;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .license-step {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+
+    .license-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #04a9ec 0%, #0284c7 100%);
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 15px;
+      color: #1c2638;
+      font-weight: 500;
+    }
+
+    .license-info {
+      font-size: 13px;
+      color: #6d7175;
+      margin: 24px 0 0 0;
+      padding-top: 24px;
+      border-top: 1px solid #e9e9e9;
+      line-height: 1.5;
+    }
+
+    .license-info strong {
+      color: #04a9ec;
+    }
+
+    @media (max-width: 768px) {
+      .license-notice-box {
+        padding: 30px 20px;
+      }
+
+      .license-title {
+        font-size: 24px;
+      }
+
+      .license-message {
+        font-size: 15px;
+      }
+
+      .license-icon {
+        font-size: 48px;
+      }
+
+      .step-text {
+        font-size: 14px;
+      }
+    }
+  </style>
+
+  <script>
+    // License validation for theme customizer ONLY - Never runs on live site
+    document.addEventListener('DOMContentLoaded', function() {
+      // Double check - only run in theme customizer/editor
+      if (!window.location.href.includes('admin/themes') &&
+          !window.Shopify?.designMode &&
+          !document.body.classList.contains('admin')) {
+        console.log('Not in theme editor - license checker disabled for SEO safety');
+        return;
+      }
+
+      const licenseOverlay = document.getElementById('license-required-overlay');
+      if (!licenseOverlay) {
+        console.log('No license overlay found - likely on live site');
+        return;
+      }
+
+      // Add noindex meta tag to prevent search engine indexing during customization
+      if (!document.querySelector('meta[name="robots"][content*="noindex"]')) {
+        const noIndexMeta = document.createElement('meta');
+        noIndexMeta.name = 'robots';
+        noIndexMeta.content = 'noindex, nofollow';
+        document.head.appendChild(noIndexMeta);
+        console.log('Added noindex meta for SEO protection');
+      }
+
+      console.log('License block checker loaded - theme customizer mode');
+
+      const licenseKey = {{ settings.license_key | json }};
+      const storeUrl = {{ settings.store_url | json }};
+      const currentShop = {{ shop.domain | json }};
+
+      console.log('License check:', {
+        key: licenseKey ? '[HIDDEN]' : null,
+        keyLength: licenseKey ? licenseKey.length : 0,
+        storeUrl: storeUrl || null,
+        currentShop: currentShop,
+        isDesignMode: true
+      });
+
+      // Check license key
+      if (!licenseKey || licenseKey.trim() === '') {
+        console.log('No license key - keeping overlay visible');
+        return;
+      }
+
+      // Check store URL
+      if (!storeUrl || storeUrl.trim() === '') {
+        console.log('No store URL - keeping overlay visible');
+        return;
+      }
+
+      // Validate store URL matches current shop
+      const cleanStoreUrl = storeUrl.toLowerCase()
+        .replace(/^https?:\/\/(www\.)?/, '')
+        .split('/')[0];
+      const cleanCurrentShop = currentShop.toLowerCase();
+
+      if (cleanStoreUrl !== cleanCurrentShop) {
+        console.log('Store URL mismatch - keeping overlay visible', {
+          entered: cleanStoreUrl,
+          current: cleanCurrentShop
+        });
+        return;
+      }
+
+      console.log('Store URL matches - proceeding with license validation');
+
+      const trimmedKey = licenseKey.trim();
+
+      // Format validation
+      if (trimmedKey.length < 10 ||
+          !/^[A-Z0-9\-]+$/i.test(trimmedKey) ||
+          !trimmedKey.includes('-') ||
+          /^[\d]+$/.test(trimmedKey) ||
+          /^[a-zA-Z]+$/.test(trimmedKey)) {
+
+        console.log('Invalid license format - keeping overlay visible');
+        updateOverlayMessage('Invalid license key format (must contain letters, numbers and dashes)');
+        return;
+      }
+
+      // Server validation
+      console.log('Validating license with server...');
+
+      fetch('{{ settings.license_server_url | default: "https://base.surgetheme.com" }}/api/license/validate', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420'
+        },
+        body: JSON.stringify({
+          license_key: trimmedKey,
+          domain: currentShop,
+          store_url: cleanStoreUrl
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Server response:', data);
+
+        if (data.success && data.valid) {
+          console.log('Valid license - hiding overlay');
+          if (licenseOverlay) {
+            licenseOverlay.style.display = 'none';
+            licenseOverlay.remove(); // Remove completely
+          }
+          localStorage.setItem('license_validated', 'true');
+        } else {
+          console.log('Invalid license - keeping overlay visible');
+          updateOverlayMessage(data.error || 'License validation failed');
+        }
+      })
+      .catch(error => {
+        console.error('Validation error:', error);
+        console.log('Server error - keeping overlay visible');
+      });
+
+      function updateOverlayMessage(errorMsg) {
+        const messageElement = licenseOverlay.querySelector('.license-message');
+        if (messageElement && errorMsg) {
+          messageElement.textContent = errorMsg;
+          messageElement.style.color = '#e74c3c';
+          messageElement.style.fontWeight = '600';
+        }
+      }
+    });
+  </script>
+{% endif %}

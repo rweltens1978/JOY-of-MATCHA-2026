@@ -1,0 +1,195 @@
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "color-settings": {
+      "type": "color-settings",
+      "blocks": {
+        "color_LydzNi": {
+          "type": "color",
+          "settings": {
+            "color": "#ffffff",
+            "title": "White"
+          }
+        },
+        "color_DnVGaF": {
+          "type": "color",
+          "settings": {
+            "color": "#000000",
+            "title": "Black"
+          }
+        },
+        "color_kdRQcw": {
+          "type": "color",
+          "settings": {
+            "color": "#f73131",
+            "title": "Red"
+          }
+        },
+        "color_adYeQk": {
+          "type": "color",
+          "settings": {
+            "color": "#003cfc",
+            "title": "Blue"
+          }
+        },
+        "color_UKFaeb": {
+          "type": "color",
+          "settings": {
+            "color": "#4caf50",
+            "title": "Green"
+          }
+        }
+      },
+      "block_order": [
+        "color_LydzNi",
+        "color_DnVGaF",
+        "color_kdRQcw",
+        "color_adYeQk",
+        "color_UKFaeb"
+      ],
+      "settings": {}
+    },
+    "yas_announcement": {
+      "type": "yas-announcement",
+      "name": "Announcement bar",
+      "settings": {
+        "background_color": "#000000",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "text_color": "#ffffff",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 10,
+        "padding_x_mob": 0,
+        "padding_y_mob": 7,
+        "display_on": "all",
+        "static": "<p>Some kind of announcement goes here</p>",
+        "url": "/"
+      }
+    },
+    "yas-header": {
+      "type": "yas-header",
+      "blocks": {
+        "slider": {
+          "type": "slider",
+          "settings": {
+            "title_slider": "Bestsellers",
+            "product_list": [],
+            "show_reviews": true,
+            "star_count": 5,
+            "review_text": "10 reviews"
+          }
+        },
+        "collection": {
+          "type": "collection",
+          "settings": {
+            "collection_list": [],
+            "collection_text": "",
+            "collection_styling": "product"
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "menu": "main-menu"
+          }
+        },
+        "review": {
+          "type": "review",
+          "settings": {
+            "testimonial": "Have been buying these for years !! Really like the bigger size of the Gummies now ! Appreciate it Joe V. 🙌",
+            "photo": "",
+            "name": "Michael",
+            "verified": true,
+            "rating": 5,
+            "container_styling": "card",
+            "box_shadow_offset": 0,
+            "box_shadow_blur": 0,
+            "box_shadow_spread": 0,
+            "box_shadow_color": "#000000",
+            "card_border": 1,
+            "card_border_color": "#000000",
+            "container_radius": 18
+          }
+        }
+      },
+      "block_order": [
+        "slider",
+        "collection",
+        "menu",
+        "review"
+      ],
+      "settings": {
+        "enable_search": true,
+        "search_only_products": true
+      }
+    },
+    "trust_policy_bar": {
+      "type": "trust-policy-bar",
+      "blocks": {
+        "text_block_1": {
+          "type": "text_block",
+          "settings": {
+            "icon_google": "",
+            "text": "<p>FREE UK SHIPPING</p>"
+          }
+        },
+        "text_block_2": {
+          "type": "text_block",
+          "settings": {
+            "icon_google": "",
+            "text": "<p>100,000 HAPPY CUSTOMERS</p>"
+          }
+        },
+        "text_block_3": {
+          "type": "text_block",
+          "settings": {
+            "icon_google": "",
+            "text": "<p>FREE UK SHIPPING</p>"
+          }
+        },
+        "text_block_4": {
+          "type": "text_block",
+          "settings": {
+            "icon_google": "",
+            "text": "<p>100,000 HAPPY CUSTOMERS</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_1",
+        "text_block_2",
+        "text_block_3",
+        "text_block_4"
+      ],
+      "name": "Trust policy bar",
+      "settings": {
+        "background_color": "#ffffff",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "text_color": "#000000",
+        "section_width": "container-fluid",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "padding_x_desk": 0,
+        "padding_y_desk": 22,
+        "padding_x_mob": 0,
+        "padding_y_mob": 16,
+        "display_on": "all",
+        "scroll_speed": 45,
+        "gap_icon": 34,
+        "separator": "|",
+        "scroll_setting": "right"
+      }
+    }
+  },
+  "order": [
+    "color-settings",
+    "yas_announcement",
+    "yas-header",
+    "trust_policy_bar"
+  ]
+}

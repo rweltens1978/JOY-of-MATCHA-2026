@@ -1,0 +1,868 @@
+{%- liquid
+  assign section_prefix_class = 'main-fb-reviews'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-fb-reviews :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-fb-reviews_content-wrapper a p {
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .main-fb-reviews a{
+    transition: all 0.3s ease;
+  }
+
+  .main-fb-reviews a:hover{
+    color: var(--color-bg-btn);
+  }
+
+  .main-fb-reviews .main-fb-reviews_wrapper{
+    display: var(--display-value);
+    text-align: var(--heading-align);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .main-fb-reviews_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-fb-reviews_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-fb-reviews_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-fb-reviews_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-fb-reviews_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-fb-reviews_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-fb-reviews_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-fb-reviews_wrapper.inner-padding .container,
+  .main-fb-reviews_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-fb-reviews_content-wrapper { display: block; position: relative; text-align: var(--heading-align); }
+
+  .main-fb-reviews .title h1,
+  .main-fb-reviews .title h2,
+  .main-fb-reviews .title h3,
+  .main-fb-reviews .title p {
+    font-size: var(--xl-heading-size);
+    text-transform: var(--heading-transform);
+    color: var(--title-color);
+    margin: 0;
+    text-align: var(--heading-align);
+    line-height: 110%;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .main-fb-reviews .subtitle h2,
+  .main-fb-reviews .subtitle h3,
+  .main-fb-reviews .subtitle h1,
+  .main-fb-reviews .subtitle p {
+    color: var(--subtitle-color);
+    font-size: 24px;
+    font-weight: 500;
+    text-align: var(--heading-align);
+    line-height: 150%;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .main-fb-reviews .uppertitle {
+    display: flex;
+    justify-content: var(--heading-justify);
+    align-items: center;
+    margin: 0;
+    margin-bottom: 14.5px;
+  }
+
+  .main-fb-reviews .uppertitle svg path { fill: var(--fill); }
+  .main-fb-reviews .uppertitle .star_span { display: flex; align-items: center; margin-right: 8px; }
+  .main-fb-reviews .uppertitle h2,
+  .main-fb-reviews .uppertitle h3,
+  .main-fb-reviews .uppertitle p {
+    color: var(--upper-title);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+    margin: 0;
+  }
+
+  .main-fb-reviews .slider-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+  .main-fb-reviews .carousel-wrapper { width: 100%; margin: 0 auto; padding: 100px 0 25px; overflow: hidden; position: relative; }
+  .main-fb-reviews .carousel { display: flex; align-items: center; justify-content: flex-start; gap: 24px; position: relative; width: 100%; transition: transform 0.5s ease; padding: 0 40px; }
+
+  .main-fb-reviews .carousel .carousel-item {
+    flex: 0 0 auto;
+    width: 404px;
+    /* height: 383px; */
+    background-color: var(--card-bg);
+    border: var(--border-solid);
+    border-radius: var(--bdr-radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    box-shadow: var(--box-shadow);
+    color: var(--body-color);
+  }
+  .main-fb-reviews .carousel .carousel-item .top-slide-content img { width: 60px; height: 60px; }
+  .main-fb-reviews .carousel .carousel-item .top-slide-content .dots { width: 20px; height: 20px; }
+  .main-fb-reviews .carousel .carousel-item .imgslide { width: 100%; height: auto; border-radius: 10px; object-fit: cover; margin: 0; }
+  .main-fb-reviews .carousel .carousel-item .rating { color: #f4a261; font-size: 12px; margin: 0; width: 160px; margin-left: 13px; text-align: left; height: 13px; }
+  .main-fb-reviews .carousel .carousel-item .name { font-weight: bold; font-size: 16px; line-height: 20px; margin: 0; width: 160px; margin-left: 13px; margin-bottom: 5px; text-align: left; }
+  .main-fb-reviews .carousel .carousel-item .status { color: var(--status-color); font-size: 12px; line-height: 20px; margin: 0; width: 160px; margin-left: 13px; margin-bottom: 5px; text-align: left; }
+  .main-fb-reviews .carousel .carousel-item p { font-size: 14px; line-height: 1.3; color: var(--body-color); margin: 0; flex-grow: 1; display: flex; text-align: left; 
+  /* overflow: hidden;  */
+  align-items: center; }
+  .main-fb-reviews .fbicons { width: 16px; height: 16px; border-radius: 0; }
+  .main-fb-reviews .carousel-nav .arrow { font-size: 20px; cursor: pointer; padding: 5px; border: 1px solid var(--swiper-navigation-color); color: var(--swiper-navigation-color); border-radius: 50%; transition: background-color 0.3s; width: 54px; line-height: normal; height: 54px; align-items: center; display: inline-flex; justify-content: center; }
+  .main-fb-reviews .carousel-nav .dot.active { background: var(--bullet-active-color); }
+  .main-fb-reviews .review-stats { display: flex; width: 100%; flex-wrap: nowrap; justify-content: space-between; }
+  .main-fb-reviews .review-divider { border: 1px solid black; width: 100%; opacity: 0.25; }
+  .main-fb-reviews .review-actions { display: flex; width: 100%; flex-wrap: nowrap; justify-content: center; gap: 40px; }
+  .main-fb-reviews .action-item { display: flex; align-items: center; }
+  .fb_carousel-pagination{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .review-fb_smile svg{
+    line-height: 0;
+  }
+
+  .review-fb_smile{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+ 
+  @media (max-width: 768px) {
+    .main-fb-reviews .main-fb-reviews_wrapper{
+      display: var(--xs-display-value);
+    }
+
+    .main-fb-reviews .subtitle h2,
+    .main-fb-reviews .subtitle h3,
+    .main-fb-reviews .subtitle h1,
+    .main-fb-reviews .subtitle p {
+      color: var(--subtitle-color);
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .main-fb-reviews .carousel-nav{
+      gap: 36px !important;
+      flex-wrap: unset !important;
+    }
+
+    .fb_carousel-pagination{
+      gap: 14px;
+    }
+
+    .outer-padding .main-fb-reviews_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-fb-reviews_wrapper.inner-padding .container,
+    .main-fb-reviews_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-fb-reviews_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+    .main-fb-reviews .heading { margin: 0; padding: 0; }
+    .main-fb-reviews .title h1,
+    .main-fb-reviews .title h2,
+    .main-fb-reviews .title h3,
+    .main-fb-reviews .title p {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+      margin-bottom: 16px;
+    }
+    .main-fb-reviews .subtitle h2,
+    .main-fb-reviews .subtitle h1,
+    .main-fb-reviews .subtitle h3,
+    .main-fb-reviews .subtitle p { font-size: 16px; line-height: 24px; }
+    .main-fb-reviews .uppertitle h2,
+    .main-fb-reviews .uppertitle h1,
+    .main-fb-reviews .uppertitle h3,
+    .main-fb-reviews .uppertitle p { font-size: 14px; }
+    .main-fb-reviews .uppertitle { margin-bottom: 16px; }
+    .main-fb-reviews .uppertitle svg { max-width: 12px; margin-left: 0; }
+    .main-fb-reviews .carousel-wrapper { max-width: 100%; margin-top: 26px; padding-top: 0; padding-left: var(--xs-padding-x); }
+    .main-fb-reviews .carousel { padding: 0; }
+    .main-fb-reviews .carousel .carousel-item { 
+      width: 350px; 
+      /* height: 404px;  */
+      gap: 20px; 
+    }
+    .main-fb-reviews .carousel .carousel-item .top-slide-content img { width: 50px; height: 50px; }
+    .main-fb-reviews .carousel .carousel-item .rating { font-size: 13px; }
+    .main-fb-reviews .carousel-nav .arrow { font-size: 16px; padding: 3px; width: 40px; height: 40px; }
+    .main-fb-reviews .carousel-nav .dot { width: 7px; height: 7px; background: grey; }
+    .main-fb-reviews .carousel-nav .dot.active { width: 12px; height: 12px; }
+    .main-fb-reviews .swiper-b-next { width: 40px; height: 40px; }
+    .main-fb-reviews .carousel-nav { margin-top: 40px; max-width: 340px; }
+  }
+{%- endstylesheet -%}
+
+<div 
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    --status-color: {{ section.settings.status_color }};
+    --body-color: {{ section.settings.body_color }};
+    {% if section.settings.container_styling == "shadow" %}
+      --box-shadow: {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_blur }}px {{ section.settings.box_shadow_spread }}px {{ section.settings.box_shadow_color }};
+    {% else %}
+      --box-shadow: none;
+    {% endif %}
+    --bdr-radius: {{ section.settings.container_radius }}px;
+     --border-solid: {{ section.settings.card_border }}px solid {{ section.settings.card_border_color }};
+     --title-color: {{ section.settings.title_color }};
+    --card-bg: {{ section.settings.card_background }};
+    --upper-title: {{ section.settings.uppertitle_color }};
+    --fill: {{ section.settings.star_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-justify: flex-start;
+      {% when 'center' %}
+      --heading-justify: center;
+      {% when 'right' %}
+      --heading-justify: flex-end;
+    {% endcase %}
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-align: left;
+      {% when 'center' %}
+      --heading-align: center;
+      {% when 'right' %}
+      --heading-align: right;
+    {% endcase %}
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div 
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="
+      --custom-width: {{ section.settings.custom_page_width }};
+    "
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.uppertitle != blank or section.settings.subtitle or section.settings.title != blank -%}
+          <div class="heading" style="
+                {% if section.settings.section_width == 'container-fluid' %}
+                  margin: 0 10%;
+                {% endif %}"
+          >
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle"><span class="star_span">{% for i in (1..5) %}{% render 'star_comparison' %}{% endfor %}</span>{{ section.settings.uppertitle }}</div>
+            {% endif %}
+            <div class="title">
+              {%- if section.settings.title != blank -%}
+                {{ section.settings.title }}
+              {%- endif -%}
+            </div>
+            <div class="subtitle">
+              {%- if section.settings.subtitle != blank -%}
+                {{ section.settings.subtitle }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <div class="slider-container">
+          <div class="carousel-wrapper">
+            <div class="carousel" data-section-id="{{ section.id }}">
+              {% for block in section.blocks %}
+                {%- liquid 
+                  assign placeholder_index = forloop.index | modulo: 4
+                  if placeholder_index == 0
+                    assign placeholder_index = 4
+                  endif
+                -%}
+                <div class="carousel-item">
+                  <div class="top-slide-content">
+                    {% if block.settings.image != blank %}
+                      {%- liquid
+                        assign max_width = block.settings.image.width
+                        if block.settings.image > 120
+                            assign max_width = 120
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.image.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.image.alt != blank
+                            echo block.settings.image.alt
+                          else
+                            echo block.settings.name
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 4.706vw'
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.image
+                        | image_url: width: max_width
+                        | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: ''
+                      -}}
+                    {% else %}
+                      {%- render 'placeholder-svgs', type: 'hero', index: placeholder_index, class: '' -%}
+                    {% endif %}
+                    <div>
+                      <div class="name word--break">{{ block.settings.name }}</div>
+                      <div class="status word--break">{{ block.settings.status }}</div>
+                    </div>
+                    <img class="dots" src="{{ 'dots.svg' | asset_url }}"/>
+                  </div>
+                    {{ block.settings.text | truncate: 480 }}
+                  <div class="review-stats word--break">
+                    <div class="review-fb_smile">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="20" viewBox="0 0 50 20" fill="none">
+                        <path d="M10.5 17C14.6421 17 18 13.6421 18 9.5C18 5.35786 14.6421 2 10.5 2C6.35786 2 3 5.35786 3 9.5C3 13.6421 6.35786 17 10.5 17Z" fill="url(#paint0_linear_9657_18990)"/>
+                        <path d="M7.65031 8.79688H6.77406C6.35087 8.79688 6.00781 9.13994 6.00781 9.56312V12.8835C6.00781 13.3067 6.35087 13.6498 6.77406 13.6498H7.65031C8.0735 13.6498 8.41656 13.3067 8.41656 12.8835V9.56312C8.41656 9.13994 8.0735 8.79688 7.65031 8.79688Z" fill="white"/>
+                        <path d="M15.0848 9.73089C15.0848 9.4191 14.9465 9.14293 14.7334 8.95535C14.8939 8.79364 14.9935 8.57135 14.9935 8.32605C14.9935 7.83318 14.5924 7.4321 14.0995 7.4321H12.567V6.41043C12.567 5.93626 12.4351 5.54164 12.1749 5.23772C11.9215 4.94189 11.5196 4.83889 11.1495 4.97568C10.7694 5.11622 10.5236 5.4668 10.5236 5.86864V7.17668C10.5236 7.88272 9.51919 8.54185 9.13206 8.73626C9.0061 8.79951 8.92789 9.09405 8.99114 9.22005V11.7743L9.78848 12.6773C10.0297 12.9186 10.3503 13.0514 10.6914 13.0514H13.5887C14.0816 13.0514 14.4827 12.6503 14.4827 12.1574C14.4827 12.0879 14.4721 12.0204 14.4567 11.9542C14.7721 11.8159 14.9936 11.5016 14.9936 11.1357C14.9936 10.8905 14.894 10.6681 14.7335 10.5064C14.9466 10.3189 15.0848 10.0427 15.0848 9.73089Z" fill="white"/>
+                        <path d="M25.5 17C29.6421 17 33 13.6421 33 9.5C33 5.35786 29.6421 2 25.5 2C21.3579 2 18 5.35786 18 9.5C18 13.6421 21.3579 17 25.5 17Z" fill="url(#paint1_linear_9657_18990)"/>
+                        <path d="M28.9809 10.2383C26.8338 12.7456 25.7424 13.484 25.696 13.5125C25.6389 13.5553 25.5676 13.5731 25.4999 13.5731C25.4321 13.5731 25.3607 13.5553 25.3001 13.5125C25.2573 13.484 24.166 12.7456 22.0188 10.2383C20.9702 9.01492 21.3233 7.54188 22.215 6.718C22.9961 5.99396 24.3229 5.70505 25.4999 6.67159C26.6768 5.70505 28.0036 5.99396 28.7847 6.718C29.6764 7.54188 30.0295 9.01492 28.9809 10.2383Z" fill="white"/>
+                        <path d="M44.6667 11.334C44.6667 13.5132 42.95 14.9798 40.3958 14.9798C37.8417 14.9798 36.125 13.5132 36.125 11.334C36.125 11.209 36.1833 11.0882 36.2833 11.009C36.3292 10.9715 37.4708 10.084 40.5 10.084C43.5042 10.084 44.4458 10.9423 44.5458 11.0382C44.6208 11.1173 44.6667 11.2215 44.6667 11.334Z" fill="url(#paint2_linear_9657_18990)"/>
+                        <path d="M43.3766 14.0667C43.1766 14.2208 42.9599 14.3583 42.7182 14.4792C42.0724 14.8 41.2849 14.9792 40.3932 14.9792C39.6349 14.9792 38.9557 14.85 38.3682 14.6125C38.0891 14.5 37.8307 14.3625 37.6016 14.2042V14.2C37.6349 14.075 37.6641 13.9667 37.6807 13.9083C38.0224 12.6375 39.1807 11.75 40.4974 11.75C41.7766 11.75 42.8974 12.5708 43.2766 13.7875C43.2891 13.8292 43.3266 13.9292 43.3766 14.0667Z" fill="url(#paint3_linear_9657_18990)"/>
+                        <path d="M47.9998 10.4999C47.9998 12.0346 47.5388 13.4614 46.7467 14.6503C46.6883 14.7393 46.627 14.8283 46.5629 14.9144C45.1988 16.7846 42.9916 17.9998 40.4999 17.9998C37.216 17.9998 34.4253 15.8889 33.4099 12.9493L33.4085 12.9478C33.1444 12.1805 33 11.3562 33 10.4999C33 9.10963 33.3778 7.80688 34.0373 6.69088C35.3429 4.48221 37.7485 3 40.5 3C43.3972 3 45.9108 4.64267 47.1596 7.04829C47.6964 8.08117 47.9998 9.2555 47.9998 10.4999Z" fill="url(#paint4_radial_9657_18990)"/>
+                        <path d="M43.1794 14.3645C42.857 14.8969 42.4981 15.3506 42.1246 15.7387C41.7118 16.1675 41.2785 16.5148 40.8525 16.7963C39.1705 17.9065 37.573 17.9999 37.573 17.9999C37.573 17.9999 36.6481 17.1202 35.853 15.9721C35.4095 15.3346 35.0069 14.6139 34.8245 13.9166C34.734 13.5694 34.667 13.2295 34.629 12.9027C34.4043 11.0412 35.0433 9.58091 36.9077 9.43941C38.9282 9.28624 39.414 11.4482 39.414 11.4482C41.2011 9.56779 44.8862 11.5591 43.1794 14.3645Z" fill="url(#paint5_radial_9657_18990)"/>
+                        <g style="mix-blend-mode:multiply" opacity="0.2">
+                        <path d="M42.1237 15.7387C41.7108 16.1675 41.2775 16.5148 40.8515 16.7963C40.5568 16.6402 40.2957 16.382 40.16 15.9706C39.982 15.4323 40.5452 15.4513 40.5452 15.4513L42.1237 15.7387Z" fill="#B81219"/>
+                        </g>
+                        <path d="M41.7675 8.35938H39.2265C39.0473 8.35938 38.9264 8.54262 38.997 8.70733C39.0175 8.75512 39.0515 8.79637 39.0966 8.82225C39.2329 8.90062 39.5966 9.03317 40.497 9.03317C41.3974 9.03317 41.7611 8.90062 41.8974 8.82225C41.9425 8.79633 41.9765 8.75512 41.9969 8.70733C42.0675 8.54262 41.9468 8.35938 41.7675 8.35938Z" fill="url(#paint6_linear_9657_18990)"/>
+                        <path d="M36.6523 6.66205C36.6523 6.07022 37.0519 5.58984 37.5458 5.58984C38.0397 5.58984 38.4393 6.07022 38.4393 6.66205C38.4393 7.25389 38.0397 7.73422 37.5458 7.73422C37.0519 7.73422 36.6523 7.25389 36.6523 6.66205Z" fill="url(#paint7_linear_9657_18990)"/>
+                        <path d="M38.8575 4.74279C38.0319 4.69971 37.1973 4.84829 36.4494 5.21588C36.3035 5.28321 36.1709 5.08754 36.2857 4.97709C36.9633 4.28567 38.0065 3.99034 38.9556 4.16754C39.3125 4.25646 39.221 4.77475 38.8575 4.74279Z" fill="#DE8009"/>
+                        <path d="M44.2752 6.66205C44.2752 7.25389 43.8757 7.73422 43.3818 7.73422C42.8879 7.73422 42.4883 7.25389 42.4883 6.66205C42.4883 6.07022 42.8879 5.58984 43.3818 5.58984C43.8757 5.58984 44.2752 6.07022 44.2752 6.66205Z" fill="url(#paint8_linear_9657_18990)"/>
+                        <path d="M41.9717 4.16861C42.6926 4.03061 43.4485 4.17582 44.0797 4.5389C44.29 4.65452 44.4751 4.81207 44.6417 4.97811C44.6993 5.03548 44.6994 5.12869 44.642 5.18627C44.5947 5.23394 44.524 5.24144 44.4676 5.21223C43.7229 4.84719 42.8913 4.70132 42.0699 4.74382C41.7038 4.7749 41.6169 4.25582 41.9717 4.16861Z" fill="#DE8009"/>
+                        <g style="mix-blend-mode:multiply" opacity="0.2">
+                        <path d="M39.3857 14.1554C38.1424 16.2283 35.3986 15.2796 35.2142 14.9145C35.0474 14.5841 34.911 14.2475 34.8244 13.9162C34.7339 13.569 34.6669 13.2291 34.6289 12.9023L38.9092 13.0788C38.9092 13.0788 39.917 13.2697 39.3857 14.1554Z" fill="#B81219"/>
+                        </g>
+                        <path d="M36.5858 14.8915C35.0045 14.7048 34.383 14.1854 33.4099 12.9498L33.4085 12.9484C33.1444 12.181 33 11.3567 33 10.5004C33 9.11016 33.3778 7.80741 34.0373 6.69141C33.9789 7.83661 33.9599 9.09411 34.0912 9.74916C34.1962 10.2627 34.2429 10.979 35.5836 11.227C36.9243 11.4764 37.7267 10.979 38.017 11.227C38.3073 11.4764 37.1592 12.1125 37.5472 12.1533C37.9338 12.1942 38.901 12.0424 39.1023 12.9003C39.3022 13.7566 38.44 15.1104 36.5858 14.8915Z" fill="url(#paint9_linear_9657_18990)"/>
+                        <path d="M47.9972 10.5005C47.9972 12.0352 47.5362 13.462 46.744 14.651L46.5602 14.915C45.0645 16.4492 43.6141 16.5809 42.4361 16.6729C40.8489 16.7969 40.6256 15.9406 40.4973 15.4431C40.3674 14.9456 40.6846 14.3236 41.3726 14.295C41.8296 14.276 42.1049 14.0192 41.7314 13.8121C41.358 13.6049 41.2617 13.1629 41.5111 13.1483C41.7591 13.1352 43.1421 13.6049 44.2888 13.1483C45.4355 12.6917 46.2787 10.5005 46.2787 10.5005C46.782 9.50262 47.0548 7.80745 47.1569 7.04883C47.6937 8.0817 47.9972 9.25612 47.9972 10.5005Z" fill="url(#paint10_linear_9657_18990)"/>
+                        <defs>
+                        <linearGradient id="paint0_linear_9657_18990" x1="10.5" y1="17" x2="10.5" y2="2" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#0064E1"/>
+                        <stop offset="0.9944" stop-color="#26B7FF"/>
+                        </linearGradient>
+                        <linearGradient id="paint1_linear_9657_18990" x1="25.5" y1="17" x2="25.5" y2="2" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#DD142E"/>
+                        <stop offset="1" stop-color="#F75E7A"/>
+                        </linearGradient>
+                        <linearGradient id="paint2_linear_9657_18990" x1="40.3958" y1="10.0352" x2="40.3958" y2="14.4282" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#8B3A0E"/>
+                        <stop offset="1" stop-color="#472315"/>
+                        </linearGradient>
+                        <linearGradient id="paint3_linear_9657_18990" x1="40.4891" y1="14.9792" x2="40.4891" y2="11.75" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#D91F3A"/>
+                        <stop offset="1" stop-color="#F85874"/>
+                        </linearGradient>
+                        <radialGradient id="paint4_radial_9657_18990" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40.4999 10.4999) scale(7.5)">
+                        <stop offset="0.0056" stop-color="#FEEB72"/>
+                        <stop offset="0.3156" stop-color="#FDE86F"/>
+                        <stop offset="0.5153" stop-color="#FCDF68"/>
+                        <stop offset="0.6839" stop-color="#FBD05C"/>
+                        <stop offset="0.8352" stop-color="#F9BB4B"/>
+                        <stop offset="0.9737" stop-color="#F6A134"/>
+                        <stop offset="1" stop-color="#F69B30"/>
+                        </radialGradient>
+                        <radialGradient id="paint5_radial_9657_18990" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40.7772 11.632) scale(7.14625)">
+                        <stop stop-color="#FA6080"/>
+                        <stop offset="0.1781" stop-color="#F65979"/>
+                        <stop offset="0.431" stop-color="#ED4866"/>
+                        <stop offset="0.727" stop-color="#DF2C48"/>
+                        <stop offset="1" stop-color="#CF0D26"/>
+                        </radialGradient>
+                        <linearGradient id="paint6_linear_9657_18990" x1="40.4971" y1="8.35954" x2="40.4971" y2="9.03329" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#8B3A0E"/>
+                        <stop offset="1" stop-color="#472315"/>
+                        </linearGradient>
+                        <linearGradient id="paint7_linear_9657_18990" x1="37.5461" y1="5.58972" x2="37.5461" y2="7.7343" gradientUnits="userSpaceOnUse">
+                        <stop offset="0.0056" stop-color="#3C466E"/>
+                        <stop offset="1" stop-color="#252949"/>
+                        </linearGradient>
+                        <linearGradient id="paint8_linear_9657_18990" x1="43.382" y1="5.58972" x2="43.382" y2="7.7343" gradientUnits="userSpaceOnUse">
+                        <stop offset="0.0056" stop-color="#3C466E"/>
+                        <stop offset="1" stop-color="#252949"/>
+                        </linearGradient>
+                        <linearGradient id="paint9_linear_9657_18990" x1="36.847" y1="14.2458" x2="33.9999" y2="7.77791" gradientUnits="userSpaceOnUse">
+                        <stop offset="0.0056" stop-color="#FEEB72"/>
+                        <stop offset="0.3156" stop-color="#FDE86F"/>
+                        <stop offset="0.5153" stop-color="#FCDF68"/>
+                        <stop offset="0.6839" stop-color="#FBD05C"/>
+                        <stop offset="0.8352" stop-color="#F9BB4B"/>
+                        <stop offset="0.9737" stop-color="#F6A134"/>
+                        <stop offset="1" stop-color="#F69B30"/>
+                        </linearGradient>
+                        <linearGradient id="paint10_linear_9657_18990" x1="40.4689" y1="11.8672" x2="47.9973" y2="11.8672" gradientUnits="userSpaceOnUse">
+                        <stop offset="0.0056" stop-color="#FEEB72"/>
+                        <stop offset="0.3156" stop-color="#FDE86F"/>
+                        <stop offset="0.5153" stop-color="#FCDF68"/>
+                        <stop offset="0.6839" stop-color="#FBD05C"/>
+                        <stop offset="0.8352" stop-color="#F9BB4B"/>
+                        <stop offset="0.9737" stop-color="#F6A134"/>
+                        <stop offset="1" stop-color="#F69B30"/>
+                        </linearGradient>
+                        </defs>
+                      </svg>
+                      <span>{{ block.settings.smiles }}</span>
+                    </div>
+                    <div>{{ block.settings.comments }}</div>
+                  </div>
+                  <hr class="review-divider"/>
+                  <div class="review-actions">
+                    <div class="action-item">
+                      <img src="{{ 'like.svg' | asset_url }}" class="fbicons"/> Like
+                    </div>
+                    <div class="action-item">
+                      <img src="{{ 'message.svg' | asset_url }}" class="fbicons"/> Comment
+                    </div>
+                    <div class="action-item">
+                      <img src="{{ 'repost.svg' | asset_url }}" class="fbicons"/> Share
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="carousel-nav">
+            <div class="arrow" data-direction="prev">{% render 'swiper-arrow-left-n' %}</div>
+            <div class="fb_carousel-pagination">
+              {% for block in section.blocks %}
+                <div class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}"></div>
+              {% endfor %}
+            </div>
+            <div class="arrow" data-direction="next">{% render 'swiper-arrow-right-n' %}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionId = '{{ section.id }}';
+    const carousel = document.querySelector(`#shopify-section-${sectionId} .carousel`);
+    const dots = document.querySelectorAll(`#shopify-section-${sectionId} .dot`);
+    const arrows = document.querySelectorAll(`#shopify-section-${sectionId} .arrow`);
+    const autoScrollEnabled = {{ section.settings.auto_scroll | json }}; // Ensure boolean value
+    const scrollSpeed = {{ section.settings.scroll_speed | times: 1000 }}; // Convert seconds to ms
+    let currentIndex = 0;
+    let autoScrollInterval = null;
+    const totalItems = carousel.children.length; // Number of original items
+    const itemWidth = carousel.children[0].offsetWidth + 24; // Width + updated gap of 24px
+    const visibleItems = Math.ceil(carousel.parentElement.offsetWidth / itemWidth); // Round up for full coverage
+
+    // Clone items for infinite scrolling (2 sets of clones)
+    const originalItems = Array.from(carousel.children);
+    for (let i = 0; i < 2; i++) {
+      originalItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        carousel.appendChild(clone);
+      });
+    }
+    const realTotalItems = carousel.children.length; // Total items after cloning
+
+    // Set initial position in the middle
+    currentIndex = totalItems;
+    carousel.style.transition = 'none';
+    carousel.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+    setTimeout(() => {
+      carousel.style.transition = 'transform 0.5s ease';
+    }, 50);
+
+    function updateCarousel(transition = true) {
+      const offset = -currentIndex * itemWidth;
+      
+      if (transition) {
+        carousel.style.transition = 'transform 0.5s ease';
+      } else {
+        carousel.style.transition = 'none';
+      }
+      
+      carousel.style.transform = `translateX(${offset}px)`;
+
+      // Infinite loop handling
+      if (currentIndex >= totalItems * 2) {
+        setTimeout(() => {
+          currentIndex = totalItems;
+          carousel.style.transition = 'none';
+          carousel.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+          setTimeout(() => {
+            carousel.style.transition = 'transform 0.5s ease';
+          }, 50);
+        }, 500);
+      } else if (currentIndex < totalItems) {
+        setTimeout(() => {
+          currentIndex = totalItems * 2 - visibleItems;
+          carousel.style.transition = 'none';
+          carousel.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+          setTimeout(() => {
+            carousel.style.transition = 'transform 0.5s ease';
+          }, 50);
+        }, 500);
+      }
+
+      // Update active dot
+      let dotIndex = (currentIndex % totalItems);
+      dots.forEach((dot, index) => {
+        
+        if(dotIndex >= {{section.blocks.size}}){
+          dotIndex = dotIndex - {{section.blocks.size}} % totalItems;
+        }
+        
+        dot.classList.toggle('active', index === dotIndex);
+      });
+    }
+
+    function startAutoScroll() {
+      stopAutoScroll(); // Clear before starting
+      if (autoScrollEnabled === true) { // Explicit comparison with true
+        autoScrollInterval = setInterval(() => {
+          currentIndex++;
+          updateCarousel(true);
+        }, scrollSpeed / totalItems); // Divide scrollSpeed by totalItems for per-slide timing
+      } else {
+      }
+    }
+
+    function stopAutoScroll() {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+      }
+    }
+
+    // Arrow navigation
+    arrows.forEach(arrow => {
+      arrow.addEventListener('click', () => {
+        stopAutoScroll();
+        const direction = arrow.getAttribute('data-direction');
+        if (direction === 'prev') {
+          currentIndex--;
+        } else if (direction === 'next') {
+          currentIndex++;
+        }
+        updateCarousel(true);
+        if (autoScrollEnabled) startAutoScroll();
+      });
+    });
+
+    // Dot navigation
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        stopAutoScroll();
+        const index = parseInt(dot.getAttribute('data-index'));
+        currentIndex = totalItems + index;
+        updateCarousel(true);
+        if (autoScrollEnabled) startAutoScroll();
+      });
+    });
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', stopAutoScroll);
+    carousel.addEventListener('mouseleave', () => {
+      if (autoScrollEnabled) startAutoScroll();
+    });
+
+    // Add touch controls for mobile devices
+    let touchStartX = 0;
+    let touchCurrentX = 0;
+    let isDragging = false;
+
+    carousel.addEventListener('touchstart', (e) => {
+      stopAutoScroll();
+      touchStartX = e.touches[0].clientX;
+      touchCurrentX = touchStartX;
+      isDragging = true;
+      carousel.style.transition = 'none'; // Disable animation during swipe
+    });
+
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      touchCurrentX = e.touches[0].clientX;
+      const diff = touchCurrentX - touchStartX;
+      const newOffset = -currentIndex * itemWidth + diff;
+      carousel.style.transform = `translateX(${newOffset}px)`;
+    });
+
+    carousel.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = touchCurrentX - touchStartX;
+      const threshold = itemWidth / 3; // Threshold for switching slides
+
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+          currentIndex--; // Swipe right
+        } else {
+          currentIndex++; // Swipe left
+        }
+      }
+
+      carousel.style.transition = 'transform 0.5s ease';
+      updateCarousel(true);
+      if (autoScrollEnabled) startAutoScroll();
+    });
+
+    // Initialization
+    updateCarousel(false);
+    startAutoScroll(); // Attempt to start auto-scroll
+  });
+</script>{% schema %}
+{
+  "name": "FB Reviews",
+  "tag": "section",
+  "class": "section fb_reviews main-fb-reviews",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "transparent" },
+    { 
+      "type": "select", 
+      "id": "heading_size", 
+      "label": "Heading Size", 
+      "options": [{ "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" }], "default": "medium" 
+    },
+    {
+      "type": "select", "id": "headline_typography", 
+      "label": "Headline Typography", 
+      "options": [
+         { "value": "uppercase", "label": "AA" }, 
+         { "value": "capitalize", "label": "Aa" }, 
+         { "value": "lowercase", "label": "aa" }], "default": "capitalize" },
+    { "type": "select", "id": "font_variant", "label": "Font Family", "options": [{ "value": "default", "label": "Default by theme" }, { "value": "custom", "label": "Own choice" }], "default": "default" },
+    { "type": "font_picker", "label": "Regular Font", "id": "title_font", "default": "montserrat_n4" },
+    { "type": "color", "id": "title_color", "label": "Title Color", "default": "#020B1E" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle Color", "default": "#020B1E" },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#FF8E00" },
+    { "type": "color", "id": "status_color", "label": "Verified Text Color", "default": "#020B1E" },
+    { "type": "color", "id": "body_color", "label": "Body Text Color", "default": "#020B1E" },
+    { "type": "select", "id": "heading_align", "label": "Heading Alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }], "default": "center" },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    { "type": "range", "id": "padding_x_desk", "label": "Horizontal Padding", "info": "for desktop", "min": 0, "max": 100, "step": 5, "default": 20 },
+    { "type": "range", "id": "padding_y_desk", "label": "Vertical Padding", "info": "for desktop", "min": 0, "max": 100, "default": 20 },
+    { "type": "range", "id": "padding_x_mob", "label": "Horizontal Padding", "info": "for mobile", "min": 0, "max": 100, "step": 5, "default": 20 },
+    { "type": "range", "id": "padding_y_mob", "label": "Vertical Padding", "info": "for mobile", "min": 0, "max": 50, "default": 20 },
+    { "type": "select", "id": "display_on", "label": "Display On", "options": [{ "value": "all", "label": "All Devices" }, { "value": "mobile_only", "label": "Mobile Only" }, { "value": "desktop_only", "label": "Desktop Only" }], "default": "all" },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    { "type": "range", "id": "scroll_speed", "label": "Scroll Speed (seconds)", "min": 5, "max": 50, "step": 1, "default": 45 },
+    { "type": "checkbox", "id": "auto_scroll", "label": "Enable Auto Scroll", "default": true },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle",
+      "default": "<p>Reviewed by +100 Happy Customers </p>"
+    },
+     {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>what people are saying... </h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>Read through some reviews and see what real people say about [product/brand name]</h3>"
+    },
+        {
+      "type": "header",
+      "content": "Product Cards Settings"
+    },
+    { "type": "color", "id": "card_background", "label": "Card Background", "default": "#EDEDED" },
+    {
+      "type": "range",
+      "id": "card_border",
+      "label": "Card border",
+      "info": "Container Styling Card",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0
+    },
+    { "type": "color", "id": "card_border_color", "label": "Card border color", "default": "#000" },
+    { "type": "range", "id": "container_radius", "label": "Container Corner Radius", "min": 0, "max": 50, "step": 1, "default": 16 },
+   ],
+  "blocks": [
+    {
+      "type": "testimonial_slide",
+      "name": "Testimonial Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "richtext", "id": "rating", "label": "Rating", "default": "<p>★★★★★</p>" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Liam Spence" },
+        { "type": "text", "id": "status", "label": "Status", "default": "3h ago" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Lorem ipsum dolor sit amet consectetur. Vitae tristique pretium egestas non elit dui tellus et. Eget sollicitudin mattis id viverra mattis imperdiet. Ut suspendisse et nullam auctor nunc vel massa commodo. Semper nibh tellus lectus egestas congue aenean lobortis. Phasellus facilisis porttitor nunc pretium scelerisque mauris consequat mauris ante. </p>" },
+        { "type": "text", "id": "smiles", "label": "Quantity Of Smiles", "default": "3" },
+        { "type": "text", "id": "comments", "label": "Quantity Of Comments", "default": "5 Comments" },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FB Reviews",
+      "category": "Reviews",
+      "blocks": [
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" },
+        { "type": "testimonial_slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

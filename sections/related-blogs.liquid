@@ -1,0 +1,92 @@
+{%- stylesheet -%}
+ .article__link{
+    transition: all 0.3s ease;
+ }
+
+ .article__link.text-2:hover{
+    color: #666666;
+ }
+{%- endstylesheet -%}
+{% assign currentblog = blog.handle %}
+{% assign currentarticlehandle = article.handle %}
+{% assign hasrelatedblogs = false%}
+{% for relatedArticle in blogs[blog.handle].articles limit: 4 %}
+    {% if relatedArticle.handle != currentarticlehandle %}
+        {% assign hasrelatedblogs = true %}
+        {% break %}
+    {% endif %}
+{% endfor %}
+{% if hasrelatedblogs %}
+    <section class="related-blogs d-none d-md-block bg-info-scale-2 pt-md-75 pb-md-20" {% if section.settings.background_color != blank %}style="background-color: {{section.settings.background_color}};"{% endif %}>
+        <div class="container">
+            {% if section.settings.title != blank %}
+                <div class="pure-g">
+                    <div class="pure-u-1 mb-md-50">
+                        <h4 class="title text-center">{{section.settings.title}}</h4>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="pure-g gutter-xl-45">
+                {% assign blogloop = 1 %}
+                {% for relatedArticle in blogs[currentblog].articles limit: 4 %}
+                    {% if relatedArticle.handle == currentarticlehandle %}
+                    {% else %}
+                        {%- render 'article-card', article: relatedArticle, show_date: section.settings.show_date, show_author: section.settings.show_author, posted_on_text: section.settings.posted_on_text, read_more_text: section.settings.read_more_text -%}
+                        {% assign blogloop = blogloop | plus: 1 %}
+                        {% if blogloop == 4 %}
+                            {% break %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+<hr class="d-block d-md-none">
+{% schema %}
+{
+  "name": "Related articles",
+  "settings": [
+    {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "posted_on_text",
+      "label": "Posted on text",
+      "default": "Posted on"
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more text",
+      "default": "Continue reading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    }
+  ],
+  "templates": ["article"],
+  "presets": [
+    {
+        "name": "Related articles"
+    }
+  ]
+}
+{% endschema %}

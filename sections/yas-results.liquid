@@ -1,0 +1,921 @@
+{%- liquid
+  assign section_prefix_class = 'main-results'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+{%- stylesheet -%}
+  .main-results .main-results--right .carousel {
+    animation-direction: reverse;
+  }
+  .main-results .main-results--static .carousel {
+    animation: unset;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .main-results .main-results--static .carousel .carousel-item {
+    grid-column-gap: var(--grid-gap);
+    justify-content: center;
+    font-size: 12px;
+    line-height: auto;
+    color: var(--block-color);
+    height: auto;
+  }
+
+  .main-results--static .carousel .carousel-item + .carousel-item {
+    display: none;
+  }
+
+  .main-results_wrapper {
+    display: var(--display-value);
+    text-align: var(--heading-align);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-results_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-results_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .main-results_content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+  }
+
+  .main-results_content-wrapper .heading {
+    max-width: 340px;
+    width: 100%;
+    text-align: var(--desktop-heading-align);
+    margin-bottom: 80px;
+  }
+
+  .inner-padding .main-results_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-results_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-results_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-results_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-results_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-results_wrapper.inner-padding .container,
+  .main-results_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-results .content-wrapper {
+    display: block;
+    position: relative;
+  }
+
+  .main-results .title h2,
+  .main-results .title h1,
+  .main-results .title h3,
+  .main-results .title p {
+    font-size: var(--xl-heading-size);
+    line-height: 110%;
+    font-weight: 700;
+    text-transform: var(--heading-transform);
+    color: var(--title-color);
+    margin: 0;
+  }
+
+  .main-results .subtitle h2,
+  .main-results .subtitle h1,
+  .main-results .subtitle h3,
+  .main-results .subtitle p {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 150%;
+    margin: 0;
+    color: var(--sub-color);
+    margin-bottom: 20px;
+  }
+
+  .main-results .subtitle,
+  .main-results .title,
+  .main-results .content-wrapper {
+    text-align: var(--desktop-heading-align);
+  }
+
+  .main-results .bottom-text {
+    font-size: 16px;
+    line-height: 150%;
+    margin: 0 auto;
+    margin-top: 40px;
+    max-width: 696px;
+    color: var(--body-color);
+  }
+
+  .main-results .results-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding-top: 40px;
+  }
+
+  .main-results .results-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .main-results .result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 235px;
+    gap: 8px;
+  }
+
+  .main-results .result-item .circle-wrapper {
+    position: relative;
+    width: 235px;
+    height: 235px;
+  }
+
+  .main-results .result-item svg {
+    width: 100%;
+    height: auto;
+    transform: rotate(-90deg);
+  }
+  .main-results .result-item .circle-bg {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 10;
+  }
+  .main-results .result-item .circle-progress {
+    fill: none;
+    stroke: var(--progress-color);
+    stroke-width: 15;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+  }
+
+  .main-results .result-item .circle-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .main-results .result-item .main-value {
+    font-size: 45px;
+    font-weight: 700;
+    color: var(--body-color);
+    line-height: 1;
+    margin: 0;
+  }
+  .main-results .result-item .circle-text {
+    font-size: 16px;
+    color: var(--body-color);
+    max-width: 80%;
+    line-height: 1.2;
+    white-space: normal;
+    text-align: center;
+  }
+  .main-results .result-item .description {
+    display: none;
+  }
+  .main-results .carousel-wrapper {
+    background-color: var(--bg-color-2);
+    display: var(--enable);
+  }
+
+  .main-results .carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: scroll-animate var(--scroll-speed) linear infinite;
+    grid-column-gap: var(--grid-gap);
+    position: relative;
+    height: auto;
+    color: var(--block-color);
+  }
+
+  .main-results .carousel:hover {
+    animation-play-state: paused;
+  }
+
+  .main-results .carousel .carousel-item {
+    grid-column-gap: 30px;
+    flex: none;
+    justify-content: space-around;
+    display: flex;
+    align-items: center;
+    color: var(--block-color);
+    height: auto;
+  }
+
+  .main-results .carousel .carousel-item img {
+    max-width: 155px;
+    height: auto;
+  }
+  .main-results .carousel-item_separator img {
+    max-width: 22px;
+    max-height: 22px;
+  }
+
+  .main-results a {
+    transition: all 0.3s ease;
+  }
+
+  .main-results a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  @keyframes scroll-animate {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .main-results_content-wrapper {
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .main-results_content-wrapper {
+      flex-direction: column;
+    }
+
+    .main-results_content-wrapper .heading {
+      max-width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .main-results .content-wrapper,
+    .main-results_content-wrapper .heading,
+    .main-results .title,
+    .main-results .subtitle {
+      text-align: var(--mobile-heading-align);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-results_wrapper {
+      display: var(--xs-display-value);
+      /* padding: var(--xs-padding-y) var(--xs-padding-x); */
+    }
+    .main-results .heading {
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-results .title h2,
+    .main-results .title h1,
+    .main-results .title h3,
+    .main-results .title p {
+      font-size: var(--xs-heading-size);
+      line-height: auto;
+      margin: 0;
+      margin-bottom: 16px;
+    }
+
+    .main-results .subtitle h2,
+    .main-results .subtitle h1,
+    .main-results .subtitle h3,
+    .main-results .subtitle p {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .main-results .results-container {
+      padding-top: 15px;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .main-results .results-wrapper {
+      gap: 16px;
+      margin-top: 0;
+      flex-direction: column;
+      width: 100%;
+      align-items: flex-start;
+      padding: 0 10px;
+    }
+
+    .main-results .result-item {
+      width: 100%;
+      max-width: 100%;
+      align-items: center;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .main-results .result-item .circle-wrapper {
+      width: 160px;
+      height: 160px;
+      flex-shrink: 0;
+    }
+    .main-results .result-item svg {
+      width: 160px;
+      height: 160px;
+    }
+    .main-results .result-item .circle-bg {
+      stroke-width: 20;
+    }
+    .main-results .result-item .circle-progress {
+      stroke-width: 20;
+    }
+    .main-results .result-item .circle-content {
+      gap: 0;
+    }
+    .main-results .result-item .circle-text {
+      display: none;
+    }
+    .main-results .result-item .description {
+      font-size: 14px;
+      display: inline-flex;
+      text-align: left;
+      color: #666;
+      max-width: 103px;
+    }
+    .main-results .bottom-text {
+      font-size: 14px;
+      line-height: auto;
+      margin: 0 auto;
+      margin-top: 20px;
+      max-width: 338px;
+    }
+    .main-results .carousel {
+      animation-duration: calc(var(--scroll-speed) * 0.5);
+    }
+
+    .outer-padding .main-results_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-results_wrapper.inner-padding .container,
+    .main-results_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-results_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .main-results_container-wrapper .heading {
+      margin-bottom: 16px;
+    }
+  }
+
+  @media (max-width: 425px) {
+    .main-results .result-item .main-value {
+      font-size: 28px;
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %} {% if section.settings.scroll_setting == 'static' %}main-results--static{% endif %} {% if section.settings.scroll_setting == 'right' %}main-results--right{% endif %}"
+  style="
+      --grid-gap: {{ section.settings.gap_icon }}px;
+      {% case section.settings.heading_size %}
+        {% when 'small' %}
+        --xs-heading-size: 20px;
+        {% when 'medium' %}
+        --xs-heading-size: 32px;
+        {% when 'large' %}
+        --xs-heading-size: 32px;
+      {% endcase %}
+      --block-color: {{ section.settings.block_color }};
+      --scroll-speed: {{ section.settings.scroll_speed }}s;
+      --enable: {{ section.settings.enable }};
+      --bg-color-2: {{ section.settings.background_color2 }};
+      --progress-color: {{ section.settings.progress_color }};
+      --body-color: {{ section.settings.body_color }};
+      --sub-color: {{ section.settings.subtitle_color }};
+      --title-color: {{ section.settings.title_color }};
+      --heading-transform: {{ section.settings.headline_typography }};
+      --desktop-heading-align: {{ section.settings.desktop_heading_alignment }};
+      --mobile-heading-align: {{ section.settings.mobile_heading_alignment }};
+      {% case section.settings.heading_size %}
+        {% when 'small' %}
+        --xl-heading-size: 28px;
+        {% when 'medium' %}
+        --xl-heading-size: 40px;
+        {% when 'large' %}
+        --xl-heading-size: 48px;
+      {% endcase %}
+      --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+      --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+      --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+      --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    {% if section.settings.section_width == 'full' %}
+      --width-value: 100%;
+    {% else %}
+      --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+          <div class="heading word--break">
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle word--break">
+                <span class="star_span">
+                  {%- for i in (1..5) -%}
+                    {%- render 'star_comparison' -%}
+                  {%- endfor -%}
+                </span>
+                {{ section.settings.uppertitle }}
+              </div>
+            {% endif %}
+            {%- if section.settings.title != blank -%}
+              <div class="title word--break">
+                {{ section.settings.title }}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.subtitle != blank -%}
+              <div class="subtitle word--break">
+                {{ section.settings.subtitle }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <div class="results-container">
+          <div class="results-wrapper">
+            {% for block in section.blocks %}
+              {% if block.type == 'result' %}
+                <div class="result-item">
+                  <div class="circle-wrapper">
+                    {%- liquid
+                      assign is_mobile = false
+                      if section.settings.display_on == 'mobile_only'
+                        assign is_mobile = true
+                      elsif section.settings.display_on == 'all' and request.device_type == 'mobile'
+                        assign is_mobile = true
+                      endif
+
+                      if is_mobile
+                        assign svg_size = 201
+                        assign circle_center = 100.5
+                        assign circle_radius = 82.5
+                        assign dasharray = 518
+                      else
+                        assign svg_size = 235
+                        assign circle_center = 117.5
+                        assign circle_radius = 107.5
+                        assign dasharray = 675
+                      endif
+
+                      assign progress = block.settings.percentage | times: dasharray | divided_by: 100
+                      assign offset = dasharray | minus: progress
+                    -%}
+                    <svg viewBox="0 0 {{ svg_size }} {{ svg_size }}">
+                      <circle class="circle-bg" cx="{{ circle_center }}" cy="{{ circle_center }}" r="{{ circle_radius }}"></circle>
+                      <circle class="circle-progress" cx="{{ circle_center }}" cy="{{ circle_center }}" r="{{ circle_radius }}" stroke-dasharray="{{ dasharray }}" stroke-dashoffset="{{ offset }}"></circle>
+                    </svg>
+                    <div class="circle-content">
+                      <div class="main-value">{{ block.settings.main_value }}</div>
+                      <div class="circle-text">{{ block.settings.circle_text }}</div>
+                    </div>
+                  </div>
+                  <div class="description">{{ block.settings.circle_text }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="bottom-text">{{ section.settings.bottom_text }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-wrapper">
+    <div class="carousel">
+      {% assign text_blocks = section.blocks | where: 'type', 'text_block' %}
+      {% for i in (1..2) %}
+        {% for block in text_blocks %}
+          <div class="carousel-item word--break">
+            {% if block.settings.icon_google != blank %}
+              <span class="material-symbols-outlined">{{ block.settings.icon_google }}</span>
+            {% elsif block.settings.icon_img != blank %}
+              {%- liquid
+                assign max_width = block.settings.icon_img.width
+                if block.settings.icon_img > 155
+                  assign max_width = 155
+                endif
+                assign image_height = max_width | divided_by: block.settings.icon_img.aspect_ratio | round
+
+                capture image_alt
+                  if block.settings.icon_img.alt != blank
+                    echo block.settings.icon_img.alt
+                  else
+                    echo 'carousel icon'
+                  endif
+                endcapture
+              -%}
+              {{-
+                block.settings.icon_img
+                | image_url: width: max_width
+                | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+              -}}
+            {% endif %}
+            {{ block.settings.text }}
+          </div>
+          {% if block.settings.text != blank and forloop.last == false %}
+            {% if section.settings.separator != blank or section.settings.separator_img != blank %}
+              {% if section.settings.separator_img != blank %}
+                <div class="carousel-item_separator">
+                  {%- liquid
+                    assign max_width = section.settings.separator_img.width
+                    if section.settings.separator_img > 22
+                      assign max_width = 22
+                    endif
+                    assign image_height = max_width | divided_by: section.settings.separator_img.aspect_ratio | round
+
+                    capture image_alt
+                      if section.settings.separator_img.alt != blank
+                        echo section.settings.separator_img.alt
+                      else
+                        echo 'separator-icon'
+                      endif
+                    endcapture
+                  -%}
+                  {{-
+                    section.settings.separator_img
+                    | image_url: width: max_width
+                    | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                  -}}
+                </div>
+              {% else %}
+                <div>{{ section.settings.separator }}</div>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Results",
+  "tag": "section",
+
+  "class": "section results main-results",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "desktop_heading_alignment",
+      "label": "Desktop Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_heading_alignment",
+      "label": "Mobile Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 7
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>What our customers experience</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "richtext",
+      "id": "bottom_text",
+      "label": "Bottom Text",
+      "default": "<p>* Results from [put the real source]. </p>"
+    },
+    {
+      "type": "header",
+      "content": "Progress Settings"
+    },
+    { "type": "color", "id": "progress_color", "label": "Progress Fill Color", "default": "#4caf50" },
+    {
+      "type": "header",
+      "content": "Text Carousel Settings"
+    },
+    {
+      "type": "select",
+      "id": "enable",
+      "label": "Status",
+      "options": [
+        { "value": "block", "label": "Enable" },
+        { "value": "none", "label": "Disable" }
+      ],
+      "default": "block"
+    },
+    { "type": "color", "id": "background_color2", "label": "Background color", "default": "#000" },
+    {
+      "type": "select",
+      "id": "scroll_setting",
+      "label": "scroll setting",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "static", "label": "Static" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "gap_icon", "label": "Gap Icons", "min": 5, "max": 50, "step": 1, "default": 10 },
+    { "type": "color", "id": "block_color", "label": "Block Text Color", "default": "#fff" },
+    { "type": "text", "id": "separator", "label": "Separator" },
+    { "type": "image_picker", "id": "separator_img", "label": "Image Separator" },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll Speed (seconds)",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15
+    }
+  ],
+  "blocks": [
+    {
+      "type": "result",
+      "name": "Result",
+
+      "settings": [
+        {
+          "type": "range",
+          "id": "percentage",
+          "label": "Circle Progress Percentage",
+          "info": "Controls the circular progress indicator only",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 88
+        },
+        {
+          "type": "richtext",
+          "id": "main_value",
+          "label": "Main Value",
+          "info": "The main text displayed in the circle (e.g., 4000+, $1B+, 140+)",
+          "default": "<p>4000+</p>"
+        },
+        { "type": "text", "id": "circle_text", "label": "Description Text", "default": "Brands worked with" }
+      ]
+    },
+    {
+      "type": "text_block",
+      "name": "Text Block",
+      "settings": [
+        { "type": "image_picker", "id": "icon_img", "label": "Image" },
+        { "type": "text", "id": "icon_google", "label": "Google Icon" },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Results",
+      "category": "Info",
+      "blocks": [
+        { "type": "text_block", "settings": { "text": "<p>Leverage your USPs</p>" } },
+        { "type": "text_block", "settings": { "text": "<p>Leverage your USPs</p>" } },
+        { "type": "text_block", "settings": { "text": "<p>Leverage your USPs</p>" } },
+        { "type": "text_block", "settings": { "text": "<p>Leverage your USPs</p>" } },
+        {
+          "type": "result",
+          "settings": { "percentage": 88, "main_value": "<p>4000+</p>", "circle_text": "Brands worked with" }
+        },
+        {
+          "type": "result",
+          "settings": { "percentage": 75, "main_value": "<p>$1B+</p>", "circle_text": "Revenue generated" }
+        },
+        {
+          "type": "result",
+          "settings": { "percentage": 90, "main_value": "<p>140+</p>", "circle_text": "Optimised components" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

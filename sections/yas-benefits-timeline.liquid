@@ -1,0 +1,441 @@
+{%- liquid
+  assign sid = section.id
+  assign section_prefix_class = 'main-benefits-timeline'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-benefits-timeline :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+
+{%- stylesheet -%}
+  .main-benefits-timeline a {
+    transition: all 0.3s ease;
+  }
+  .main-benefits-timeline a:hover {
+    color: var(--color-bg-btn);
+  }
+  .main-benefits-timeline_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-benefits-timeline_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-benefits-timeline_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-benefits-timeline_container-wrapper {
+    background: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .main-benefits-timeline_wrapper.inner-padding .container {
+    background: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .main-benefits-timeline_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-benefits-timeline_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-benefits-timeline_wrapper.inner-padding .container,
+  .main-benefits-timeline_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .timeline-label-square img {
+    width: 32px;
+    height: 32px;
+  }
+  @media (max-width: 768px) {
+    .main-benefits-timeline_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .main-benefits-timeline_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-benefits-timeline_wrapper.inner-padding .container,
+    .main-benefits-timeline_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-benefits-timeline_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .main-benefits-timeline_wrapper {
+      display: var(--display-value);
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="benefits-timeline {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  data-section-id="{{ sid }}"
+  style="
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+       --xs-display-value: block;
+      {% when 'mobile_only' %}
+       --xs-display-value: block;
+      {% when 'desktop_only' %}
+       --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+       --display-value: block;
+      {% when 'mobile_only' %}
+       --display-value: none;
+      {% when 'desktop_only' %}
+       --display-value: block;
+    {% endcase %}
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    {% if section.settings.section_width == 'full' %}
+      --width-value: 100%;
+    {% else %}
+      --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --text-color: {{ section.settings.text_color }};
+    --background-color: {{ section.settings.background_color }};
+    --heading-align: {{ section.settings.heading_align }};
+    --headline-transform: {{ section.settings.headline_typography }};
+    --font-size-heading: {% case section.settings.heading_size %}{% when 'small' %}28px{% when 'medium' %}32px{% when 'large' %}48px{% endcase %};
+    --font-size-heading-mob: {% case section.settings.heading_size %}{% when 'small' %}20px{% when 'medium' %}32px{% when 'large' %}32px{% endcase %};
+    --uppertitle-color: {{ section.settings.uppertitle_color }};
+    --timeline-bg: {{ section.settings.tl_bg }};
+    --timeline-title: {{ section.settings.tl_title }};
+    --timeline-text: {{ section.settings.tl_text }};
+    --dot-color: {{ section.settings.dot_color }};
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {% if section.settings.uppertitle != blank or section.settings.subtitle or section.settings.title != blank %}
+          <div class="heading">
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle word--break">
+                <span class="star_span" aria-label="5 out of 5 stars">
+                  {% for i in (1..5) %}
+                    {% render 'star_comparison' %}
+                  {% endfor %}
+                </span>
+                {{ section.settings.uppertitle }}
+              </div>
+            {% endif %}
+            <div class="title word--break">
+              {% if section.settings.title != blank %}{{ section.settings.title }}{% endif %}
+            </div>
+            <div class="subtitle word--break">
+              {% if section.settings.subtitle != blank %}{{ section.settings.subtitle }}{% endif %}
+            </div>
+          </div>
+        {% endif %}
+        <div class="benefits-timeline-section">
+          <div class="benefits-timeline-wrapper">
+            {% for block in section.blocks %}
+              <div class="benefits-timeline-item" {{ block.shopify_attributes }}>
+                <div class="timeline-marker"></div>
+                <div class="timeline-label-wrapper">
+                  {% if block.settings.icon != blank and block.settings.icon_image == blank %}
+                    <span class="material-symbols-outlined">{{ block.settings.icon }}</span>
+                  {% else %}
+                    <div class="timeline-label-square">
+                      {% if block.settings.icon_image != blank %}
+                        {%- liquid
+                          assign max_width = block.settings.icon_image.width
+                          if block.settings.icon_image > 30
+                            assign max_width = 30
+                          endif
+                          assign image_height = max_width | divided_by: block.settings.icon_image.aspect_ratio | round
+
+                          capture image_alt
+                            unless block.settings.icon_image.alt == blank
+                              echo block.settings.icon_image.alt
+                            else
+                              echo 'image_alternative.static' | t
+                            endunless
+                          endcapture
+                        -%}
+                        {{-
+                          block.settings.icon_image
+                          | image_url: width: max_width
+                          | image_tag:
+                            loading: 'lazy',
+                            width: max_width,
+                            height: image_height,
+                            alt: image_alt,
+                            class: ''
+                        -}}
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  <div class="timeline-label word--break">{{ block.settings.month }}</div>
+                </div>
+                <div class="timeline-content word--break">{{ block.settings.description }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Benefits Timeline",
+  "class": "main-benefits-timeline",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "transparent" },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    { "type": "font_picker", "label": "Regular Font", "id": "title_font", "default": "montserrat_n4" },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    { "type": "color", "id": "tl_bg", "label": "Timeline Background", "default": "#E5E5E5" },
+    { "type": "color", "id": "tl_title", "label": "Timeline Title", "default": "#000" },
+    { "type": "color", "id": "tl_text", "label": "Timeline Text", "default": "#000" },
+    { "type": "color", "id": "dot_color", "label": "Dot Color", "default": "#D9D9D9" },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>What Happens After You Start Using [Product Name]</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>Experience [Benefit 1], [Benefit 2], And [Benefit 3] Without [Common Objections].</h3>"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Milestone",
+      "settings": [
+        {
+          "type": "text",
+          "id": "month",
+          "label": "Month",
+          "default": "1st Month"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "[Short line describing what they'll start noticing or achieving and how it benefits their daily life]"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "icon Image",
+          "info": "Recommended size: 200x200px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits Timeline",
+      "category": "Info",
+      "blocks": [{ "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,298 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection-list",
+      "settings": {
+        "title": "<h2>Find Your Perfect [Product/Category]</h2>",
+        "subtitle": "<h3>[Short enticing line that highlights variety, style, or quality]</h3>",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "heading_align": "center",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "title_font_bold": "montserrat_n7",
+        "background_color": "#ffffff",
+        "section_width": "contained",
+        "padding_lr_desk": 20,
+        "padding_tb_desk": 20,
+        "padding_lr_mob": 20,
+        "padding_tb_mob": 20,
+        "display_on": "all",
+        "secondary_image_highlight": false,
+        "card_title_line": true,
+        "card_title_typography": "capitalize",
+        "card_clickable": true,
+        "container_styling": "card", 
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_background": "rgba(0,0,0,0)",
+        "card_padding": 10,
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 10,
+        "column_prod_mob": "2",
+        "show_cta": true,
+        "show_arrow": true,
+        "settging_btn": "global",
+        "button_border_size": 1,
+        "button_border_color": "#000000",
+        "button_radius": 10,
+        "button_color": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "text_btn_card": "SHOP NOW"
+      }
+    },
+    "yas_image_with_text_k6gYb4": {
+      "type": "yas-image-with-text",
+      "name": "Image With Text",
+      "settings": {
+        "heading": "<h2>[Achieve desired outcome] without [biggest frustration or common pain point]</h2>",
+        "description": "<h3>Our [product/service] is designed to you [benefit 1], [benefit 2], and [benefit 3] without [common objection].</h3>",
+        "background_color": "rgba(0,0,0,0)",
+        "title_size": "small",
+        "title_format": "capitalize",
+        "text_color": "#000000",
+        "padding_x_desk": 20,
+        "padding_y_desk": 80,
+        "padding_x_mob": 20,
+        "padding_y_mob": 30,
+        "display_on": "all",
+        "text_color_list": "#000000",
+        "image_position": "left",
+        "icon_1_text": "",
+        "point_1_text": "[Leverage your USP (ex. guarantee, free shipping, natural ingreidents)]",
+        "icon_2_text": "",
+        "point_2_text": "[Leverage your USP (ex. guarantee, free shipping, natural ingreidents)]",
+        "icon_3_text": "",
+        "point_3_text": "[Leverage your USP (ex. guarantee, free shipping, natural ingreidents)]",
+        "button_text": "BUTTON NAME",
+        "button_link": "",
+        "settging_btn": "global",
+        "button_border_size": 1,
+        "button_border_color": "#000000",
+        "button_radius": 10,
+        "button_color": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "yas_gallery_i7KBAH": {
+      "type": "yas-gallery",
+      "blocks": {
+        "photo_slide_GR8mny": {
+          "type": "photo_slide",
+          "settings": {}
+        },
+        "testimonial_slide_7whWKP": {
+          "type": "testimonial_slide",
+          "settings": {
+            "rating": "<p>★★★★★</p>",
+            "name": "Leslie Alexander",
+            "status": "Verified Customer",
+            "text": "<p>Fantastic experience overall. The product feels reliable, easy to use, and worth every penny.</p>"
+          }
+        },
+        "photo_slide_Wb7FtN": {
+          "type": "photo_slide",
+          "settings": {}
+        },
+        "testimonial_slide_BBnRb7": {
+          "type": "testimonial_slide",
+          "settings": {
+            "rating": "<p>★★★★★</p>",
+            "name": "Leslie Alexander",
+            "status": "Verified Customer",
+            "text": "<p>Very happy with my purchase. Everything arrived on time and performed exactly as expected.</p>"
+          }
+        },
+        "photo_slide_dxLNwQ": {
+          "type": "photo_slide",
+          "settings": {}
+        },
+        "testimonial_slide_q7YCfj": {
+          "type": "testimonial_slide",
+          "settings": {
+            "rating": "<p>★★★★★</p>",
+            "name": "Leslie Alexander",
+            "status": "Verified Customer",
+            "text": "<p>Fantastic experience overall. The product feels reliable, easy to use, and worth every penny.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "photo_slide_GR8mny",
+        "testimonial_slide_7whWKP",
+        "photo_slide_Wb7FtN",
+        "testimonial_slide_BBnRb7",
+        "photo_slide_dxLNwQ",
+        "testimonial_slide_q7YCfj"
+      ],
+      "name": "Gallery",
+      "settings": {
+        "background_color": "rgba(0,0,0,0)",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "title_color": "#000000",
+        "subtitle_color": "#000000",
+        "status_color": "#000000",
+        "body_color": "#000000",
+        "heading_align": "center",
+        "section_width": "container-fluid",
+        "padding_x_desk": 0,
+        "padding_y_desk": 100,
+        "padding_x_mob": 15,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "scroll_speed": 15,
+        "auto_scroll": true,
+        "enable_arrow": true,
+        "title": "<h2>What people are saying</h2>",
+        "subtitle": "<h3>Real Stories From People Who Made The Switch.</h3>",
+        "container_styling": "card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_background": "#f4f4f4",
+        "card_border": 0,
+        "card_border_color": "#000000",
+        "container_radius": 10
+      }
+    },
+    "yas_faq_N86dBg": {
+      "type": "yas-faq",
+      "blocks": {
+        "faq_block_6MjhF6": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What make [product name] different?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_exxtpk": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_J9wLBx": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_XxNxnA": {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will my order arrive?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_EiBPNC": {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will i see results?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_MaPqNN": {
+          "type": "faq_block",
+          "settings": {
+            "title": "is [product name] safe to use?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        "faq_block_aWKChL": {
+          "type": "faq_block",
+          "settings": {
+            "title": "can i cancel or return my order?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        }
+      },
+      "block_order": [
+        "faq_block_6MjhF6",
+        "faq_block_exxtpk",
+        "faq_block_J9wLBx",
+        "faq_block_XxNxnA",
+        "faq_block_EiBPNC",
+        "faq_block_MaPqNN",
+        "faq_block_aWKChL"
+      ],
+      "name": "FAQ Section",
+      "settings": {
+        "title": "<h2>Frequently Asked Questions</h2>",
+        "under_title_text": "<h3>Got Questions? We’ve Got Answers!</h3>",
+        "heading_align": "center",
+        "background_color": "#ebebeb",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "padding_lr_desk": 20,
+        "padding_tb_desk": 100,
+        "padding_lr_mob": 20,
+        "padding_tb_mob": 40,
+        "text_color": "#000000",
+        "subtitle_color": "#000000",
+        "display_on": "all",
+        "show_video": true,
+        "video_aligment": "right",
+        "faq_background_color": "#ffffff",
+        "faq_border_color": "#e0e0e0",
+        "faq_border_size": 1,
+        "title_color_block": "#252525",
+        "text_color_block": "#696969"
+      }
+    },
+    "yas_email_sign_up_aL4hit": {
+      "type": "yas-email-sign-up",
+      "name": "Newsletter Signup Bar",
+      "settings": {
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "star_color": "#ff8e00",
+        "heading_align": "center",
+        "background_color": "#ffffff",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "padding_x_desk": 70,
+        "padding_y_desk": 100,
+        "padding_x_mob": 15,
+        "padding_y_mob": 40,
+        "display_on": "all",
+        "title": "<h2>sign up to our Free newsletter & receive [benefit]</h2>",
+        "subtitle": "<h3>Join our community of [number] and receive [benefit].</h3>",
+        "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
+        "placeholder_text": "Enter your email address",
+        "privacy_text": "<p>We will never share your information</p>",
+        "input_color": "#000000",
+        "input_border_color": "#000000",
+        "setting_btn": "global",
+        "button_border_size": 1,
+        "button_border_color": "#000000",
+        "show_arrow": true,
+        "button_radius": 10,
+        "button_color": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "button_text": "GET YOURS NOW"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "yas_image_with_text_k6gYb4",
+    "yas_gallery_i7KBAH",
+    "yas_faq_N86dBg",
+    "yas_email_sign_up_aL4hit"
+  ]
+}

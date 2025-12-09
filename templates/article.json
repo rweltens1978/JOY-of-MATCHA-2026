@@ -1,0 +1,47 @@
+{
+  "wrapper": "div.page__blog-post",
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "home_text": "Home",
+        "blogs_text": "Blog", 
+        "show_breadcrumbs": true,
+        "blog_show_date": true,
+        "blog_show_author": true,
+        "posted_on_text": "Posted on",
+        "bottom_banner_background_color": "#e6e6e6",
+        "bottom_banner_heading": "Add collection highlight introduction",
+        "bottom_banner_title": "Add emotive proposition for collection highlight",
+        "bottom_banner_button_link": "shopify:\/\/collections",
+        "bottom_banner_button_text": "Get Mine Now",
+        "bottom_banner_enable_payment_icons": false,
+        "bottom_banner_show_reviews": true,
+        "sidebar_banner_background_color": "#e6e6e6",
+        "sidebar_banner_heading": "",
+        "sidebar_banner_title": "Add emotive proposition for collection highlight",
+        "sidebar_banner_button_link": "shopify:\/\/collections",
+        "sidebar_banner_button_text": "Get Mine Now",
+        "sidebar_banner_enable_payment_icons": true,
+        "sidebar_banner_show_reviews": true,
+        "sidebar_products_title": "Featured in this article",
+        "sidebar_products_save_text": "Save"
+      }
+    },
+    "1635419816fad5db37": {
+      "type": "related-blogs",
+      "settings": {
+        "background_color": "#eeeeee",
+        "title": "You may also be interested in…",
+        "posted_on_text": "Posted on",
+        "read_more_text": "Continue reading",
+        "show_date": true,
+        "show_author": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1635419816fad5db37"
+  ]
+}

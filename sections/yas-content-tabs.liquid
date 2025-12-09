@@ -1,0 +1,805 @@
+{%- liquid
+  assign section_prefix_class = 'tabbed-content'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .tabbed-content :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .tabbed-content .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    font-size: 24px;
+    vertical-align: middle;
+  }
+
+  .tabbed-content a {
+    transition: all 0.3s ease;
+  }
+
+  .tabbed-content a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .tabbed-content_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .tabbed-content_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .tabbed-content_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .tabbed-content_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .tabbed-content_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .tabbed-content_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .tabbed-content_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .tabbed-content_wrapper.inner-padding .container,
+  .tabbed-content_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .tabbed-content .tabbed-content_wrapper {
+    text-align: var(--heading-align);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tabbed-content_content-wrapper {
+    position: relative;
+    text-align: var(--heading-align);
+  }
+
+  .tabbed-content .heading {
+    max-width: 50%;
+  }
+  .tabbed-content .title h2,
+  .tabbed-content .title h1,
+  .tabbed-content .title h3,
+  .tabbed-content .title p {
+    font-size: var(--font-size);
+    line-height: 110%;
+    font-weight: 700;
+    text-transform: var(--heading-transform);
+    color: var(--title-color);
+    margin: 0;
+    text-align: var(--heading-align);
+    margin-bottom: 40px;
+  }
+
+  .tabbed-content .subtitle h2,
+  .tabbed-content .subtitle h3,
+  .tabbed-content .subtitle h1,
+  .tabbed-content .subtitle p {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 150%;
+    margin: 0;
+    margin-bottom: 32px;
+    text-align: var(--heading-align);
+    color: var(--subtitle-color);
+  }
+
+  .tabbed-content ul li {
+    margin-bottom: 26.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: var(--heading-justify);
+  }
+
+  .tabbed-content ul {
+    padding: 0;
+  }
+
+  .tab-button {
+    background: var(--tab-bg);
+    border: none;
+    padding: 0 20px;
+    margin: 0;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--tab-color);
+    /* Center vertically */
+    line-height: 91px;
+    position: relative;
+    flex: 1;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tab-button.active {
+    background: var(--tab-fg-color);
+    color: var(--tab-text-color);
+  }
+
+  .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid var(--tab-fg-color);
+  }
+
+  .tab-image img,
+  .tab-image .placeholder-image,
+  .tab-image .placeholder-image svg {
+    width: 100%;
+    height: 460px;
+    border-radius: var(--img-round);
+    object-fit: cover;
+  }
+
+  .tab-text {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 80px;
+    color: var(--body-color);
+  }
+
+  @media (min-width: 769px) {
+    .tabbed-content .tabbed-content_wrapper {
+      display: var(--display-value);
+    }
+  }
+
+  /* Mobile responsive dynamic styles */
+  @media (max-width: 768px) {
+    .tabbed-content .tabbed-content_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .tabbed-content_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .tabbed-content_wrapper.inner-padding .container,
+    .tabbed-content_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .tabbed-content_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .tabbed-content .heading {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .tabbed-content .title h2,
+    .tabbed-content .title h1,
+    .tabbed-content .title h3,
+    .tabbed-content .title p {
+      font-size: var(--xs-heading-size);
+      line-height: auto;
+      margin: 0;
+      margin-bottom: 24px;
+    }
+
+    .tabbed-content .subtitle h2,
+    .tabbed-content .subtitle h1,
+    .tabbed-content .subtitle h3,
+    .tabbed-content .subtitle p {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+
+    .tabbed-content ul li {
+      margin-bottom: 16px;
+    }
+
+    .tab-button.active::after {
+      bottom: -8px;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid var(--tab-fg-color);
+    }
+  }
+{%- endstylesheet -%}
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+       --xs-heading-size: 20px;
+      {% when 'medium' %}
+       --xs-heading-size: 32px;
+      {% when 'large' %}
+       --xs-heading-size: 32px;
+    {% endcase %}
+    --body-color: {{ section.settings.body_color }};
+    --img-round: {{ section.settings.image_round }}px;
+    --tab-text-color: {{ section.settings.tabs_texta_color }};
+    --tab-fg-color: {{ section.settings.tabs_color }};
+    --tab-color: {{ section.settings.tabs_text_color }};
+    --tab-bg: {{ section.settings.tabs_color_non }};
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-justify: flex-start;
+      {% when 'center' %}
+      --heading-justify: center;
+      {% when 'right' %}
+      --heading-justify: flex-end;
+    {% endcase %}
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-align: left;
+      {% when 'center' %}
+      --heading-align: center;
+      {% when 'right' %}
+      --heading-align: right;
+    {% endcase %}
+    --title-color: {{ section.settings.title_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+        --font-size: 28px;
+      {% when 'medium' %}
+        --font-size: 40px;
+      {% when 'large' %}
+        --font-size: 48px;
+    {% endcase %}
+    {% if section.settings.section_width == 'full' %}
+    --width-value: 100%;
+    {% else %}
+    --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        <div class="tabs-container">
+          {% for block in section.blocks %}
+            <button
+              class="tab-button {{ block.shopify_attributes }} {% if forloop.first %}active{% endif %}"
+              data-tab="{{ block.id }}"
+            >
+              {{ block.settings.tab_title }}
+            </button>
+          {% endfor %}
+        </div>
+        <div class="tab-content">
+          {% for block in section.blocks %}
+            {%- liquid
+              assign placeholder_index = forloop.index | modulo: 4
+              if placeholder_index == 0
+                assign placeholder_index = 4
+              endif
+            -%}
+            <div
+              class="tab-pane {% if forloop.first %}active{% endif %}"
+              data-tab="{{ block.id }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="tab-image">
+                {% if block.settings.tab_image %}
+                  {%- liquid
+                    assign max_width = block.settings.tab_image.width
+                    if block.settings.tab_image > 1400
+                      assign max_width = 1400
+                    endif
+                    assign image_height = max_width | divided_by: block.settings.tab_image.aspect_ratio | round
+
+                    capture image_alt
+                      if block.settings.tab_image.alt != blank
+                        echo block.settings.tab_image.alt
+                      elsif block.settings.tab_image.alt == blank
+                        echo 'image_alternative.static' | t
+                      else
+                        echo block.settings.tab_title
+                      endif
+                    endcapture
+
+                    capture sizes_attr
+                      echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 54.902vw'
+                    endcapture
+                  -%}
+                  {{-
+                    block.settings.tab_image
+                    | image_url: width: max_width
+                    | image_tag:
+                      loading: 'lazy',
+                      width: max_width,
+                      height: image_height,
+                      sizes: sizes_attr,
+                      alt: image_alt,
+                      class: ''
+                  -}}
+                {% else %}
+                  <div class="placeholder-image">
+                    {%- render 'placeholder-svgs', type: 'hero', index: placeholder_index, class: '' -%}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="tab-text heading word--break">
+                <div class="title word--break">{{ block.settings.title }}</div>
+                <div class="subtitle word--break">{{ block.settings.subtitle }}</div>
+                <ul class="image-with-text-list word--break">
+                  <li class="word--break">
+                    {% if block.settings.icon_1 != blank %}
+                      {%- liquid
+                        assign max_width = block.settings.icon_1.width
+                        if block.settings.icon_1 > 24
+                          assign max_width = 24
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.icon_1.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.icon_1.alt != blank
+                            echo block.settings.icon_1.alt
+                          else
+                            echo 'Icon 1'
+                          endif
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.icon_1
+                        | image_url: width: max_width
+                        | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                      -}}
+                    {% else %}
+                      {% if block.settings.icon_1_text != blank %}
+                        <span class="material-symbols-outlined">{{ block.settings.icon_1_text }}</span>
+                      {% else %}
+                        {% render 'icon_number_1' %}
+                      {% endif %}
+                    {% endif %}
+                    {{ block.settings.point_1_text }}
+                  </li>
+                  <li class="word--break">
+                    {% if block.settings.icon_2 != blank %}
+                      {%- liquid
+                        assign max_width = block.settings.icon_2.width
+                        if block.settings.icon_2 > 24
+                          assign max_width = 24
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.icon_2.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.icon_2.alt != blank
+                            echo block.settings.icon_2.alt
+                          else
+                            echo 'Icon 2'
+                          endif
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.icon_2
+                        | image_url: width: max_width
+                        | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                      -}}
+                    {% else %}
+                      {% if block.settings.icon_2_text != blank %}
+                        <span class="material-symbols-outlined">{{ block.settings.icon_2_text }}</span>
+                      {% else %}
+                        {% render 'icon_number_2' %}
+                      {% endif %}
+                    {% endif %}
+                    {{ block.settings.point_2_text }}
+                  </li>
+                  <li class="word--break">
+                    {% if block.settings.icon_3 != blank %}
+                      {%- liquid
+                        assign max_width = block.settings.icon_3.width
+                        if block.settings.icon_3 > 24
+                          assign max_width = 24
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.icon_3.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.icon_3.alt != blank
+                            echo block.settings.icon_3.alt
+                          else
+                            echo 'Icon 3'
+                          endif
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.icon_3
+                        | image_url: width: max_width
+                        | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                      -}}
+                    {% else %}
+                      {% if block.settings.icon_3_text != blank %}
+                        <span class="material-symbols-outlined">{{ block.settings.icon_3_text }}</span>
+                      {% else %}
+                        {% render 'icon_number_3' %}
+                      {% endif %}
+                    {% endif %}
+                    {{ block.settings.point_3_text }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const section = document.querySelector('.tabs');
+    const tabButtons = section.querySelectorAll('.tab-button');
+    const tabPanes = section.querySelectorAll('.tab-pane');
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const tabId = button.getAttribute('data-tab');
+
+        // Remove active class from all buttons and panes
+        tabButtons.forEach((btn) => btn.classList.remove('active'));
+        tabPanes.forEach((pane) => pane.classList.remove('active'));
+
+        // Add active class to clicked button and corresponding pane
+        button.classList.add('active');
+        section.querySelector(`.tab-pane[data-tab="${tabId}"]`).classList.add('active');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Tabbed Content",
+  "class": "tabs tabbed-content",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "transparent" },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    { "type": "font_picker", "label": "Regular Font", "id": "title_font", "default": "montserrat_n4" },
+    { "type": "color", "id": "title_color", "label": "Title Color", "default": "#000" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle Color", "default": "#666" },
+    { "type": "color", "id": "body_color", "label": "Icon Text Colour", "default": "#000" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "image_round",
+      "label": "Image Round Corner",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "tabs_color",
+      "label": "Tab Caption Backgroundcolor",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "tabs_color_non",
+      "label": "Tab Caption Non Active Backgroundcolor",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "tabs_texta_color",
+      "label": "Tab Caption Active Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "tabs_text_color",
+      "label": "Tab Caption Text Color",
+      "default": "#000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "Content Tab 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "tab_image",
+          "label": "Tab Image"
+        },
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "<h2>[Short promise or feature] that [solves key frustration or delivers benefit]</h2>"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "<h3>[Explain how this feature, category, or use case makes life easier or better.]</h3>"
+        },
+        {
+          "type": "header",
+          "content": "Icons Settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_1",
+          "label": "Icon Image For Point 1"
+        },
+        {
+          "type": "text",
+          "id": "icon_1_text",
+          "label": "Icon Symbol For Point 1"
+        },
+        {
+          "type": "text",
+          "id": "point_1_text",
+          "label": "Text For Point 1",
+          "default": "[Short benefit or use] without [common objection]"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_2",
+          "label": "Icon Image For Point 2"
+        },
+        {
+          "type": "text",
+          "id": "icon_2_text",
+          "label": "Icon Symbol For Point 2"
+        },
+        {
+          "type": "text",
+          "id": "point_2_text",
+          "label": "Text for Point 2",
+          "default": "[Short benefit or use] without [common objection]"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_3",
+          "label": "Icon Image For Point 3"
+        },
+        {
+          "type": "text",
+          "id": "icon_3_text",
+          "label": "Icon Symbol For Point 3"
+        },
+        {
+          "type": "text",
+          "id": "point_3_text",
+          "label": "Text For Point 3",
+          "default": "[Short benefit or use] without [common objection]"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabbed Content",
+      "category": "Info",
+      "blocks": [
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

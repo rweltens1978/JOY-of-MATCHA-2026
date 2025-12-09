@@ -1,0 +1,869 @@
+<div id="{{- section.id -}}">
+  {% assign hasProduct = false %}
+  {% assign hasArticle = false %}
+  {% if search.results.size > 0 %}
+    {%- for item in search.results -%}
+      {% if item.object_type == "product" %}
+        {% assign hasProduct = true %}
+        {% break %}
+      {% endif %}
+    {%- endfor -%}
+    {%- for item in search.results -%}
+      {% if item.object_type == "article" or item.object_type == "page" %}
+        {% assign hasArticle = true %}
+        {% break %}
+      {% endif %}
+    {%- endfor -%}
+  {% endif %}
+  {% if hasArticle or hasProduct %}
+      <div class="search__result">
+          {% if hasProduct %}
+            {%- liquid
+              assign sort_by = search.sort_by | default: search.default_sort_by
+              assign base_url = request.path
+          
+              if search.url
+                assign results_url = search.url
+                else
+                  assign terms = search.terms | escape
+                  assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+              endif
+              
+              assign current_sort = ''
+              capture sort_value
+                for option in search.sort_options
+                  if option.value == sort_by
+                    assign current_sort = option.name
+                    echo option.value
+                  endif
+                endfor
+              endcapture
+              assign base_url = base_url | append: results_url
+            -%}
+            <div class="pt-25">
+              <div class="container">
+                <div class="main-featured-product-grid_facets-bar">
+                  {%- liquid
+                    for filter in search.filters
+                      case filter.type
+                        when 'price_range'
+                          if filter.min_value.value != null or filter.max_value.value != null
+                            assign price_min_filter = filter.min_value.param_name
+                            assign price_max_filter = filter.max_value.param_name
+          
+                            assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                            assign uses_comma_decimals = false
+                            if currencies_using_comma_decimals contains cart.currency.iso_code
+                              assign uses_comma_decimals = true
+                            endif
+          
+                            assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', ''
+                            if uses_comma_decimals
+                              assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                            endif
+          
+                            if filter.max_value.value
+                              assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', ''
+                              if uses_comma_decimals
+                                assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                              endif
+                              else
+                                assign filter_max_value = filter.range_max | money_without_currency | replace: ',', ''
+                                if uses_comma_decimals
+                                  assign filter_max_value = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+                                endif
+                            endif
+          
+                            assign price_min_filter = price_min_filter | append: '=' | append: filter_min_value
+                            assign price_max_filter = price_max_filter | append: '=' | append: filter_max_value
+                            unless base_url contains '?'
+                              assign base_url = base_url | append: '?' | append: price_min_filter | append: '&' | append: price_max_filter
+                              else
+                                assign base_url = base_url | append: '&' | append: price_min_filter | append: '&' | append: price_max_filter
+                            endunless
+                          endif
+                        when 'boolean', 'list'
+                          for value in filter.active_values
+                            assign active_filter_param = value.param_name | append: '=' | append: value.value
+          
+                            if base_url contains '?'
+                              assign base_url = base_url | append: '&' | append: active_filter_param
+                              else
+                                assign base_url = base_url | append: '?' | append: active_filter_param
+                            endif
+                          endfor
+                      endcase
+                    endfor
+          
+                    capture filter_url
+                      unless base_url contains '?'
+                        echo base_url | append: '?'
+                        else
+                          echo base_url | append: '&'
+                      endunless
+                    endcapture
+                  -%}
+                  <facets-filter
+                    hidden
+                    data-sections='[
+                      {
+                        "id": "{{ section.id }}",
+                        "selectors": ["[data-render-params]", "[data-render-grid]", "[data-render-facets]", "[data-render-actives]"]
+                      }
+                    ]'
+                  >
+                    <input type="hidden" value="{% unless filter_url contains '?' %}?section_id=section-facets{% else %}&section_id=section-facets{% endunless %}" id="modal-section">
+                    <input type="hidden" value="{% unless filter_url contains '?' %}?sections[]=section-facets&sections[]={{ section.id }}{% else %}&sections[]=section-facets&sections[]={{ section.id }}{% endunless %}" id="filters-sections">
+                    <span data-render-params="">
+                      <input type="hidden" value="{{- filter_url -}}" id="filters-params">
+                    </span>
+                    <input type="hidden" value="{{- results_url -}}" id="base-url">
+                  </facets-filter>
+                  <div class="main-featured-product-grid_facets-wrap">
+                    <div class="main-featured-product-grid_facets-modal-wrap" data-render-facets="">
+                      <filters-dropdown class="main-featured-product-grid_facets-filters-dropdown">
+                        <button
+                          type="button"
+                          aria-expanded="false"
+                          class="main-featured-product-grid_facets-toggler"
+                          data-dropdown-toggler=""
+                        >
+                          <i class="main-featured-product-grid_facets-toggler-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="19" viewBox="0 0 21 19" fill="none">
+                              <path d="M20.5 0.5H0.5L8.5 9.96V16.5L12.5 18.5V9.96L20.5 0.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </i>
+                          Filters
+                          <i class="main-featured-product-grid_facets-toggler-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="7" viewBox="0 0 13 7" fill="none">
+                              <path d="M0.5 0.5L6.5 6.5L12.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </i>
+                        </button>
+                        <div
+                          class="main-featured-product-grid_facets-filters-dropdown-content"
+                          data-dropdown-content=""
+                          data-frames='[{"opacity":"0"},{"opacity":"1"}]'
+                          data-options='{"duration":300,"easing":"ease","delay":0,"fill":"both","iterations":1}'
+                        >
+                          {%- render 'facets', results: search -%}
+                        </div>
+                      </filters-dropdown>
+                    </div>
+                    <div class="main-featured-product-grid_facets-sorter-wrap">
+                      <sort-dropdown
+                        class="main-featured-product-grid_facets-dropdown-sort"
+                      >
+                        <button
+                          type="button"
+                          class="main-featured-product-grid_facets-sort-toggler"
+                          aria-expanded="false"
+                          data-dropdown-toggler=""
+                        >
+                          Sort by <span data-current-value="">{{ current_sort -}}</span>
+                          <i class="main-featured-product-grid_facets-toggler-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="7" viewBox="0 0 13 7" fill="none">
+                              <path d="M0.5 0.5L6.5 6.5L12.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </i>
+                        </button>
+                        <div
+                          class="main-featured-product-grid_facets-sort-content"
+                          data-frames='[{"opacity":"0","transform":"translateY(10px)"},{"opacity":"1","transform":"translateY(0px)"}]'
+                          data-options='{"duration":300,"easing":"ease","delay":0,"fill":"both","iterations":1}'
+                          data-dropdown-content=""
+                        >
+                          <ul class="list-unstyled main-featured-product-grid_facets-sort-list">
+                            {%- for option in search.sort_options -%}
+                              <li class="main-featured-product-grid_facets-sort-list-item">
+                                <button
+                                  data-btn-sort=""
+                                  type="button"
+                                  class="main-featured-product-grid_facets-sort-action-btn {% if option.value == sort_by %}main-featured-product-grid_facets-sort-action-btn--active{% endif %}"
+                                  data-value="{{- option.value | escape -}}"
+                                  data-text="{{- option.name | escape -}}"
+                                >
+                                  {{- option.name | escape -}}
+                                </button>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                        <input type="hidden" name="sort_by" value="{{- sort_value -}}">
+                      </sort-dropdown>
+                    </div>
+                  </div>
+                  {%- liquid
+                    assign active_filters_size = 0
+          
+                    for filter in search.filters
+                      for value in filter.active_values
+                        assign active_filters_size = active_filters_size | plus: 1
+                      endfor
+          
+                      if filter.type == 'price_range'
+                        if filter.min_value.value != null or filter.max_value.value != null
+                          assign active_filters_size = active_filters_size | plus: 1
+                        endif
+                      endif
+                    endfor
+                  -%}
+                  <div class="main-featured-product-grid_facets-active" data-render-actives="">
+                    <div class="main-featured-product-grid_facets-active-wrap {% unless active_filters_size > 0 %}main-featured-product-grid_facets-active--hidden{% endunless %}">
+                      {%- for filter in search.filters -%}
+                        {%- for value in filter.active_values -%}
+                          <facet-remove-button
+                            data-name="{{- filter.param_name -}}"
+                            data-value="{{- value.value -}}"
+                          >
+                            <button type="button" class="main-featured-product-grid_facet-remover">
+                              {{- value.label | escape -}}
+                              <i class="main-featured-product-grid_facet-remover-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                  <path d="M18 6L6 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M6 6L18 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              </i>
+                            </button>
+                          </facet-remove-button>
+                        {%- endfor -%}
+                        {% if filter.type == 'price_range' %}
+                          {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                            <facet-remove-button
+                              data-name="{{- filter.param_name -}}"
+                            >
+                              <button type="button" class="main-featured-product-grid_facet-remover">
+                                {%- liquid
+                                  if filter.min_value.value
+                                    echo filter.min_value.value | money
+                                    else
+                                      echo 0 | money
+                                  endif
+                                  echo ' - '
+                                  if filter.max_value.value
+                                    echo filter.max_value.value | money
+                                    else
+                                      echo filter.range_max | money
+                                  endif
+                                -%}
+                                <i class="main-featured-product-grid_facet-remover-icn">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 6L6 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M6 6L18 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                </i>
+                              </button>
+                            </facet-remove-button>
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <facet-remove-button
+                        data-name="all"
+                      >
+                        <button type="button" class="main-featured-product-grid_facets-remove-all">
+                          Reset all
+                        </button>
+                      </facet-remove-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="search__result-product pt-25 pb-20 pt-md-50 pb-md-30 product__grid" data-render-grid="">
+                {% paginate search.results by 16 %}
+                <div class="container">
+                    <div class="pure-g justify-content-center">
+                        <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
+                            <div class="search__result-head text-center">
+                                <h2 class="title">{{section.settings.product_results_text}} "{{ search.terms | escape }}"</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pure-g">
+                        {%- for item in search.results -%}
+                            {% if item.object_type == "product" %}
+                                {% render 'custom-product-card', product_card_product: item, show_secondary_image: section.settings.show_secondary_image, show_vendor: section.settings.show_vendor, show_rating: section.settings.show_rating, is_related_products: false, enable_filtering: false %}
+                            {% endif %}
+                        {%- endfor -%}
+                    </div>
+                    {%- if paginate.pages > 1 -%}
+                        {% render 'pagination', paginate: paginate %}
+                    {%- endif -%}
+                </div>
+                {% endpaginate %}
+            </div>
+          {% endif %}
+          {% if hasArticle %}
+              <div class="search__result-article d-block pt-25 pb-20 pt-md-50 pb-md-30">
+                  {% paginate search.results by 16 %}
+                  <div class="container">
+                      <div class="pure-g gutter-xl-45">
+                          <div class="pure-u-1">
+                              <h2 class="title">{{section.settings.article_results_text}} "{{ search.terms | escape }}"</h2>
+                          </div>
+                          {%- for item in search.results -%}
+                              {% if item.object_type == "article" %}
+                                  {%- render 'article-card', article: item, show_date: section.settings.show_date, show_author: section.settings.show_author, posted_on_text: section.settings.posted_on_text -%}
+                              {% elsif item.object_type == "page" %}
+                                  {%- render 'search-page', item: item -%}
+                              {% endif %}
+                          {%- endfor -%} 
+                      </div>
+                  </div>
+                  {% endpaginate %}
+              </div>
+          {% endif %}
+      </div>
+  {% else %}
+      <div class="search__result">
+          <div class="search__result-product pt-25 pb-20 pt-md-50 pb-md-30">
+              <div class="container">
+                  <div class="pure-g justify-content-center">
+                      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
+                          <div class="search__result-head text-center">
+                              <h2 class="title">{{ 'templates.search.no_results' | t: terms: search.terms }}</h2>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  {% endif %}
+</div>
+{%- javascript -%}
+  const trapFocus = (container, elementToFocus = container, shouldTrap = true) => {
+    const handlers = trapFocus._handlers || (trapFocus._handlers = {});
+    const getFocusableElements = (container) => {
+      return Array.from(
+        container.querySelectorAll(
+          "summary, a[href], button:enabled, [tabindex]:not([tabindex^='-']), [draggable], area, input:not([type=hidden]):enabled, select:enabled, textarea:enabled, object, iframe"
+        )
+      );
+    };
+    const remove = (focusTarget = null) => {
+      document.removeEventListener('focusin', handlers.focusin);
+      document.removeEventListener('focusout', handlers.focusout);
+      document.removeEventListener('keydown', handlers.keydown);
+      if (focusTarget) focusTarget.focus();
+    };
+    if (!shouldTrap) {
+      remove(elementToFocus);
+      return;
+    }
+    const elements = getFocusableElements(container);
+    const first = elements[0];
+    const last = elements[elements.length - 1];
+    remove();
+    handlers.keydown = (event) => {
+      if (event.code.toUpperCase() !== 'TAB') return;
+      if (event.target === last && !event.shiftKey) {
+        event.preventDefault();
+        first.focus();
+      }
+      if ((event.target === container || event.target === first) && event.shiftKey) {
+        event.preventDefault();
+        last.focus();
+      }
+      if (!container.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    handlers.focusin = (event) => {
+      if (
+        event.target !== container &&
+        event.target !== last &&
+        event.target !== first
+      ) return;
+      document.addEventListener('keydown', handlers.keydown);
+    };
+    handlers.focusout = () => {
+      document.removeEventListener('keydown', handlers.keydown);
+    };
+    document.addEventListener('focusin', handlers.focusin);
+    document.addEventListener('focusout', handlers.focusout);
+    elementToFocus.focus();
+    if (
+      elementToFocus.tagName === 'INPUT' &&
+      ['search', 'text', 'email', 'url'].includes(elementToFocus.type) &&
+      elementToFocus.value
+      ) {
+        elementToFocus.setSelectionRange(0, elementToFocus.value.length);
+      }
+  };
+  const debounce = (fn, wait) => {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+  const setFilterParam = (param, value, remove = false, getParams = false) => {
+    const input = document.getElementById('filters-params');
+    const url = new URL(input.value, window.location.origin);
+    if (getParams) return new URLSearchParams(url.searchParams).toString();
+    switch (remove) {
+      case true:
+        if (param.includes('price')) {
+          [...url.searchParams.keys()].forEach(key =>
+            key.includes('filter.v.price') && url.searchParams.delete(key)
+          );
+        } else {
+          if(!value){
+            url.searchParams.delete(param);
+          } else{
+            const valToDel = value;
+            const values = url.searchParams.getAll(param);
+            const updatedValues = values.filter(value => value !== valToDel);
+            url.searchParams.delete(param);
+            updatedValues.forEach(value => url.searchParams.append(param, value));
+          }
+        }
+        break;
+      case 'all':
+        [...url.searchParams.keys()].forEach(key =>
+          key.includes('filter') && url.searchParams.delete(key)
+        );
+        break;
+
+      default:
+        if (param.includes('price')) {
+          url.searchParams.set(param, value);
+        } else {
+          url.searchParams.append(param, value);
+        }
+        break;
+    }
+
+    input.value = url.toString();
+  };
+  const toggleLoader = (state) => {
+    const loader = document.querySelector('[data-theme-loader]');
+    if(!loader) return;
+    if(state){
+      loader.style.display = 'flex';
+      loader.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 300,
+        fill: 'forwards',
+        easing: 'ease'
+      }).onfinish = () => {
+        loader.classList.add('theme-loader--active');
+      };
+      return;
+    }
+    loader.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 300,
+      fill: 'forwards',
+      easing: 'ease'
+    }).onfinish = () => {
+      loader.classList.remove('theme-loader--active');
+      loader.style.display = 'none';
+    };
+  };
+  class FiltersDropdown extends HTMLElement {
+    constructor() {
+      super();
+
+      this.button = this.querySelector('[data-dropdown-toggler]');
+      this.content = this.querySelector('[data-dropdown-content]');
+      this.items = this.querySelectorAll('input');
+      this.closeButton = this.querySelector('[data-dropdown-close-btn]');
+      if (!this.button || !this.content) return;
+      this.button.addEventListener('click', (event) => {
+        if (this.button.getAttribute('aria-expanded') === 'true') return this.closeDropdown();
+        this.openDropdown();
+      });
+    }
+    connectedCallback() {
+      const self = this;
+      const doAnimate = (element) => {
+        const parseJSON = (key) => {
+          try {
+            return JSON.parse(self.content.dataset[key]);
+          } catch (e) {
+            return null;
+          }
+        };
+        const animationFrames = parseJSON('frames');
+        const timing = parseJSON('options');
+        if (!animationFrames || !timing) return;
+        element.animate(animationFrames, timing);
+      };
+      const applyColorScheme = () => {
+        const { colorScheme, schemeQuery } = this.dataset;
+        if (!colorScheme) return;
+        const classes = colorScheme.trim().split(/\s+/);
+        const query = parseFloat(schemeQuery);
+        if (!schemeQuery || isNaN(query)){
+          this.content.classList.add(...classes);
+          return;
+        }
+        if (screen.width >= query) this.content.classList.add(...classes);
+      };
+      const openDropdown = () => {
+        self.button.setAttribute('aria-expanded', true);
+        self.content.classList.add('dropdown--open');
+        doAnimate(self.content);
+        self.content.focus();
+        trapFocus(self.content);
+        document.body.addEventListener('click', onBodyClick);
+        self.addEventListener('keyup', onKeyUp);
+        this.initFilters();
+        if(this.closeButton) this.closeButton.addEventListener('click', this.closeDropdown);
+      };
+      const closeDropdown = () => {
+        closeDetailsTag();
+        self.button.setAttribute('aria-expanded', false);
+        self.content.classList.remove('dropdown--open');
+        self.button.focus();
+        document.body.removeEventListener('click', onBodyClick);
+        self.removeEventListener('keyup', onKeyUp);
+        this.fields.forEach(field => {
+          field.removeEventListener('input', this.debouncedOnSubmit.bind(this));
+        });
+        if(this.closeButton) this.closeButton.removeEventListener('click', this.closeDropdown);
+      };
+      const onBodyClick = (event) => {
+        const target = event.target;
+        if (
+          self.contains(target) ||
+          target === self ||
+          target === self.button && self.button.getAttribute('aria-expanded') === 'true'
+        ) return;
+        closeDropdown();
+      };
+      const onKeyUp = (event) => {
+        if (event.key !== 'Escape') return;
+        event.stopPropagation();
+        closeDropdown();
+      };
+      const closeDetailsTag = () => {
+        const tags = this.querySelectorAll('details');
+        tags.forEach(tag => {
+          tag.removeAttribute('open');
+        });
+      };
+      applyColorScheme();
+      this.openDropdown = openDropdown;
+      this.closeDropdown = closeDropdown;
+    }
+
+    initFilters(){
+      this.debouncedOnSubmit = debounce((event) => {
+        this.onSubmitHandler(event);
+      }, 500);
+      this.fields = this.querySelectorAll('input');
+      this.fields.forEach(field => {
+        field.addEventListener('input', this.debouncedOnSubmit.bind(this));
+      });
+    }
+
+    onSubmitHandler(event){
+      event.preventDefault();
+      const target = event.target;
+      switch(target.type){
+        case 'checkbox':
+          setFilterParam(target.name, target.value, !target.checked);
+          break;
+        case 'number':
+          setFilterParam(target.name, target.value);
+          break;
+        default:
+          break;
+      }
+      const facetsFilter = document.querySelector('facets-filter');
+      facetsFilter.onSubmitHandler(target.id);
+    }
+  }
+  if (!customElements.get('filters-dropdown')) { customElements.define('filters-dropdown', FiltersDropdown); }
+  class SortDropdown extends HTMLElement {
+    constructor() {
+      super();
+
+      this.button = this.querySelector('[data-dropdown-toggler]');
+      this.content = this.querySelector('[data-dropdown-content]');
+      this.items = this.content.querySelectorAll('[data-btn-sort]');
+      this.closeButton = this.querySelector('[data-dropdown-close-btn]');
+      if (!this.button || !this.content) return;
+      this.button.addEventListener('click', (event) => {
+        if (this.button.getAttribute('aria-expanded') === 'true') return this.closeDropdown();
+        this.openDropdown();
+      });
+    }
+    connectedCallback() {
+      const self = this;
+      const doAnimate = (element) => {
+        const parseJSON = (key) => {
+          try {
+            return JSON.parse(self.content.dataset[key]);
+          } catch (e) {
+            return null;
+          }
+        };
+        const animationFrames = parseJSON('frames');
+        const timing = parseJSON('options');
+        if (!animationFrames || !timing) return;
+        element.animate(animationFrames, timing);
+      };
+      const setCurrentValue = (target) => {
+        const elem = self.button.querySelector('[data-current-value]');
+        elem.textContent = target.dataset.text;
+        setFilterParam('sort_by', target.dataset.value);
+        const facetsFilter = document.querySelector('facets-filter');
+        facetsFilter.onSubmitHandler();
+        self.closeDropdown();
+      }
+      const onSortSelect = (event) => {
+        const target = event.target;
+        self.items.forEach(item => item.classList.remove('main-featured-product-grid_facets-sort-action-btn--active'));
+        target.classList.add('main-featured-product-grid_facets-sort-action-btn--active');
+        setCurrentValue(target);
+      }
+      const applyColorScheme = () => {
+        const { colorScheme, schemeQuery } = this.dataset;
+        if (!colorScheme) return;
+        const classes = colorScheme.trim().split(/\s+/);
+        const query = parseFloat(schemeQuery);
+        if (!schemeQuery || isNaN(query)){
+          this.content.classList.add(...classes);
+          return;
+        }
+        if (screen.width >= query) this.content.classList.add(...classes);
+      };
+      const openDropdown = () => {
+        self.button.setAttribute('aria-expanded', true);
+        self.content.classList.add('dropdown--open');
+        doAnimate(self.content);
+        self.content.focus();
+        trapFocus(self.content);
+        document.body.addEventListener('click', onBodyClick);
+        self.addEventListener('keyup', onKeyUp);
+        self.items.forEach(item => {item.addEventListener('click', self.sortSelect);});
+        if(this.closeButton) this.closeButton.addEventListener('click', this.closeDropdown);
+      };
+      const closeDropdown = () => {
+        const outerSelf = self.closest('menu-dropdown[data-level="1"]');
+        self.button.setAttribute('aria-expanded', false);
+        self.content.classList.remove('dropdown--open');
+        if(self.dataset.level === '2') trapFocus(outerSelf.content);
+        self.button.focus();
+        document.body.removeEventListener('click', onBodyClick);
+        self.removeEventListener('keyup', onKeyUp);
+        this.items.forEach(item => {item.removeEventListener('click', self.sortSelect);});
+        if(this.closeButton) this.closeButton.removeEventListener('click', this.closeDropdown);
+      };
+      const onBodyClick = (event) => {
+        const target = event.target;
+        if (
+          self.contains(target) ||
+          target === self ||
+          target === self.button && self.button.getAttribute('aria-expanded') === 'true'
+        ) return;
+        closeDropdown();
+      };
+      const onKeyUp = (event) => {
+        if (event.key !== 'Escape') return;
+        event.stopPropagation();
+        closeDropdown();
+      };
+      applyColorScheme();
+      this.sortSelect = onSortSelect.bind(this);
+      this.openDropdown = openDropdown;
+      this.closeDropdown = closeDropdown;
+    }
+  }
+  if (!customElements.get('sort-dropdown')) { customElements.define('sort-dropdown', SortDropdown); }
+  
+  class FacetRemoveButton extends HTMLElement {
+    connectedCallback() {
+      this.button = this.querySelector('button');
+      if (!this.button) return;
+
+      this.button.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const { name, value, valueArr } = this.dataset;
+        const values = valueArr || value || null;
+
+        setFilterParam(name === 'all' ? null : name, values, name === 'all' ? 'all' : true);
+
+        const facetsFilter = document.querySelector('facets-filter');
+        facetsFilter?.onSubmitHandler?.();
+      });
+    }
+  }
+
+  if (!customElements.get('facet-remove-button'))
+    customElements.define('facet-remove-button', FacetRemoveButton);
+
+
+  class FacetsFilter extends HTMLElement {
+    constructor() {
+      super();
+
+      this.cachedResults = [];
+      window.addEventListener('popstate', this.onHistoryChange.bind(this));
+    }
+
+    connectedCallback(){
+      this.initParams = setFilterParam(null, null, false, true);
+    }
+
+    onHistoryChange(event){
+      if(event.state && this.cachedResults.length === 0){
+        const searchParams = event.state ? event.state.searchParams : this.initParams;
+        const sectionsInput = document.querySelector('#filters-sections');
+        const baserUrl = document.querySelector('#base-url');
+        const url = baserUrl.value + '?' + searchParams + sectionsInput.value;
+        this.renderFetch(url, false, searchParams);
+        return;
+      }
+      
+      if(this.cachedResults && this.cachedResults.length > 0){
+        const searchParams = event.state ? event.state.searchParams : this.initParams;
+        const term = {params: searchParams};
+        if (this.cachedResults.some(key => key.params === term.params)) return this.renderFromCache(this.cachedResults, term, false);
+        const sectionsInput = document.querySelector('#filters-sections');
+        const baserUrl = document.querySelector('#base-url');
+        const url = baserUrl.value + '?' + searchParams + sectionsInput.value;
+        this.renderFetch(url, false, searchParams);
+      }
+    }
+
+    onSubmitHandler(target){
+      toggleLoader(true);
+      const input = document.querySelector('#filters-params');
+      let inputValue = input.value;
+      if(!inputValue.includes('?')) inputValue = input.value + '?';
+      const sectionsInput = document.querySelector('#filters-sections');
+      const url = inputValue + sectionsInput.value;
+      const searchParams = setFilterParam(null, null, false, true);
+      const term = {params: searchParams};
+      if(this.cachedResults.length > 0 && this.cachedResults.some(key => key.params === term.params)){
+        this.renderFromCache(this.cachedResults, term, true, target);
+        return;
+      }
+      this.renderFetch(url, true, searchParams, target);
+    }
+
+    renderFetch(url, updateURLHash = false, searchParams, target = null){
+      fetch(url)
+        .then(response => response.json())
+        .then((data) => {
+          const secArr = JSON.parse(this.dataset.sections);
+          secArr.forEach(section => {
+            const html = new DOMParser() .parseFromString(data[section.id], 'text/html').getElementById(section.id);
+            section.selectors.forEach(selector => {
+              const targetElement = document.querySelector(selector);
+              const sourceElement = html.querySelector(selector);
+              if (targetElement && sourceElement) {
+                targetElement.outerHTML = sourceElement.outerHTML;
+              }
+            });
+          });
+          const cacheObj = {params: searchParams, content: data};
+          this.cachedResults.push(cacheObj);
+        })
+        .catch((e) => {
+          throw e;
+        })
+        .finally(() => {
+          if(updateURLHash) this.updateURLHash(searchParams);
+          if(target){
+            const org = document.getElementById(target);
+            if(org) org.focus();
+          }
+          toggleLoader(false);
+        }
+      );
+    }
+
+    renderFromCache(cache, filter, updateURLHash = false, target = null){
+      const cacheDataArr = cache;
+      const cachedResults = cacheDataArr.find(results => results.params === filter.params);
+      const secArr = JSON.parse(this.dataset.sections);
+      secArr.forEach(section => {
+        const html = new DOMParser() .parseFromString(cachedResults.content[section.id], 'text/html').getElementById(section.id);
+        section.selectors.forEach(selector => {
+          const targetElement = document.querySelector(selector);
+          const sourceElement = html.querySelector(selector);
+          if (targetElement && sourceElement) {
+            targetElement.outerHTML = sourceElement.outerHTML;
+          }
+        });
+      });
+      if(updateURLHash) this.updateURLHash(filter.params);
+      toggleLoader(false);
+    }
+
+    updateURLHash(searchParams){
+      const updatedSearchParams = setFilterParam(null, null, false, true);
+      history.pushState({ searchParams }, '', `${window.location.pathname}${updatedSearchParams && '?'.concat(updatedSearchParams)}`);
+    }
+  }
+  if(!customElements.get('facets-filter')) customElements.define('facets-filter', FacetsFilter);
+{%- endjavascript -%}
+{% schema %}
+{
+  "name": "Search results",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header__1.content"
+    },
+    {
+      "type": "text",
+      "id": "product_results_text",
+      "default": "Product results for",
+      "label": "Product results text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "Show second image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-search.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-search.settings.show_rating.label",
+      "info": "t:sections.main-search.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header__2.content"
+    },
+    {
+      "type": "text",
+      "id": "article_results_text",
+      "default": "Article results",
+      "label": "Search results for:"
+    },
+    {
+      "type": "text",
+      "id": "posted_on_text",
+      "label": "Posted on text",
+      "default": "Posted on"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-search.settings.article_show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-search.settings.article_show_author.label"
+    }
+  ]
+}
+{% endschema %}

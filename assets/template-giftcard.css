@@ -1,0 +1,239 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.gradient{
+  position: relative;
+}
+
+.gift-card,
+.site-logo img,
+.btnWrap .button{
+  width: 100%;
+}
+
+.gift-card {
+  padding: 35px 20px;
+  text-align: center;
+  font-family: var(--body-font-family, 'Open Sans', sans-serif);
+}
+
+.site-logo {
+  margin-bottom: 55px;
+  max-width: 500px;
+  width: var(--logo-width);
+}
+
+.gift-card .brand-name {
+  margin-bottom: 24px;
+}
+
+.gift-card__title {
+  letter-spacing: -0.03em;
+}
+
+.gift-card__price {
+  margin-bottom: 9px;
+  margin-bottom: -14px;
+  color: var(--section-error-color);
+}
+
+.gift-card__price strong,
+.gift-card__number {
+  font-weight: 700;
+}
+
+.gift-card__price strong {
+  font-size: 2rem;
+  line-height: 2,5rem;
+}
+
+.gift-card__expire-date {
+  margin-top: 25px;
+  margin-bottom: -25px;
+}
+
+.btnWrap .button,
+.gift-card .site-logo {
+  max-width: 100%;
+}
+
+.gift-card__qr-code img,
+.site-logo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gift-card__number {
+  margin-top: 23px;
+  margin-bottom: 40px;
+  font-size: 1.6rem;
+  line-height: 2.3rem;
+  display: inline-block;
+  background-color: color-mix(in srgb, #EEFDF3 50%, var(--section-success-color) 50%);
+  color: var(--section-background-color);
+  padding: 6px 16px;
+}
+
+.gift-card__buttons {
+  margin-top: 40px; 
+  margin-bottom: 30px;
+}
+
+.gift-card__copy-success {
+  font-size: 1.2rem;
+  color: var(--section-success-color);
+  display: flex;
+  justify-content: center;
+}
+
+.gift-card__copy-success svg {
+  margin-right: 4px;
+}
+
+.gift-card__copy-button {
+  border: 0;
+  padding: 0 10px;
+  cursor: pointer;
+  --button-font-family: var(--font-headings-family);
+  color: var(--section-heading-color);
+}
+
+.gift-card__copy-button,
+.gift-card__copy-button:hover {
+  background: transparent;
+}
+
+.gift-card__copy-button:hover {
+  text-decoration: underline;
+  color: var(--section-active-hover-color);
+}
+
+.gift-card__copy-success,
+.btnWrap .button  {
+  display: block;
+}
+
+.btnWrap .button {
+  text-transform: uppercase;
+}
+
+.btnWrap .button + .button {
+  margin-top: 12px;
+}
+
+.mty {
+  margin-top: var(--mt-top, 0);
+  margin-bottom: var(--mt-bottom, 0);
+}
+
+.gift-card .site-logo {
+  --logo-width: var(--logo-mobile-width);
+  max-width: var(--logo-width);
+}
+
+.gift-card .site-logo img {
+  vertical-align: top;
+}
+
+.gift-col_banner{
+  display: none;
+}
+
+.gift-card .logo{
+  display: inline-flex;
+}
+
+.gift-card .logo img{
+  width: var(--logo-width-xs);
+  height: auto;
+}
+
+.gift-card .gift-card_continue-shopping,
+.gift-card .gift-card_print-button{
+  cursor: pointer;
+  padding: 17px 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  gap: 16px;
+  min-height: 100%;
+}
+
+.gift-col_banner-img img,
+.gift-col_banner-img svg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media print {
+  .no-print,
+  .sticky-header-wrapper,
+  .utility-bar,
+  .announcement-bar,
+  .shopify-section-group-footer-group {
+    display: none;
+  }
+}
+
+@media (min-width: 576px) {
+  .gift-card {
+    padding: 62px;
+  }
+}
+
+@media (min-width: 768px) {
+  .gift-card .logo img{
+    width: var(--logo-width-xl);
+    height: auto;
+  }
+
+  .gift-card__price strong {
+    font-size: 4rem;
+    line-height: 5rem;
+  }
+}
+
+@media (min-width: 992px){
+  .gradient{
+    display: flex;
+  }
+
+  .gift-card{
+    width: 50%;
+  }
+
+  .gift-col_banner{
+    flex-grow: 1;
+    display: block;
+  }
+
+  .gift-col_banner-img{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gift-col_banner-img img,
+  .gift-col_banner-img svg{
+    border-radius: inherit;
+  }
+
+  .gift-card {
+    padding: 81px 72px 81px 73px;
+  }
+}

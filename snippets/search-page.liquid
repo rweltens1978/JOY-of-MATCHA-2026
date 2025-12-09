@@ -1,0 +1,12 @@
+<div class="pure-u-1 pure-u-lg-1-3">
+    <div class="article">
+        <figure class="article__img">
+            <a href="{{ item.url }}" class="ratio21by1">
+              <img data-src="{{ 'thumb.svg' | asset_url }}" class="pure-img lazyload svg__thumb" alt="{{ item.title }}"/>
+            </a>
+        </figure>
+        <div class="article__content">
+            <a href="{{ item.url }}" class="article__title">{{ item.title | truncate: 50 | escape }}</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,209 @@
+{
+  "wrapper": "div.page__landing",
+  "sections": {
+    "yas_hero_cropped_efEYCp": {
+      "type": "yas-hero-cropped", 
+      "blocks": {
+        "hero_banner_QEEgky": {
+          "type": "Hero-Banner",
+          "settings": {
+            "title": "<h3>A Simple Way to [Desired Outcome] Without [Pain Point]</h3>",
+            "subtitle": "<p>Join [#] happy customers already enjoying [core benefit], backed by our [USP. ex. guarantee, free shipping, expert formula].</p>",
+            "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
+            "star_color": "#ff8e00",
+            "slide_bg": "#ffffff",
+            "image_position": "right",
+            "image_positionm": "top",
+            "cpadding_x_desk": 30,
+            "cpadding_y_desk": 30,
+            "cpadding_x_mob": 20,
+            "cpadding_y_mob": 20,
+            "container_radius": 10,
+            "heading_size": "large",
+            "headline_typography": "capitalize",
+            "text_color": "#000000",
+            "btext_color": "#000000",
+            "show_payment_icons": true,
+            "heading_align": "left",
+            "show_points": "block",
+            "icon_1_text": "check",
+            "point_1_text": "Get [Primary Benefit] in just [Timeframe]",
+            "icon_2_text": "check",
+            "point_2_text": "Enjoy [Secondary Benefit] without [Common Hassle]",
+            "icon_3_text": "check",
+            "point_3_text": "Feel [Emotional Outcome] and finally [End Fear State]",
+            "review_on": "on",
+            "review-title": "<h2>Julia Larson</h2>",
+            "review-text": "<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihi quo minus id quod maxime placeat facere possimus</p><p></p>",
+            "button_text": "SHOP NOW",
+            "button_link": "/",
+            "setting_btn": "global",
+            "button_border_size": 1,
+            "button_border_color": "#000000",
+            "button_radius": 10,
+            "button_color": "#ffffff",
+            "button_text_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "hero_banner_QEEgky"
+      ],
+      "name": "Hero Banner",
+      "settings": {
+        "background_color": "#696969",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained",
+        "size": "big",
+        "padding_x_desk": 20,
+        "padding_y_desk": 75,
+        "padding_x_mob": 20,
+        "padding_y_mob": 20,
+        "display_on": "all",
+        "align_content": "center"
+      }
+    },
+    "yas_logo_carousel_B3Wk4h": {
+      "type": "yas-logo-carousel",
+      "blocks": {
+        "logo_block_KKkQtV": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_KJHC6G": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_BnqNK4": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_mQNF8D": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_JeVjie": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_block_8FG4He": {
+          "type": "logo_block",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_block_KKkQtV",
+        "logo_block_KJHC6G",
+        "logo_block_BnqNK4",
+        "logo_block_mQNF8D",
+        "logo_block_JeVjie",
+        "logo_block_8FG4He"
+      ],
+      "name": "Logo Carousel",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "background_color": "rgba(0,0,0,0)",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "text_color": "#000000",
+        "subtitle_color": "#666666",
+        "heading_align": "center",
+        "section_width": "contained",
+        "padding_x_desk": 20,
+        "padding_y_desk": 20,
+        "padding_x_mob": 20,
+        "padding_y_mob": 20,
+        "block_color": "#000000",
+        "scroll_speed": 15,
+        "mod_carusel": "marquee",
+        "display_on": "all",
+        "separator": "",
+        "gap_icon": 30
+      }
+    },
+    "yas_transformation_hywp9N": {
+      "type": "yas-transformation",
+      "blocks": {
+        "card_EQTHhK": {
+          "type": "card",
+          "settings": {
+            "card_title": "<h3>Place your order</h3>",
+            "card_text": "<p>Secure your [product] in minutes with our easy and secure checkout.</p>",
+            "card_number": "1"
+          }
+        },
+        "card_MEnkM9": {
+          "type": "card",
+          "settings": {
+            "card_title": "<h3>Get Fast Shipping</h3>",
+            "card_text": "<p>We'll pack & ship your order within [x] hours, with tracking sent straight to your inbox.</p>",
+            "card_number": "2"
+          }
+        },
+        "card_mhUUiM": {
+          "type": "card",
+          "settings": {
+            "card_title": "<h3>Enjoy [Desired outcome]</h3>",
+            "card_text": "<p>Experience [desired outcome] in just [timeframe] without [common objection]</p>",
+            "card_number": "3"
+          }
+        }
+      },
+      "block_order": [
+        "card_EQTHhK",
+        "card_MEnkM9",
+        "card_mhUUiM"
+      ],
+      "name": "Transformation",
+      "settings": {
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "background_color": "rgba(0,0,0,0)",
+        "title_color": "#000000",
+        "subtitle_color": "#666666",
+        "text_color": "#666666",
+        "heading_size": "medium",
+        "headline_typography": "capitalize",
+        "heading_align": "center",
+        "section_width": "contained",
+        "padding_x_desk": 20,
+        "padding_y_desk": 50,
+        "padding_x_mob": 20,
+        "padding_y_mob": 10,
+        "display_on": "all",
+        "num_bg": "#000000",
+        "num_txt": "#ffffff",
+        "title": "<h2>3 Easy Steps to [Desired outcome]</h2>",
+        "subtitle": "<h3>It's never been easier to [achieve outcome], just follow these simple steps and enjoy [primary benefit] fast.</h3>",
+        "container_styling": "no_card",
+        "box_shadow_offset": 1,
+        "box_shadow_blur": 1,
+        "box_shadow_spread": 1,
+        "box_shadow_color": "#000000",
+        "card_border": 1,
+        "box_color": "rgba(0,0,0,0)",
+        "card_border_color": "#000000",
+        "container_radius": 10
+      }
+    }
+  },
+  "order": [
+    "yas_hero_cropped_efEYCp",
+    "yas_logo_carousel_B3Wk4h",
+    "yas_transformation_hywp9N"
+  ]
+}

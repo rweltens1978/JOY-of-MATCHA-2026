@@ -1,0 +1,123 @@
+<section class="account-page">
+    <div class="container">
+        <div class="pure-g justify-content-center">
+            <div class="pure-u-1 pure-u-md-17-24 pure-u-xl-10-24 pure-u-lg-1-2">
+                <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+                    <div class="text-center mb-20 mb-md-50">
+                        <h1 class="title">{{ 'customer.register.title' | t }}</h1>
+                        {% if section.settings.register_sub_title != blank %}
+                            <h4 class="subtitle">{{section.settings.register_sub_title}}</h4>
+                        {% endif %}
+                    </div>
+                    {%- form 'create_customer', novalidate: 'novalidate' -%}
+                        {%- if form.errors -%}
+                          <div class="form__messages" tabindex="-1" autofocus>
+                            <h3>{{ 'templates.contact.form.error_heading' | t }}</h3>
+                            <ul> 
+                                {%- for field in form.errors -%}
+                                  <li>
+                                    {%- if field == 'form' -%}
+                                      {{ form.errors.messages[field] }}
+                                    {%- else -%}
+                                      <a href="#RegisterForm-{{ field }}">
+                                        {{ form.errors.translated_fields[field] | capitalize }}
+                                        {{ form.errors.messages[field] }}
+                                      </a>
+                                    {%- endif -%}
+                                  </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
+                        {%- endif -%}
+                        <div class="form-row form-group">
+                            <label class="form-label fw-700" for="RegisterForm-FirstName">{{ 'customer.register.first_name' | t }}</label>
+                            <input type="text" name="customer[first_name]" id="RegisterForm-FirstName"{% if form.first_name %} value="{{ form.first_name }}"{% endif %} autocomplete="given-name" placeholder="{{ 'customer.register.first_name' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter your First name">
+                        </div>
+                        <div class="form-row form-group">
+                            <label class="form-label fw-700" for="RegisterForm-LastName">{{ 'customer.register.last_name' | t }}</label>
+                            <input type="text" name="customer[last_name]" id="RegisterForm-LastName"{% if form.last_name %} value="{{ form.last_name }}"{% endif %} autocomplete="family-name" placeholder="{{ 'customer.register.last_name' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter your Last name">
+                        </div>
+                        <div class="form-row form-group">
+                            <label class="form-label fw-700" for="RegisterForm-email">{{ 'customer.register.email' | t }}</label>
+                            <input type="email" name="customer[email]" id="RegisterForm-email"{% if form.email %} value="{{ form.email }}"{% endif %} spellcheck="false" autocapitalize="off" autocomplete="email" aria-required="true"{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="RegisterForm-email-error"{% endif %} placeholder="{{ 'customer.register.email' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter email">
+                        </div>
+                        <div id="email-error" class="text-danger mt-1" style="color: red; display:none;">Please enter a valid email</div>
+                        <div class="form-row form-group">
+                            <label class="form-label fw-700" for="RegisterForm-password">{{ 'customer.register.password' | t }}</label>
+                            <input type="password" name="customer[password]" id="RegisterForm-password" aria-required="true"{% if form.errors contains 'password' %} aria-invalid="true" aria-describedby="RegisterForm-password-error"{% endif %} placeholder="{{ 'customer.register.password' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter Password">
+                        </div>
+                        <div id="password-error" class="text-danger mt-1" style="color: red; display:none;">Password must be at least 5 characters</div>
+                        <div class="form-button text-center mt-30 mt-md-50">
+                            <button type="submit" class="btn btn--icon-hand mb-0 btn--fixed-width">{{ 'customer.register.submit' | t }}</button>
+                        </div>
+                    {%- endform -%}
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('RegisterForm-password');
+    const emailInput = document.getElementById('RegisterForm-email');
+    const submitButton = document.querySelector('button[type="submit"]');
+    const passwordError = document.getElementById('password-error');
+    const emailError = document.getElementById('email-error');
+    const MIN_PASSWORD_LENGTH = 5;
+  
+    // Disable submit initially
+    submitButton.disabled = true;
+  
+    function validateEmail(email) {
+      // Simple email regex
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+  
+    function validateForm() {
+      const passwordValue = passwordInput.value;
+      const emailValue = emailInput.value;
+  
+      let isPasswordValid = false;
+      let isEmailValid = false;
+  
+      // Password validation
+      if (passwordValue.length < MIN_PASSWORD_LENGTH) {
+        passwordError.textContent = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`;
+        passwordError.style.display = 'block';
+        isPasswordValid = false;
+      } else {
+        passwordError.style.display = 'none';
+        isPasswordValid = true;
+      }
+  
+      // Email validation
+      if (!validateEmail(emailValue)) {
+        emailError.textContent = 'Please enter a valid email';
+        emailError.style.display = 'block';
+        isEmailValid = false;
+      } else {
+        emailError.style.display = 'none';
+        isEmailValid = true;
+      }
+  
+      // Enable button only if both are valid
+      submitButton.disabled = !(isPasswordValid && isEmailValid);
+    }
+  
+    // Listen to input events
+    passwordInput.addEventListener('input', validateForm);
+    emailInput.addEventListener('input', validateForm);
+  });
+</script>
+{% schema %}
+{
+  "name": "Register",
+  "settings": [
+    {
+      "type": "text",
+      "id": "register_sub_title",
+      "label": "Register sub title"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,886 @@
+{%- liquid
+  assign section_prefix_class = 'main-signup-bar'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-signup-bar :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+  .newsletter-signup_wrapper.inner-padding .container,
+  .newsletter-signup_wrapper.outer-padding {
+    background: var(--bg-color);
+    color: var(--text-color);
+    background-image: url({{ section.settings.bg_image | image_url: width: 2000 }});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>
+{%- stylesheet -%}
+  .main-signup-bar .btn {
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    color: var(--btn-color);
+    background: var(--btn-background);
+    padding: 18px 56px;
+    width: 700px;
+    height: auto;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .main-signup-bar .btn:hover svg path {
+    fill: var(--btn-background);
+  }
+
+  .main-signup-bar .btn svg path {
+    fill: var(--btn-fill);
+  }
+
+  .main-signup-bar_content-wrapper a p {
+    margin: 0 auto;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .main-signup-bar .newsletter-signup_wrapper {
+    display: var(--display-value);
+    text-align: var(--heading-align);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .main-signup-bar_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-signup-bar_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-signup-bar_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .main-signup-bar_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-signup-bar_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-signup-bar_wrapper.inner-padding .container,
+  .main-signup-bar_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-signup-bar_content-wrapper {
+    display: block;
+    position: relative;
+    text-align: var(--heading-align);
+  }
+
+  .main-signup-bar .title h2,
+  .main-signup-bar .title h1,
+  .main-signup-bar .title h3,
+  .main-signup-bar .title p {
+    font-size: var(--xl-heading-size);
+    line-height: 110%;
+    font-weight: 700;
+    color: var(--text-color);
+    text-transform: var(--heading-transform);
+    margin: 0;
+    text-align: var(--heading-align);
+    margin-bottom: 20px;
+  }
+
+  .main-signup-bar .subtitle {
+    margin-bottom: 0;
+  }
+
+  .main-signup-bar .heading {
+    margin-bottom: 33px;
+  }
+
+  .main-signup-bar .subtitle h2,
+  .main-signup-bar .subtitle h3,
+  .main-signup-bar .subtitle h1,
+  .main-signup-bar .subtitle p {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 150%;
+    color: var(--subtitle-color);
+    text-align: var(--heading-align);
+    margin: 0;
+  }
+
+  .main-signup-bar .uppertitle {
+    display: flex;
+    justify-content: var(--heading-justify);
+    margin: 0;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .main-signup-bar .uppertitle svg path {
+    fill: var(--fill);
+  }
+
+  .main-signup-bar .uppertitle .star_span {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+
+  .main-signup-bar .uppertitle h2,
+  .main-signup-bar .uppertitle h3,
+  .main-signup-bar .uppertitle p {
+    color: var(--upper-title);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+    margin-left: 0px;
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
+
+  .main-signup-bar .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .main-signup-bar .newsletter-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .main-signup-bar .newsletter-form input[type='email'] {
+    padding: 10px 10px 26px 10px;
+    width: 100%;
+    max-width: 703px;
+    border: none;
+    border-bottom: 1px solid var(--input-bdr-color);
+    background: transparent;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    outline: none;
+    color: var(--input-color);
+  }
+
+  .main-signup-bar .newsletter-form .btn,
+  .main-signup-bar .btn svg path {
+    transition: all 0.3s ease;
+  }
+
+  .main-signup-bar .newsletter-form .btn .icon_cart-btns {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .main-signup-bar .newsletter-form .btn .icon_cart-btns img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-signup-bar .newsletter-form input[type='email']::placeholder {
+    color: var(--input-color);
+    opacity: 1;
+  }
+
+  .main-signup-bar .newsletter-form .btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+  }
+
+  .main-signup-bar .newsletter-form .privacy {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+    margin-top: 14px;
+  }
+
+  .newsletter_signup .newsletter-form button {
+    gap: 20px;
+  }
+
+  .newsletter_signup .newsletter-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .newsletter_signup .newsletter-form form {
+      gap: 25px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-signup-bar .newsletter-signup_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .main-signup-bar_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-signup-bar_wrapper.inner-padding .container,
+    .main-signup-bar_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-signup-bar_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .newsletter_signup .newsletter-form button {
+      gap: 16px;
+    }
+
+    .newsletter_signup .newsletter-form form {
+      gap: 27px;
+    }
+
+    .main-signup-bar .newsletter-form input[type='email'] {
+      padding: 10px 10px 24px 10px;
+      font-size: 16px;
+      line-height: 18px;
+      font-weight: 400;
+    }
+
+    .main-signup-bar .heading {
+      margin-bottom: 5px;
+    }
+
+    .main-signup-bar .title {
+    }
+
+    .main-signup-bar .title h2,
+    .main-signup-bar .title h1,
+    .main-signup-bar .title h3,
+    .main-signup-bar .title p {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+      margin: 0;
+      margin-bottom: 8px;
+    }
+
+    .main-signup-bar .subtitle h2,
+    .main-signup-bar .subtitle h3,
+    .main-signup-bar .subtitle h1,
+    .main-signup-bar .subtitle p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+
+    .main-signup-bar .uppertitle h2,
+    .main-signup-bar .uppertitle h3,
+    .main-signup-bar .uppertitle h4,
+    .main-signup-bar .uppertitle p {
+      color: var(--upper-title);
+      font-size: 12px;
+      font-weight: 400;
+      margin-right: 4px;
+      margin-bottom: 0px;
+    }
+
+    .main-signup-bar .uppertitle {
+      margin-bottom: 14px;
+    }
+
+    .main-signup-bar .uppertitle svg {
+      width: 12px;
+      margin-left: 0;
+    }
+
+    .main-signup-bar .newsletter-form input[type='email'] {
+      max-width: 350px;
+    }
+
+    .main-signup-bar .newsletter-form .btn {
+      width: 100%;
+      font-size: 13px;
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="newsletter-signup_wrapper {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    --input-color: {{ section.settings.input_color }};
+    --input-bdr-color: {{ section.settings.input_border_color }};
+    --upper-title: {{ section.settings.uppertitle_color }};
+    --fill: {{ section.settings.star_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-justify: flex-start;
+      {% when 'center' %}
+      --heading-justify: center;
+      {% when 'right' %}
+      --heading-justify: flex-end;
+    {% endcase %}
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-align: left;
+      {% when 'center' %}
+      --heading-align: center;
+      {% when 'right' %}
+      --heading-align: right;
+    {% endcase %}
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+        {% when 'small' %}
+        --xl-heading-size: 28px;
+        {% when 'medium' %}
+        --xl-heading-size: 40px;
+        {% when 'large' %}
+        --xl-heading-size: 48px;
+      {% endcase %}
+      {% if section.settings.section_width == 'full' %}
+      --width-value: 100%;
+      {% else %}
+      --width-value: {{ settings.page_width }}px;
+      {% endif %}
+      --heading-align: {{ section.settings.heading_align }};
+      --bg-color: {{ section.settings.background_color }};
+      --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+      --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+      --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+      --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+      {% case section.settings.display_on %}
+        {% when 'all' %}
+          --xs-display-value: block;
+        {% when 'mobile_only' %}
+          --xs-display-value: block;
+        {% when 'desktop_only' %}
+          --xs-display-value: none;
+      {% endcase %}
+      {% case section.settings.display_on %}
+        {% when 'all' %}
+          --display-value: block;
+        {% when 'mobile_only' %}
+          --display-value: none;
+        {% when 'desktop_only' %}
+          --display-value: block;
+      {% endcase %}
+      --text-color: {{ section.settings.text_color }};
+      {% if section.settings.button_text_color != 'rgba(0,0,0,0)' %}
+       --btn-fill: {{ section.settings.button_text_color }};
+      {% else %}
+       --btn-fill: #ffffff;
+      {% endif %}
+      {% if section.settings.setting_btn == 'global' %}
+      --btn-border-radius: {{ settings.button_radius }}px;
+      --btn-border: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --btn-color: {{ settings.button_text_color }};
+      --btn-background: {{ settings.button_color }};
+    {% else %}
+      --btn-border-radius: {{ section.settings.button_radius }}px;
+      --btn-border: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --btn-color: {{ section.settings.button_text_color }};
+      --btn-background: {{ section.settings.button_color }};
+    {% endif %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.uppertitle != blank or section.settings.subtitle or section.settings.title != blank -%}
+          <div
+            class="heading word--break"
+            style="
+              {% if section.settings.section_width == 'full' %}
+                margin: 0 10%;
+              {% endif %}
+            "
+          >
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle word--break">
+                {{ section.settings.uppertitle -}}
+                <span class="star_span">
+                  {%- for i in (1..5) -%}
+                    {%- render 'star_comparison' -%}
+                  {%- endfor -%}
+                </span>
+              </div>
+            {% endif %}
+            <div class="title">
+              {%- if section.settings.title != blank -%}
+                {{ section.settings.title }}
+              {%- endif -%}
+            </div>
+            <div class="subtitle word--break">
+              {%- if section.settings.subtitle != blank -%}
+                {{ section.settings.subtitle }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <div class="newsletter-form">
+          <form
+            id="contact_form"
+            method="post"
+            action="/contact#contact_form"
+            accept-charset="UTF-8"
+            class="contact-form"
+          >
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input
+              type="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.placeholder_text }}"
+              pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+              required
+            >
+            <button type="submit" class="btn">
+              {{ section.settings.button_text }}
+              {% if section.settings.show_arrow == true %}
+                {% if section.settings.icon != blank %}
+                  <i class="icon_cart-btns">
+                    {%- liquid
+                      assign max_width = section.settings.icon.width
+                      if section.settings.icon > 150
+                        assign max_width = 150
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon.alt != blank
+                          echo section.settings.icon.alt
+                        else
+                          echo 'Icon' | escape
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  </i>
+                {% elsif section.settings.icon_alt != blank %}
+                  <i class="icon_cart-btns material-symbols-outlined">
+                    {{ section.settings.icon_alt }}
+                  </i>
+                {% else %}
+                  <i class="icon_cart-btns">
+                    {% render 'icon_arrow_submit2' %}
+                  </i>
+                {% endif %}
+              {% endif %}
+            </button>
+          </form>
+          <div class="privacy">{{ section.settings.privacy_text }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter Signup Bar",
+  "tag": "section",
+  "class": "section newsletter_signup main-signup-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FF8E00"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#EDEDED"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 29
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>sign up to our Free newsletter & receive [benefit]</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>Join our community of [number] and receive [benefit].</h3>"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle",
+      "default": "<p>Reviewed by +100 Happy Customers </p>"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_text",
+      "label": "Input Placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "richtext",
+      "id": "privacy_text",
+      "label": "Privacy Text",
+      "default": "<p>We will never share your information</p>"
+    },
+    {
+      "type": "header",
+      "content": "Form color"
+    },
+    {
+      "type": "color",
+      "id": "input_color",
+      "label": "Input Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "setting_btn",
+      "label": "Settings",
+      "options": [
+        {
+          "value": "global",
+          "label": "Global"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "global"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow Button",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "GET YOURS NOW"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Button Icon image"
+    },
+    {
+      "type": "text",
+      "id": "icon_alt",
+      "label": "Button Google Icon"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Signup Bar",
+      "category": "Contact"
+    }
+  ]
+}
+{% endschema %}

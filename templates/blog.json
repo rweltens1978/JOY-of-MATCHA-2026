@@ -1,0 +1,21 @@
+{
+  "wrapper": "div.page__blog-list",
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "settings": { 
+        "title": "Latest News",
+        "all_blogs_title": "Show all",
+        "read_more_text": "Continue reading",
+        "posted_on_text": "Posted on",
+        "post_per_page": 15,
+        "enable_tag_categories": true,
+        "show_date": true,
+        "show_author": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

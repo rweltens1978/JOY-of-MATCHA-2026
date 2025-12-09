@@ -1,0 +1,1392 @@
+{%- liquid
+  assign section_prefix_class = 'main-shopable'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-shopable * { font-family: {{ section.settings.title_font.family }}; }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-shopable a {
+    transition: all 0.3s ease;
+  }
+
+  .main-shopable a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .main-shopable_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-shopable_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-shopable_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-shopable_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-shopable_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-shopable_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-shopable_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-shopable_wrapper.inner-padding .container,
+  .main-shopable_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-shopable_wrapper {
+    display: var(--display-value);
+    text-align: var(--heading-align);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    width: 100%;
+  }
+
+  .pimage {
+    line-height: 0;
+  }
+
+  .main-shopable .pimage img,
+  .main-shopable .pimage svg {
+    width: 85px;
+    height: 85px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .main-shopable_content-wrapper {
+    position: relative;
+  }
+
+  .main-shopable .si-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 440px) minmax(0, 1fr);
+    align-items: center;
+    column-gap: 25px;
+    row-gap: 0;
+    padding: var(--xl-padding-y) var(--xl-padding-x);
+    box-sizing: border-box;
+    max-width: var(--width-value);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .main-shopable .heading .title :where(h1, h2, h3, p) {
+    font-size: var(--xl-heading-size);
+    line-height: 110%;
+    font-weight: 700;
+    margin: 0 0 22px 0;
+    text-transform: var(--heading-transform);
+    color: var(--text-color);
+    text-align: var(--heading-align);
+  }
+
+
+  .main-shopable .subtitle :where(h2, h3, h1, p) {
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 0 0 20px 0;
+    text-align: var(--heading-align);
+  }
+
+  .main-shopable .uppertitle {
+    display: flex;
+    align-items: center;
+    justify-content: var(--heading-align);
+    margin: 0 0 14.5px 0;
+  }
+
+  .main-shopable .uppertitle svg path {
+    fill: var(--fill);
+  }
+
+  .main-shopable .uppertitle :where(h2, h3, h4, p) {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+    margin-left: 11px;
+  }
+
+  .main-shopable .media {
+    min-width: 0;
+  }
+
+  .main-shopable .shopable-image-section {
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+
+  .main-shopable .shopable-image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .main-shopable .shopable-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--img-radius);
+  }
+
+  .shopable-point {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .shopable-point::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--marker-hover-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+    opacity: 0.6;
+  }
+
+  .shopable-point::before {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 48px;
+    height: 48px;
+    background: var(--marker-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--symbol);
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.3s ease;
+  }
+
+  .shopable-point.shopable-point--open::before,
+  .shopable-point:hover::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .shopable-point .tooltip {
+    position: absolute;
+    transform: translateX(-50%);
+    background: var(---tooltip);
+    color: var(--ptext);
+    padding: 20px;
+    border-radius: var(--tip-round);
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    white-space: normal;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  }
+
+  .shopable-point .tooltip::after {
+    content: '';
+    position: absolute;
+    transform: translateX(-50%);
+    bottom: -12px;
+  }
+
+  .prod-t {
+    width: 372px;
+    height: 127px;
+    bottom: 70px;
+  }
+
+  .shopable-point .tooltip-t::after {
+    content: '';
+    position: absolute;
+    transform: translateX(-50%);
+    bottom: -12px;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 12px solid var(---tooltip);
+  }
+
+  .tooltip2 {
+    position: absolute;
+    background: var(---tooltip);
+    color: var(--ptext);
+    padding: 12px;
+    border-radius: var(--tip-round);
+    font-size: 14px;
+    line-height: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    white-space: normal;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+    width: 100%;
+    height: 127px;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 30px);
+    display: none;
+  }
+
+  .tooltip2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(---tooltip);
+  }
+
+  .tooltip .product,
+  .tooltip2 .product {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 31px;
+    height: 100%;
+  }
+
+  .tooltip .pinfo,
+  .tooltip2 .pinfo {
+    width: calc(100% - 116px);
+    text-align: left;
+    align-content: center;
+  }
+
+  .tooltip .ptitle,
+  .tooltip2 .ptitle {
+    font-size: 16px;
+    line-height: 150%;
+    font-weight: 600;
+    color: var(--ptitle);
+  }
+
+  .tooltip .pprice,
+  .tooltip2 .pprice {
+    font-size: 16px;
+    line-height: 150%;
+    font-weight: 600;
+    color: var(--pprice);
+  }
+
+  .tooltip .pdescription,
+  .tooltip2 .pdescription {
+    font-size: 14px;
+    line-height: 150%;
+    font-weight: 400;
+    color: var(--ptext);
+  }
+
+  .prod2 {
+    left: -67px !important;
+  }
+
+  .prod3,
+  .prod6 {
+    left: -78px !important;
+  }
+
+  .prod4 {
+    left: -68px !important;
+  }
+
+  .prod5 {
+    left: 140px !important;
+  }
+
+  .prod7 {
+    left: 140px !important;
+  }
+
+  .temp-marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--marker-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+  }
+
+  .temp-marker::before {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--tooltext);
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .main-shopable .subtitle {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 768px) {
+    .main-shopable .subtitle :where(h2, h3, h1, p) {
+      font-size: 24px;
+      line-height: 30px;
+    }
+
+    .main-shopable .heading {
+      margin-bottom: 64px;
+    }
+
+    .shopable-point.shopable-point--open .tooltip,
+    .shopable-point:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .tooltip2 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .outer-padding .main-shopable_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-shopable_wrapper.inner-padding .container,
+    .main-shopable_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-shopable_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .main-shopable .heading {
+      margin-bottom: 29px;
+    }
+
+    .main-shopable .heading .title :where(h1, h2, h3, p) {
+      font-size: var(--xs-heading-size);
+      line-height: 103%;
+      margin-bottom: 0;
+      margin: 0 0 9px 0;
+    }
+
+    .shopable-point .tooltip {
+      display: none;
+    }
+
+    .main-shopable .main-shopable_wrapper {
+      display: var(--xs-display-value);
+      padding: 0;
+    }
+
+    .main-shopable {
+      display: block;
+      padding: var(--xs-padding-y) 0px;
+    }
+
+    .main-shopable .title :where(h1, h2, h3, h4, p) {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+      margin-bottom: 16px;
+    }
+
+    .main-shopable .subtitle :where(h2, h3, h1, p) {
+      font-size: 20px;
+      line-height: 120%;
+    }
+
+    .main-shopable .uppertitle :where(h2, h3, h1, p) {
+      font-size: 14px;
+      margin-left: 3px;
+    }
+
+    .main-shopable .uppertitle {
+      margin-bottom: 16px;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+
+    70% {
+      transform: translate(-50%, -50%) scale(1.5);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translate(-50%, -50%) scale(1.5);
+      opacity: 0;
+    }
+  }
+{%- endstylesheet -%}
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %} {% if section.settings.heading_type == 'top' %}top_shopable{% endif %}"
+  style="
+    --marker-hover-color: {{ section.settings.marker_hover_color }};
+    --tooltext: {{ section.settings.tooltip_text }};
+    --pprice: {{ section.settings.pprice }};
+    --ptitle: {{ section.settings.ptitle }};
+    --tip-round: {{ section.settings.ttip_round }}px;
+    --ptext: {{ section.settings.tooltip_text }};
+    ---tooltip: {{ section.settings.tooltip_color }};
+    --symbol: {{ section.settings.marker_symbol }};
+    --marker-color: {{ section.settings.marker_color }};
+    --img-radius: {{ section.settings.image_round }}px;
+    --fill: {{ section.settings.star_color }};
+    --text-color: {{ section.settings.text_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {% if section.settings.heading_type == 'side' %}
+          <div class="si-grid">
+            <div class="heading word--break">
+              {% if section.settings.uppertitle != blank %}
+                <div class="uppertitle word--break">
+                  <span class="star_span" role="img" aria-label="5 out of 5 stars">
+                    {%- for i in (1..5) -%}
+                      {%- render 'star_comparison' -%}
+                    {%- endfor -%}
+                  </span>
+                  {{ section.settings.uppertitle }}
+                </div>
+              {% endif %}
+              <div class="title word--break">
+                {% if section.settings.title != blank %}{{ section.settings.title }}{% endif %}
+              </div>
+              <div class="subtitle word--break">
+                {% if section.settings.subtitle != blank %}{{ section.settings.subtitle }}{% endif %}
+              </div>
+            </div>
+
+            <div class="media">
+              <div class="shopable-image-section">
+                <div
+                  class="shopable-image-wrapper"
+                  {% if section.settings.image %}
+                    style="aspect-ratio: {{ section.settings.image.aspect_ratio | default: 1.6 }};"
+                  {% endif %}
+                >
+                  {% if section.settings.image %}
+                    {%- liquid
+                      assign max_width = section.settings.image.width
+                      if section.settings.image > 1400
+                        assign max_width = 1400
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.image.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.image.alt != blank
+                          echo section.settings.image.alt
+                        else
+                          echo 'Shopable Image'
+                        endif
+                      endcapture
+
+                      capture sizes_attr
+                        echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.image
+                      | image_url: width: max_width
+                      | image_tag:
+                        loading: 'lazy',
+                        width: max_width,
+                        height: image_height,
+                        sizes: sizes_attr,
+                        alt: image_alt,
+                        class: 'shopable-image',
+                        id: 'shopable-image'
+                    -}}
+                  {% else %}
+                    {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'shopable-image' -%}
+                  {% endif %}
+
+                  {% for block in section.blocks %}
+                    {% assign product = block.settings.product %}
+
+                    {% if block.settings.y_coord < 35 %}
+                      <style>
+                        .shopable-point .tooltip-{{ forloop.index }}::after{ transform:rotate(180deg)!important; top:-11px; right:75px; } .prod{{ forloop.index }}{ top:70px; bottom:unset!important; }
+                      </style>
+                    {% endif %}
+                    {% if block.settings.x_coord < 20 %}
+                      <style>
+                        .shopable-point .tooltip-{{ forloop.index }}::after{  } .prod{{ forloop.index }}{ left:129px; }
+                      </style>
+                    {% else %}
+                      <style>
+                        .shopable-point .tooltip-{{ forloop.index }}::after{  } .prod{{ forloop.index }}{ left:-71px; }
+                      </style>
+                    {% endif %}
+
+                    <div
+                      class="shopable-point"
+                      style="left: {{ block.settings.x_coord }}%; top: {{ block.settings.y_coord }}%; z-index:1;"
+                      data-block-id="{{ block.id }}"
+                      data-product="{% if block.settings.product == blank %}false{% else %}true{% endif %}"
+                    >
+                      <span class="tooltip prod-t prod{{ forloop.index }} tooltip-t tooltip-{{ forloop.index }}">
+                        {% if product == blank %}
+                          {{ block.settings.tooltip_text }}
+                        {% else %}
+                          <div class="product" onclick="window.location.href='{{ product.url }}'">
+                            {%- unless product.featured_image == blank -%}
+                              <div class="pimage">
+                                {%- liquid
+                                  assign max_width = product.featured_image.width
+                                  if product.featured_image > 85
+                                    assign max_width = 85
+                                  endif
+                                  assign image_height = max_width | divided_by: product.featured_image.aspect_ratio | round
+
+                                  capture image_alt
+                                    if product.featured_image.alt != blank
+                                      echo product.featured_image.alt
+                                    else
+                                      echo product.title
+                                    endif
+                                  endcapture
+                                -%}
+                                {{-
+                                  product.featured_image
+                                  | image_url: width: max_width
+                                  | image_tag:
+                                    loading: 'lazy',
+                                    width: max_width,
+                                    height: image_height,
+                                    alt: image_alt,
+                                    class: ''
+                                -}}
+                              </div>
+                            {%- endunless -%}
+                            <div class="pinfo">
+                              <div class="ptitle">{{ product.title | truncate: 20 }}</div>
+                              {%- assign variant = product.selected_or_first_available_variant -%}
+                              <div class="pprice">{{ variant.price | money_with_currency }}</div>
+                              <div class="pdescription">{{ product.description | strip_html | truncate: 37 }}</div>
+                            </div>
+                          </div>
+                        {% endif %}
+                      </span>
+                    </div>
+                  {% endfor %}
+                </div>
+
+                <span class="tooltip2" id="tooltip2">
+                  <div class="product" onclick="window.location.href='{{ product.url }}'">
+                    <div class="pimage" id="tooltip2-image"></div>
+                    <div class="pinfo">
+                      <div class="ptitle" id="tooltip2-title"></div>
+                      <div class="pprice" id="tooltip2-price"></div>
+                      <div class="pdescription" id="tooltip2-description"></div>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          {% if section.settings.uppertitle != blank or section.settings.subtitle or section.settings.title != blank %}
+            <div class="heading word--break">
+              {% if section.settings.uppertitle != blank %}
+                <div class="uppertitle word--break">
+                  <span class="star_span" role="img" aria-label="5 out of 5 stars">
+                    {%- for i in (1..5) -%}
+                      {%- render 'star_comparison' -%}
+                    {%- endfor -%}
+                  </span>
+                  {{ section.settings.uppertitle }}
+                </div>
+              {% endif %}
+              <div class="title word--break">
+                {% if section.settings.title != blank %}{{ section.settings.title }}{% endif %}
+              </div>
+              <div class="subtitle word--break">
+                {% if section.settings.subtitle != blank %}{{ section.settings.subtitle }}{% endif %}
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="shopable-image-section">
+            <div
+              class="shopable-image-wrapper"
+              {% if section.settings.image %}
+                style="aspect-ratio: {{ section.settings.image.aspect_ratio | default: 1.6 }};"
+              {% endif %}
+            >
+              {% if section.settings.image %}
+                {%- liquid
+                  assign max_width = section.settings.image.width
+                  if section.settings.image > 1400
+                    assign max_width = 1400
+                  endif
+                  assign image_height = max_width | divided_by: section.settings.image.aspect_ratio | round
+
+                  capture image_alt
+                    if section.settings.image.alt != blank
+                      echo section.settings.image.alt
+                    else
+                      echo 'Shopable Image'
+                    endif
+                  endcapture
+
+                  capture sizes_attr
+                    echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                  endcapture
+                -%}
+                {{-
+                  section.settings.image
+                  | image_url: width: max_width
+                  | image_tag:
+                    loading: 'lazy',
+                    width: max_width,
+                    height: image_height,
+                    sizes: sizes_attr,
+                    alt: image_alt,
+                    class: 'shopable-image',
+                    id: 'shopable-image'
+                -}}
+              {% else %}
+                {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'shopable-image' -%}
+              {% endif %}
+
+              {% for block in section.blocks %}
+                {% assign product = block.settings.product %}
+
+                {% if block.settings.y_coord < 35 %}
+                  <style>
+                    .shopable-point .tooltip-{{ forloop.index }}::after{ transform:rotate(180deg)!important; top:-11px; left:75px; } .prod{{ forloop.index }}{ top:70px; bottom:unset!important; }
+                  </style>
+                {% endif %}
+                {% if block.settings.x_coord < 20 %}
+                  <style>
+                    .shopable-point .tooltip-{{ forloop.index }}::after{ left:75px; right: unset;  } .prod{{ forloop.index }}{ left:129px; }
+                  </style>
+                {% else %}
+                  <style>
+                    .shopable-point .tooltip-{{ forloop.index }}::after{ right: 65px; left:unset; } .prod{{ forloop.index }}{ left:-71px; }
+                  </style>
+                {% endif %}
+
+                <div
+                  class="shopable-point"
+                  style="left: {{ block.settings.x_coord }}%; top: {{ block.settings.y_coord }}%; z-index:1;"
+                  data-block-id="{{ block.id }}"
+                  data-product="{% if block.settings.product == blank %}false{% else %}true{% endif %}"
+                >
+                  <span class="tooltip prod-t prod{{ forloop.index }} tooltip-t tooltip-{{ forloop.index }}">
+                    {% if product == blank %}
+                      {{ block.settings.tooltip_text }}
+                    {% else %}
+                      <div class="product" onclick="window.location.href='{{ product.url }}'">
+                        <div class="pimage">
+                          {% if product.featured_image != blank %}
+                            {%- liquid
+                              assign max_width = product.featured_image.width
+                              if product.featured_image > 85
+                                assign max_width = 85
+                              endif
+                              assign image_height = max_width | divided_by: product.featured_image.aspect_ratio | round
+
+                              capture image_alt
+                                if product.featured_image.alt != blank
+                                  echo product.featured_image.alt
+                                else
+                                  echo product.title
+                                endif
+                              endcapture
+                            -%}
+                            {{-
+                              product.featured_image
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% else %}
+                            {%- render 'placeholder-svgs', type: 'collection', index: 1, class: '' -%}
+                          {% endif %}
+                        </div>
+                        <div class="pinfo">
+                          <div class="ptitle">{{ product.title | truncate: 20 }}</div>
+                          {%- assign variant = product.selected_or_first_available_variant -%}
+                          <div class="pprice">{{ variant.price | money_with_currency }}</div>
+                          <div class="pdescription">{{ product.description | strip_html | truncate: 37 }}</div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </span>
+                </div>
+              {% endfor %}
+            </div>
+
+            <span class="tooltip2" id="tooltip2">
+              <div class="product" onclick="window.location.href='{{ product.url }}'">
+                <div class="pimage" id="tooltip2-image"></div>
+                <div class="pinfo">
+                  <div class="ptitle" id="tooltip2-title"></div>
+                  <div class="pprice" id="tooltip2-price"></div>
+                  <div class="pdescription" id="tooltip2-description"></div>
+                </div>
+              </div>
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const pointsToll = document.querySelectorAll('.main-shopable .shopable-point');
+    const tooltip2 = document.getElementById('tooltip2');
+    let activePoint = null;
+
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    function closeTooltip2() {
+      tooltip2.style.opacity = '0';
+      tooltip2.style.visibility = 'hidden';
+      tooltip2.style.display = 'none';
+      activePoint = null;
+    }
+
+    pointsToll.forEach((point) => {
+      point.addEventListener('click', function (e) {
+        if (e.target.closest('.tooltip') || e.target.closest('#tooltip2')) return;
+
+        const isOpen = this.classList.contains('shopable-point--open');
+        const isSamePoint = activePoint === point;
+
+        pointsToll.forEach((p) => p.classList.remove('shopable-point--open'));
+        if (!isOpen) this.classList.add('shopable-point--open');
+
+        if (isMobile()) {
+          if (isSamePoint && tooltip2.style.display === 'block') {
+            closeTooltip2();
+            return;
+          }
+          const hasProduct = point.getAttribute('data-product') === 'true';
+          if (hasProduct) {
+            const productData = point.querySelector('.tooltip .product');
+
+            if (productData) {
+              const image = productData.querySelector('.pimage img')?.src || '';
+              const title = productData.querySelector('.ptitle')?.textContent || '';
+              const price = productData.querySelector('.pprice')?.textContent || '';
+              const description = productData.querySelector('.pdescription')?.textContent || '';
+
+              const originalOnClick = productData.getAttribute('onclick');
+              let productLink = '';
+              if (originalOnClick && originalOnClick.includes('window.location.href')) {
+                const match = originalOnClick.match(/window\.location\.href\s*=\s*['"](.+?)['"]/);
+                if (match && match[1]) productLink = match[1];
+              }
+
+              document.getElementById('tooltip2-image').innerHTML = image
+                ? `<img src="${image}" alt="${title}" width="85" height="85" loading="lazy">`
+                : '';
+              document.getElementById('tooltip2-title').textContent = title;
+              document.getElementById('tooltip2-price').textContent = price;
+              document.getElementById('tooltip2-description').textContent = description;
+
+              const tooltip2Product = tooltip2.querySelector('.product');
+              if (tooltip2Product && productLink) {
+                tooltip2Product.setAttribute('onclick', `window.location.href='${productLink}'`);
+              }
+
+              tooltip2.style.opacity = '1';
+              tooltip2.style.visibility = 'visible';
+              tooltip2.style.display = 'block';
+
+              activePoint = point;
+            }
+          } else {
+            const productData = point.querySelector('.tooltip');
+            const title = productData?.textContent || '';
+
+            document.getElementById('tooltip2-image').innerHTML = '';
+            document.getElementById('tooltip2-price').textContent = '';
+            document.getElementById('tooltip2-description').textContent = '';
+            document.getElementById('tooltip2-title').textContent = title;
+
+            tooltip2.style.opacity = '1';
+            tooltip2.style.visibility = 'visible';
+            tooltip2.style.display = 'block';
+
+            activePoint = point;
+          }
+        }
+      });
+    });
+    document.addEventListener('click', function (e) {
+      const clickedInsidePoint = e.target.closest('.shopable-point');
+      const clickedInsideTooltip2 = e.target.closest('#tooltip2');
+
+      if (!clickedInsidePoint && !clickedInsideTooltip2) {
+        pointsToll.forEach((p) => p.classList.remove('shopable-point--open'));
+        if (isMobile()) closeTooltip2();
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (!isMobile()) {
+        closeTooltip2();
+      }
+    });
+
+    if (window.Shopify && Shopify.designMode) {
+      const image = document.getElementById('shopable-image');
+      if (image) {
+        image.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          const rect = image.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const xCoord = Math.round((x / rect.width) * 10000) / 100;
+          const yCoord = Math.round((y / rect.height) * 10000) / 100;
+
+          const tempMarker = document.createElement('div');
+          tempMarker.className = 'temp-marker';
+          tempMarker.style.left = `${xCoord}%`;
+          tempMarker.style.top = `${yCoord}%`;
+          image.parentElement.appendChild(tempMarker);
+          setTimeout(() => tempMarker.remove(), 3000);
+
+          const points = document.querySelectorAll('.shopable-point');
+          let targetBlockId = null;
+
+          if (points.length > 0) {
+            targetBlockId = points[points.length - 1].getAttribute('data-block-id');
+          }
+
+          if (targetBlockId) {
+            Shopify.designMode.postMessage({
+              type: 'updateBlock',
+              blockId: targetBlockId,
+              data: { x_coord: xCoord, y_coord: yCoord },
+            });
+          } else {
+            alert('Please add a "Point" block in the customizer first, then click the image to set coordinates.');
+          }
+        });
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Shopable Image",
+  "class": "shopable main-shopable",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "heading_type",
+      "label": "Heading Type",
+      "options": [
+        {
+          "value": "side",
+          "label": "Side"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FF8E00"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#EDEDED"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "image_round",
+      "label": "Image Round Corner",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>[Short promise of style, function or discovery tied to the image]</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>[Short supportive line that invites exploration or highlights ease]</h3>"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Tooltips Settings"
+    },
+    {
+      "type": "color",
+      "id": "marker_color",
+      "label": "Marker Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "marker_hover_color",
+      "label": "Marker Hover Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "marker_symbol",
+      "label": "Marker Plus Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tooltip_color",
+      "label": "Tooltip Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tooltip_text",
+      "label": "Tooltip Font Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "ptitle",
+      "label": "Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "ptext",
+      "label": "Description/Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "pprice",
+      "label": "Price Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "ttip_round",
+      "label": "Tooltip Round Corner",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 16
+    }
+  ],
+  "limit": 1,
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tooltip_text",
+          "label": "Tooltip Text",
+          "default": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        },
+        {
+          "type": "range",
+          "id": "x_coord",
+          "label": "X Coordinate (%)",
+          "default": 50,
+          "min": 10,
+          "max": 85
+        },
+        {
+          "type": "range",
+          "id": "y_coord",
+          "label": "Y Coordinate (%)",
+          "default": 50,
+          "min": 10,
+          "max": 85
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shopable Image",
+      "category": "Product",
+      "blocks": [
+        {
+          "type": "point",
+          "settings": {
+            "x_coord": 15,
+            "y_coord": 15
+          }
+        },
+        {
+          "type": "point",
+          "settings": {
+            "x_coord": 50,
+            "y_coord": 50
+          }
+        },
+        {
+          "type": "point",
+          "settings": {
+            "x_coord": 68,
+            "y_coord": 25
+          }
+        },
+        {
+          "type": "point",
+          "settings": {
+            "x_coord": 85,
+            "y_coord": 69
+          }
+        },
+        {
+          "type": "point",
+          "settings": {
+            "x_coord": 15,
+            "y_coord": 85
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

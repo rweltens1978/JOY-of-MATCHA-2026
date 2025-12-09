@@ -1,0 +1,105 @@
+.contact-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    width: 100%;
+}
+.form-row {
+    display: flex;
+    gap: 32px;
+    width: 100%;
+}
+
+.form-row input, .form-row input:focus-visible {
+    flex: 1;
+    padding: 10px 10px 32px;
+    border: none;
+    border-bottom: 1px solid #CACACA;
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-size: 24px;
+}
+.contact-form textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px 10px 32px;
+    border: none;
+    border-bottom: 1px solid #CACACA;
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-size: 24px;
+}
+.social-icons {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+}
+.social-icons a{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #B7B7B7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.social-icons img {
+    width: 24px;
+    height: 24px;
+}
+@media (max-width: 768px) {
+    .contact-header {
+      text-align: center;
+      margin-bottom: 40px;
+      gap: 32px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .social-icons {
+      flex-direction: row;
+    }
+    .contact-header h4{
+      font-size: 11px;
+      font-weight: 400;
+      margin: 0 0 16px;
+    }
+    .contact-header h2{
+      font-size: 28px;
+    }
+    .form-row {
+      gap: 40px;
+      flex-direction: column;
+    }
+    .contact-form ::-webkit-input-placeholder {
+      font-size: 18px;
+    }
+    
+    .contact-form :-moz-placeholder {
+      font-size: 18px;
+    }
+    
+    .contact-form ::-moz-placeholder {
+      font-size: 18px;
+    }
+    
+    .contact-form :-ms-input-placeholder {
+      font-size: 18px;
+    }
+    
+    .contact-form ::-ms-input-placeholder {
+      font-size: 18px;
+    }
+    .contact-form ::placeholder{
+      font-size: 18px;
+    }
+  .form-row input, .form-row input:focus-visible {
+   
+    padding: 0px 10px 24px;
+   
+  }
+}

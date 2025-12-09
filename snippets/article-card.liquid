@@ -1,0 +1,62 @@
+{% comment %}
+    Renders an article card for a given blog with settings to either show the image or not.
+
+    Accepts:
+    - blog: {Object} Blog object
+    - article: {Object} Article object
+    - image_height: {String} The setting changes the height of the article image, if shown
+    - show_image: {String} The setting either show the article image or not. If it's not included it will show the image by default
+    - show_date: {String} The setting either show the article date or not. If it's not included it will not show the image by default
+    - show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
+
+    Usage:
+    {% render 'article-card' blog: blog, article: article, show_image: section.settings.show_image %}
+{% endcomment %}
+<div class="pure-u-1 pure-u-lg-1-3">
+    <div class="article">
+        <figure class="article__img">
+            <a href="{{ article.url }}" class="ratio21by1">
+              {% if article.image != blank %}
+                {%- liquid
+                    assign max_width = article.image.width
+                    if article.image > 710
+                        assign max_width = 710
+                    endif
+                    assign image_height = max_width | divided_by: article.image.aspect_ratio | round
+      
+                    capture image_alt
+                        unless article.image.alt == blank
+                            echo article.image.alt
+                            else
+                                echo article.title | escape
+                        endunless
+                    endcapture
+                  -%}
+                  {{-
+                    article.image
+                    | image_url: width: max_width
+                    | image_tag: loading: 'lazy', width: max_width, sizes: '(max-width: 1023px) calc(100vw - 30px), 18.438vw', height: image_height, alt: image_alt, class: 'pure-img lazyload svg__thumb'
+                  -}}
+              {% else %}
+                {%- render 'placeholder-svgs', type: 'blog', index: placeholder_index, class: 'pure-img lazyload svg__thumb' -%}
+              {% endif %}
+            </a>
+        </figure>
+        <div class="article__content">
+            <a href="{{ article.url }}" class="article__title">{{ article.title | escape }}</a>
+            {%- if show_date or show_author -%}
+            <div class="article__meta">
+                <div class="article__author">
+                    <span class="text-2 text-grey">{% if show_date %}{{ posted_on_text | default: section.settings.posted_on_text | default: 'Posted on' }} {{- article.published_at | time_tag: format: 'date' -}}{% endif %}{% if show_author %} by {{ article.author -}}{% endif %}</span>
+                </div>
+            </div>
+            {%- endif -%}
+            {% if article.excerpt.size > 0 %}
+            <div class="article__desc">
+                {{article.excerpt}}
+            </div>
+            {% endif %}
+            <a href="{{ article.url }}" class="article__link text-2 fw-700 td-none">{{ read_more_text | default: section.settings.read_more_text | default: 'Continue reading' }}</a>
+        </div>
+    </div>
+</div>

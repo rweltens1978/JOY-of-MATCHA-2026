@@ -1,0 +1,31 @@
+{% comment %}
+  Payment Icons Snippet
+  Usage: {% render 'payment-icons', enable: section.settings.sidebar_banner_enable_payment_icons %}
+{% endcomment %}
+
+{% for i in (1..7) %}
+  {% assign icon_key = 'payment_icon_' | append: i %}
+  {% assign icon = settings[icon_key] %}
+  {% if icon != blank %}
+    {%- liquid
+      assign max_width = icon.width
+      if icon.width > 72
+          assign max_width = 72
+      endif
+      assign image_height = max_width | divided_by: icon.aspect_ratio | round
+
+      capture image_alt
+        if icon.alt != blank
+          echo icon.alt
+        else
+          echo 'Payment Icon'
+        endif
+      endcapture
+    -%}
+    {{-
+      icon
+      | image_url: width: max_width
+      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: 'icon icon--full-color'
+    -}}
+  {% endif %}
+{% endfor %}

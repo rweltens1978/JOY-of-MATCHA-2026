@@ -1,0 +1,12 @@
+{
+  "wrapper": "div.page__error",
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    } 
+  },
+  "order": [
+    "main"
+  ]
+}

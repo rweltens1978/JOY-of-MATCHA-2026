@@ -1,0 +1,938 @@
+{%- liquid
+  assign section_prefix_class = 'main-image-text'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-image-text * {
+      font-family: {{ section.settings.title_font.family }};
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-image-text_content-wrapper a p {
+    margin: 0 auto;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .main-image-text_wrapper {
+    text-align: var(--heading-align);
+    display: var(--display-value);
+    color: var(--text-color);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .main-image-text_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-image-text_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-image-text_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-image-text_container-wrapper {
+    background: var(--bg-color);
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--text-color);
+  }
+
+  .main-image-text_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--text-color);
+  }
+
+  .main-image-text_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-image-text_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-image-text_wrapper.inner-padding .container,
+  .main-image-text_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-image-text_content-wrapper {
+    display: flex;
+    flex-direction: var(--direction);
+    align-items: center;
+    gap: 88px;
+  }
+
+  .main-image-text .image-with-text-image {
+    width: 100%;
+    flex: 1 1 50%;
+  }
+  .main-image-text .image-with-text-content {
+    flex: 1 1 42%;
+    text-align: var(--desktop-align);
+  }
+
+  .main-image-text .image-with-text-image div {
+    width: 100%;
+    /* padding-top: 100%; */
+    position: relative;
+    border-radius: var(--image-border-radius);
+    overflow: hidden;
+    display: flex;
+  }
+
+  .main-image-text .image-with-text-image img,
+  .main-image-text .image-with-text-image svg {
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; */
+    margin: 0 auto;
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+  }
+
+  .main-image-text .image-with-text-content h2 {
+    font-size: var(--heading-size);
+    font-weight: 700;
+    text-transform: var(--text-transform);
+    margin: 0 0 40px;
+    line-height: 110%;
+    color: inherit;
+  }
+
+  .main-image-text .image-with-text-content p {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0 0 32px;
+    line-height: 150%;
+    color: inherit;
+  }
+
+  .main-image-text ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .main-image-text .image-with-text-list li {
+    font-size: 16px;
+    color: var(--color-tex);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    line-height: 150%;
+  }
+
+  .main-image-text .image-with-text-list img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .main-image-text .image-with-text-button {
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    color: var(--btn-color);
+    background: var(--btn-background);
+    padding: 13px 30px;
+    font-size: var(--btn-text-size);
+    margin-top: 56px;
+    text-decoration: none;
+    display: inline-flex;
+    font-weight: 700;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .main-image-text .image-with-text-button .icon_cart-btns {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .main-image-text .image-with-text-button .icon_cart-btns img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-image-text .image-with-text-button:hover {
+    background-color: var(--btn-color);
+    color: var(--btn-background);
+    transition: all 300ms ease-in-out;
+  }
+
+  .main-image-text a {
+    transition: all 0.3s ease;
+  }
+
+  .main-image-text a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .image-with-text-content h3 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 120%;
+  }
+
+  .image-with-text-list li svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .image-with-text-section .image-with-text-content .subheading {
+    font-weight: 500;
+  }
+
+  .image-with-text-section .image-with-text-content .description {
+    font-weight: 400;
+  }
+
+  @media (min-width: 769px) and (max-width: 1279px) {
+    .main-image-text_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .main-image-text .image-with-text-section ul {
+      gap: 16px;
+    }
+
+    .image-with-text-list li svg {
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .main-image-text .image-with-text-button {
+      padding: 10.5px 16px;
+    }
+
+    .main-image-text_content-wrapper {
+      gap: 25px;
+    }
+    .image-with-text-content {
+      max-width: 50%;
+    }
+    .main-image-text .image-with-text-image {
+      flex: 1 1 38%;
+    }
+    .main-image-text .image-with-text-content {
+      flex: 1 1 42%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .outer-padding .main-image-text_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-image-text_wrapper.inner-padding .container,
+    .main-image-text_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-image-text_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .main-image-text .image-with-text-image {
+      flex: 1 1 100%;
+    }
+    .main-image-text .image-with-text-content {
+      flex: 1 1 100%;
+      text-align: var(--mobile-align);
+    }
+    .main-image-text .image-with-text-button {
+      margin-top: 32px;
+    }
+    .main-image-text .image-with-text-content h2 {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+    }
+    .main-image-text .content-wrapper {
+      flex-direction: column;
+    }
+    .main-image-text .image-with-text-content h2 {
+      font-size: 28px;
+      margin: 0 0 24px;
+    }
+    .main-image-text .image-with-text-content p {
+      margin: 0 0 24px;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    .main-image-text .image-with-text-list li {
+      font-size: 14px;
+    }
+    .main-image-text .content-wrapper {
+      gap: 32px;
+    }
+    .image-with-text-content h3 {
+      font-size: 20px;
+    }
+  }
+{%- endstylesheet -%}
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    --image-border-radius: {{ section.settings.image_bdr_radius }}px;
+    {% if section.settings.settging_btn == 'global' %}
+      --btn-border-radius: {{ settings.button_radius }}px;
+      --btn-border: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --btn-color: {{ settings.button_text_color }};
+      --btn-background: {{ settings.button_color }};
+    {% else %}
+      --btn-border-radius: {{ section.settings.button_radius }}px;
+      --btn-border: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --btn-color: {{section.settings.button_text_color}};
+      --btn-background: {% if section.settings.button_color != 'transparent' %}{{section.settings.button_color}}{% else %}var(--color-bg-btn){% endif %};
+    {% endif %}
+    --btn-text-size: {% if section.settings.button_text_size == 'small' %}14px{% else %}20px{% endif %};
+    --color-tex: {{ section.settings.text_color_list }};
+    --text-transform: {{ section.settings.title_format }};
+    {% case section.settings.title_size %}
+        {% when 'small' %}
+         --xs-heading-size: 20px;
+        {% when 'medium' %}
+         --xs-heading-size: 32px;
+        {% when 'large' %}
+         --xs-heading-size: 32px;
+      {% endcase %};
+    {% case section.settings.title_size %}
+        {% when 'small' %}
+         --heading-size: 28px;
+        {% when 'medium' %}
+         --heading-size: 40px;
+        {% when 'large' %}
+         --heading-size: 48px;
+      {% endcase %};
+    {% if section.settings.image_position == 'left' %}
+      --direction: row;
+    {% else %}
+     --direction: row-reverse;
+    {% endif %}
+      {% case section.settings.display_on %}
+        {% when 'all' %}
+          --xs-display-value: block;
+        {% when 'mobile_only' %}
+          --xs-display-value: block;
+        {% when 'desktop_only' %}
+          --xs-display-value: none;
+      {% endcase %}
+      {% case section.settings.display_on %}
+        {% when 'all' %}
+          --display-value: block;
+        {% when 'mobile_only' %}
+          --display-value: none;
+        {% when 'desktop_only' %}
+          --display-value: block;
+      {% endcase %}
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    {% if section.settings.bg_image != blank %}
+      --bg-image: url({{ section.settings.bg_image | image_url: width: 2000 }});
+    {% endif %}
+    --text-color: {{ section.settings.text_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --desktop-align: {{ section.settings.desktop_alignment }};
+    --mobile-align: {{ section.settings.mobile_alignment }};
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="--custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper image-with-text-container">
+        <div class="image-with-text-image">
+          {% if section.settings.image %}
+            <div>
+              {%- liquid
+                assign max_width = section.settings.image.width
+                if section.settings.image > 1200
+                  assign max_width = 1200
+                endif
+                assign image_height = max_width | divided_by: section.settings.image.aspect_ratio | round
+
+                capture image_alt
+                  if section.settings.image.alt != blank
+                    echo section.settings.image.alt
+                  else
+                    echo 'Section Image'
+                  endif
+                endcapture
+              -%}
+              {{-
+                section.settings.image
+                | image_url: width: max_width
+                | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+              -}}
+            </div>
+          {% else %}
+            <div>
+              {%- render 'placeholder-svgs', type: 'hero', index: 1, class: '' -%}
+            </div>
+          {% endif %}
+        </div>
+        <div class="image-with-text-content">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="word--break">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <div class="word--break subheading">
+              {{ section.settings.subheading }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.description != blank -%}
+            <p class="word--break description">{{ section.settings.description }}</p>
+          {%- endif -%}
+          {%- if section.settings.point_3_text != blank
+            or section.settings.point_2_text != blank
+            or section.settings.point_1_text != blank
+          -%}
+            <ul class="image-with-text-list">
+              {%- if section.settings.point_1_text != blank -%}
+                <li class="word--break">
+                  {% if section.settings.icon_1 != blank %}
+                    {%- liquid
+                      assign max_width = section.settings.icon_1.width
+                      if section.settings.icon_1 > 24
+                        assign max_width = 24
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon_1.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon_1.alt != blank
+                          echo section.settings.icon_1.alt
+                        else
+                          echo 'Icon 1'
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon_1
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  {% else %}
+                    {% if section.settings.icon_1_text != blank %}
+                      <span class="material-symbols-outlined"> {{ section.settings.icon_1_text }}</span>
+                    {% else %}
+                      {% render 'icon_number_1' %}
+                    {% endif %}
+                  {% endif %}
+                  {{ section.settings.point_1_text }}
+                </li>
+              {%- endif -%}
+              {%- if section.settings.point_2_text != blank -%}
+                <li class="word--break">
+                  {% if section.settings.icon_2 != blank %}
+                    {%- liquid
+                      assign max_width = section.settings.icon_2.width
+                      if section.settings.icon_2 > 24
+                        assign max_width = 24
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon_2.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon_2.alt != blank
+                          echo section.settings.icon_2.alt
+                        else
+                          echo 'Icon 2'
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon_2
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  {% else %}
+                    {% if section.settings.icon_2_text != blank %}
+                      <span class="material-symbols-outlined"> {{ section.settings.icon_2_text }}</span>
+                    {% else %}
+                      {% render 'icon_number_2' %}
+                    {% endif %}
+                  {% endif %}
+                  {{ section.settings.point_2_text }}
+                </li>
+              {%- endif -%}
+              {%- if section.settings.point_3_text != blank -%}
+                <li class="word--break">
+                  {% if section.settings.icon_3 != blank %}
+                    {%- liquid
+                      assign max_width = section.settings.icon_3.width
+                      if section.settings.icon_3 > 24
+                        assign max_width = 24
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon_3.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon_3.alt != blank
+                          echo section.settings.icon_3.alt
+                        else
+                          echo 'Icon 3'
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon_3
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  {% else %}
+                    {% if section.settings.icon_3_text != blank %}
+                      <span class="material-symbols-outlined">{{ section.settings.icon_3_text }}</span>
+                    {% else %}
+                      {% render 'icon_number_3' %}
+                    {% endif %}
+                  {% endif %}
+                  {{ section.settings.point_3_text }}
+                </li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+          {%- if section.settings.button_text != blank -%}
+            <a
+              {% if section.settings.button_link %}
+                href="{{ section.settings.button_link }}"
+              {% endif %}
+              class="image-with-text-button word--break"
+            >
+              {{- section.settings.button_text -}}
+              {% if section.settings.show_arrow == true %}
+                {% if section.settings.icon != blank %}
+                  <i class="icon_cart-btns">
+                    {%- liquid
+                      assign max_width = section.settings.icon.width
+                      if section.settings.icon > 150
+                        assign max_width = 150
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon.alt != blank
+                          echo section.settings.icon.alt
+                        else
+                          echo 'Icon' | escape
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  </i>
+                {% elsif section.settings.icon_alt != blank %}
+                  <i class="icon_cart-btns material-symbols-outlined">
+                    {{ section.settings.icon_alt }}
+                  </i>
+                {% else %}
+                  <i class="icon_cart-btns">
+                    {% render 'icon_arrow_submit2' %}
+                  </i>
+                {% endif %}
+              {% endif %}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image With Text",
+  "class": "image-with-text-section main-image-text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Content"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Title",
+      "default": "<h2>Emotive benefit block</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Subheading</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<h3>Our [product/service] is designed to you [benefit 1], [benefit 2], and [benefit 3] without [common objection].</h3>"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Title Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "title_format",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "color",
+      "id": "text_color_list",
+      "label": "Points Text Color",
+      "default": "#696969"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_bdr_radius",
+      "label": "Image Corner Radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Icons Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_1",
+      "label": "Icon Image For Point 1"
+    },
+    {
+      "type": "text",
+      "id": "icon_1_text",
+      "label": "Icon Symbol For Point 1"
+    },
+    {
+      "type": "text",
+      "id": "point_1_text",
+      "label": "Text For Point 1",
+      "default": "[Leverage your USP (ex. guarantee, free shipping, natural ingreidents)]"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_2",
+      "label": "Icon Image For Point 2"
+    },
+    {
+      "type": "text",
+      "id": "icon_2_text",
+      "label": "Icon Symbol For Point 2"
+    },
+    {
+      "type": "text",
+      "id": "point_2_text",
+      "label": "Text for Point 2",
+      "default": "[Leverage your USP (ex. guarantee, free shipping, natural ingreidents)]"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_3",
+      "label": "Icon Image For Point 3"
+    },
+    {
+      "type": "text",
+      "id": "icon_3_text",
+      "label": "Icon Symbol For Point 3"
+    },
+    {
+      "type": "text",
+      "id": "point_3_text",
+      "label": "Text For Point 3",
+      "default": "[Leverage your USP (ex. guarantee, free shipping, natural ingreidents)]"
+    },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "Desktop text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Mobile text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "BUTTON NAME"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Button Icon image"
+    },
+    {
+      "type": "text",
+      "id": "icon_alt",
+      "label": "Button Google Icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow button",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "button_text_size",
+      "label": "Button Text Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "settging_btn",
+      "label": "Settings",
+      "options": [
+        { "value": "global", "label": "Global" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "global"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    { "type": "color", "id": "button_border_color", "label": "Button Border Color", "default": "#000" },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    { "type": "color", "id": "button_color", "label": "Button background", "default": "#000000" },
+    { "type": "color", "id": "button_text_color", "label": "Button Text Color", "default": "#ffffff" }
+  ],
+  "presets": [
+    {
+      "name": "Image With Text",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+{% if section.settings.icon_cross != blank %}
+  {%- liquid
+    assign max_width = section.settings.icon_cross.width
+    if section.settings.icon_cross > 24
+        assign max_width = 24
+    endif
+    assign image_height = max_width | divided_by: section.settings.icon_cross.aspect_ratio | round
+
+    capture image_alt
+      if section.settings.icon_cross.alt != blank
+        echo section.settings.icon_cross.alt
+      else
+        echo 'image_alternative.static' | t
+      endif
+    endcapture
+
+    capture sizes_attr
+      echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 30px), (max-width: 1199px) 59.216vw'
+    endcapture
+  -%}
+  {{-
+    section.settings.icon_cross
+    | image_url: width: max_width
+    | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: ''
+  -}}
+{% else %}
+<svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.24 24.4648L16 18.7048L21.76 24.4648L24 22.2248L18.24 16.4648L24 10.7048L21.76 8.46484L16 14.2248L10.24 8.46484L8 10.7048L13.76 16.4648L8 22.2248L10.24 24.4648ZM16 32.4648C13.7867 32.4648 11.7067 32.0448 9.76 31.2048C7.81333 30.3648 6.12 29.2248 4.68 27.7848C3.24 26.3448 2.1 24.6515 1.26 22.7048C0.42 20.7582 0 18.6782 0 16.4648C0 14.2515 0.42 12.1715 1.26 10.2248C2.1 8.27818 3.24 6.58484 4.68 5.14484C6.12 3.70484 7.81333 2.56484 9.76 1.72484C11.7067 0.884844 13.7867 0.464844 16 0.464844C18.2133 0.464844 20.2933 0.884844 22.24 1.72484C24.1867 2.56484 25.88 3.70484 27.32 5.14484C28.76 6.58484 29.9 8.27818 30.74 10.2248C31.58 12.1715 32 14.2515 32 16.4648C32 18.6782 31.58 20.7582 30.74 22.7048C29.9 24.6515 28.76 26.3448 27.32 27.7848C25.88 29.2248 24.1867 30.3648 22.24 31.2048C20.2933 32.0448 18.2133 32.4648 16 32.4648Z" fill="{{ section.settings.icon_cross_color }}"/>
+</svg>
+{% endif %}

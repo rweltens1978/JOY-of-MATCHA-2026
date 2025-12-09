@@ -1,0 +1,194 @@
+.blog-header-w{
+  margin-bottom: 50px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; 
+  gap: 24px;
+}
+ .blog-header-w h3{
+   font-size: 20px;
+ }
+.blog-posts-section .swiper-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 25px 15px 40px;
+}
+.blog-posts-section .swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+.blog-posts-section .swiper-pagination-w{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 58px;
+    gap: 61px;
+}
+.blog-posts-section .swiper-container .swiper-pagination,
+.blog-posts-section .swiper-container .swiper-pagination.swiper-pagination-bullets-dynamic{
+    position: unset;
+    display: flex;
+    align-items: center;
+    justify-content: normal;
+    width: auto !important;
+    gap: 30px;
+    transform: unset;
+    max-width: 50%;
+    padding: 0 1%;
+}
+.blog-posts-section .swiper-container .swiper-pagination-bullet{
+    width: 16px;
+    height: 16px;
+    background: #282828;
+    margin: 0 8px;
+    min-width: 16px;
+}
+.blog-posts-section .swiper-container .swiper-pagination-bullet-active{
+    width: 20px;
+    height: 20px;
+    background: #000;
+    min-width: 20px;
+}
+
+.blog-posts-section .swiper-b-prev.swiper-button-lock,
+.blog-posts-section .swiper-b-next.swiper-button-lock,
+.blog-posts-section .swiper-container .swiper-pagination.swiper-pagination-bullets-dynamic.swiper-pagination-lock,
+.blog-posts-section .swiper-container .swiper-pagination.swiper-pagination-lock{
+  display: none;
+}
+.blog-posts-section .swiper-b-prev, .blog-posts-section .swiper-b-next{
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+.blog-posts-section .swiper-button-disabled{
+    opacity: 0.2;
+}
+  
+.blog-card {
+    width: 404px;
+    background-color: transparent;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: hidden;
+}
+.blog-card-img{
+    margin-bottom: 28px;
+    width: 100%; 
+    padding-top: 95%;
+    position: relative;
+  
+    overflow: hidden;
+}
+.blog-card img,
+.blog-card-img svg {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+  
+}
+.blog-card .blog-card-date {
+    font-size: 16px;
+    margin: 0 0 22px;
+    line-height: normal;
+}
+.blog-card .blog-card-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 22px;
+    line-height: normal;
+}
+.blog-card .blog-card-excerpt {
+    font-size: 16px;
+    margin: 0 0 28px;
+    line-height: normal;
+}
+.blog-card .read-more {
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0 28px;
+    line-height: normal;
+}
+@media (max-width: 768px) {
+    .blog-card {
+      width: 350px;
+    }
+    .blog-card .date {
+      font-size: 12px;
+    }
+    .blog-posts-w .swiper-pagination-w{
+      gap: 38px;
+    }
+    .blog-posts-w .swiper-container .swiper-pagination, .blog-posts-w .swiper-container .swiper-pagination.swiper-pagination-bullets-dynamic{
+      gap: 14px;
+    }
+    .blog-header-w {
+      margin-bottom: 33px;
+      
+      
+    }
+   .blog-header-w
+  {
+    font-size: 16px;
+  }
+ 
+    .blog-header-w .blog-header{
+     
+      margin: 0;
+    }
+    .blog-header-w .blog-subtitle {
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    .blog-card .blog-card-date{
+      font-weight: 400;
+      font-size: 12px;
+      margin-bottom: 11px;
+    }
+    .blog-card .blog-card-title{
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    .blog-card .blog-card-excerpt{
+      font-weight: 400;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .blog-card .read-more{
+      font-size: 14px;
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      margin: 0;
+    }
+    .blog-posts-section .swiper-pagination-w{
+      margin-top: 48px;
+    }
+    .blog-posts-section .swiper-b-prev, .blog-posts-section .swiper-b-next{
+      width: 40px;
+      height: 40px;
+    }
+    .blog-posts-section .swiper-container .swiper-pagination-bullet.swiper-pagination-bullet-active{
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+    }
+    .blog-posts-section .swiper-container .swiper-pagination-bullet{
+      width: 10px;
+      height: 10px;
+      min-width: 10px;
+      margin: 0;
+    }
+}

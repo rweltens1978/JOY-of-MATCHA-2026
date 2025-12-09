@@ -1,0 +1,238 @@
+{%- comment -%}
+  renders filters
+  usage
+    {%- render 'facets', results: collection -%}
+{%- endcomment -%}
+<div class="mcpg-facets">
+  <div class="mcpg-facets_head">
+    <div class="mcpg-facets_head-text">
+      <i class="main-featured-product-grid_facets-toggler-icn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="19" viewBox="0 0 21 19" fill="none">
+          <path d="M20.5 0.5H0.5L8.5 9.96V16.5L12.5 18.5V9.96L20.5 0.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </i>
+      Filter
+    </div>
+    <div class="mcpg-facets_head-action">
+      <button
+        type="button"
+        aria-expanded="true"
+        class="main-featured-product-grid_facets-closer"
+        data-dropdown-close-btn=""
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 6L18 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  {%- assign default_presentation = 'text' -%}
+  {%- for filter in results.filters -%}
+    {%- assign presentation = filter.presentation | default: default_presentation -%}
+    {%- case filter.type -%}
+      {% when 'price_range' %}
+        {%- liquid
+          assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+          assign uses_comma_decimals = false
+          if currencies_using_comma_decimals contains cart.currency.iso_code
+            assign uses_comma_decimals = true
+          endif
+          assign max_price_amount = filter.range_max | money | strip_html | escape
+        -%}
+        {%- if filter.range_max > 0 -%}
+          <details name="facets" class="mcpg-facets_filter-wrap mcpg-facets_filter-wrap--price">
+            <summary class="mcpg-facets_toggler">
+              {{- filter.label -}}
+              <i class="main-featured-product-grid_facets-toggler-icn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 9 5" fill="none">
+                  <path d="M0.5 0.5L4.5 4.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </i>
+            </summary>
+            <div class="mcpg-facets_filter-content">
+              <div class="mcpg-facets_box-wrap">
+                <div class="mcpg-facets_box-head">
+                  <strong class="mcpg-facets_subtitle">
+                    Highest price is {{ max_price_amount -}}
+                  </strong>
+                  <div class="mcpg-facets_btn-wrap">
+                    <facet-remove-button
+                      data-name="{{- filter.param_name -}}"
+                      data-value="{{- value.value -}}"
+                    >
+                      <button type="button" class="mcpg-facets_btn-action" {% unless filter.min_value.value or filter.max_value.value %}disabled{% endunless %}>
+                        Reset
+                      </button>
+                    </facet-remove-button>
+                  </div>
+                </div>
+                <div class="mcpg-facets_box-content">
+                  <strong class="mcpg-facets_subtitle">
+                    Highest price is {{ max_price_amount -}}
+                  </strong>
+                  <div class="mcpg-facets_price-fields">
+                    <span class="mcpg-facets_price-field-text">{{- cart.currency.symbol -}}</span>
+                    <input
+                      type="number"
+                      name="{{ filter.min_value.param_name }}"
+                      id="Filter-{{ filter.label | escape }}-{{ filter.min_value.param_name }}"
+                      min="0"
+                      step="0.01"
+                      {% if filter.min_value.value %}
+                        {% if uses_comma_decimals %}
+                          value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                          {% else %}
+                            value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                        {% endif %}
+                        {% else %}
+                          placeholder="From"
+                      {% endif %}
+                      {% if uses_comma_decimals %}
+                        max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                        {% else %}
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      {% endif %}
+                    >
+                    <span class="mcpg-facets_price-field-text">{{- cart.currency.symbol -}}</span>
+                    <input
+                      id="Filter-{{ filter.label | escape }}-{{ filter.max_value.param_name }}"
+                      type="number"
+                      name="{{ filter.max_value.param_name }}"
+                      min="0"
+                      step="0.01"
+                      {% if filter.max_value.value %}
+                        {% if uses_comma_decimals %}
+                          value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                          {% else %}
+                            value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                        {% endif %}
+                        {% else %}
+                          placeholder="To"
+                      {% endif %}
+                      {% if uses_comma_decimals %}
+                        max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                        {% else %}
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      {% endif %}
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        {%- endif -%}
+      {%- when 'boolean' or 'list' -%}
+        {%- liquid
+          assign selected_count = 0
+          assign selected_filters_array = filter.values | where: 'active', true | map: 'value' | join: ','
+          for value in filter.values
+            if value.active
+              assign selected_count = selected_count | plus: 1
+            endif
+          endfor
+        -%}
+        <details name="facets" class="mcpg-facets_filter-wrap mcpg-facets_filter-wrap--price">
+          <summary class="mcpg-facets_toggler">
+            {{- filter.label -}}
+            {%- unless selected_count == 0 -%}
+              <span class="mcpg-facets_toggler-bubble">{{- selected_count -}}</span>
+            {%- endunless -%}
+            <i class="main-featured-product-grid_facets-toggler-icn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 9 5" fill="none">
+                <path d="M0.5 0.5L4.5 4.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </i>
+          </summary>
+          <div class="mcpg-facets_filter-content">
+            <div class="mcpg-facets_box-wrap">
+              <div class="mcpg-facets_box-head">
+                <strong class="mcpg-facets_subtitle">
+                  Select {%- unless selected_count == 0 %}ed{%- endunless %} <span {% unless selected_count != 0 %}hidden{% endunless %} data-selected-count="">{{- selected_count -}}</span>
+                </strong>
+                <div class="mcpg-facets_btn-wrap">
+                  <facet-remove-button
+                    data-name="{{- filter.param_name -}}"
+                  >
+                    <button type="button" class="mcpg-facets_btn-action" {% unless selected_count != 0 %}disabled{% endunless %}>
+                      Reset
+                    </button>
+                  </facet-remove-button>
+                </div>
+              </div>
+              <div class="mcpg-facets_box-content">
+                <ul class="list-unstyled mcpg-facets_list">
+                  {%- for value in filter.values -%}
+                    {%- liquid
+                      assign swatch_value = null
+                      if value.swatch.image
+                        assign image_url = value.swatch.image | image_url: width: 50
+                        assign swatch_value = 'url(' | append: image_url | append: ')'
+                        assign swatch_focal_point = value.swatch.image.presentation.focal_point
+                        elsif value.swatch.color
+                          assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+                      endif
+                    -%}
+                    <li class="mcpg-facets_list-item">
+                      <span class="mcpg-facets_custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="mcpg-facets_custom-checkbox-control"
+                          name="{{- value.param_name -}}"
+                          value="{{- value.value -}}"
+                          id="Filter-{{ filter.label | replace: ' ', '' | escape }}-{{ value.label | replace: ' ', '' | escape }}"
+                          {% if value.active %}
+                            checked
+                          {% endif %}
+                          {% if value.count == 0 and value.active == false %}
+                            disabled
+                          {% endif %}
+                        >
+                        <label
+                          class="mcpg-facets_custom-checkbox-label"
+                          data-button=""
+                          data-selected="false"
+                          for="Filter-{{ filter.label | replace: ' ', '' | escape }}-{{ value.label | replace: ' ', '' | escape }}"
+                        >
+                          <span class="mcpg-facets_custom-checkbox-text {% unless presentation == 'swatch' or presentation == 'image' %}mcpg-facets_custom-checkbox--padding-null{% endunless %}">
+                            {%- if presentation == 'swatch' -%}
+                              <i class="mcpg-facets_custom-checkbox-swatch" style="--swatch--background: {{ swatch_value }}; {% if swatch_focal_point %}--swatch-focal-point: {{ swatch_focal_point }};{% endif %}">
+                              </i>
+                              {%- else -%}
+                                {%- if presentation == 'image' -%}
+                                  {%- liquid
+                                    capture value_alt
+                                      if value.alt != blank
+                                        echo value.alt
+                                        else
+                                          echo filter.label
+                                      endif
+                                    endcapture
+                                  -%}
+                                  <i class="mcpg-facets_custom-checkbox-icn">
+                                    {%- if value.image -%}
+                                      {{- value.image | image_url: width: 300 | image_tag: class: 'mcpg-facets_custom-checkbox-img', alt: value_alt -}}
+                                    {%- endif -%}
+                                  </i>
+                                  {%- else -%}
+                                    <i class="mcpg-facets_custom-checkbox-icn">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">
+                                        <path d="M11.1667 0.5L3.83333 7.83333L0.5 4.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                      </svg>
+                                    </i>
+                                {%- endif -%}
+                            {%- endif -%}
+                            {{- value.label | escape }} ({{ value.count -}})
+                          </span>
+                        </label>
+                      </span>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </details>
+    {%- endcase -%}
+  {%- endfor -%}
+</div>

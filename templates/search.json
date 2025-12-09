@@ -1,0 +1,31 @@
+{
+  "wrapper": "div.page__search",
+  "sections": {
+    "search-results": {
+      "type": "main-search-results",
+      "settings": {
+        "product_results_text": "Product results for",
+        "show_secondary_image": false, 
+        "show_vendor": false,
+        "show_rating": false,
+        "article_results_text": "Search results for",
+        "posted_on_text": "Posted on",
+        "show_date": true,
+        "show_author": false
+      }
+    },
+    "main": {
+      "type": "main-search",
+      "settings": {
+        "title": "Search the latest additions",
+        "sub_title": "Can't find what you're looking for? Search below 👇",
+        "popular_search_title": "Popular Searches Include",
+        "search_label": "What are you searching for?"
+      }
+    }
+  },
+  "order": [
+    "search-results",
+    "main"
+  ]
+}

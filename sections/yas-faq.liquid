@@ -1,0 +1,851 @@
+{%- liquid
+  assign section_prefix_class = 'main-faq-section'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-faq-section :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-faq-section .faq_wrapper {
+    display: var(--display-value);
+  }
+
+  .main-faq-section_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-faq-section_container-wrapper {
+    padding: var(--xl-padding-tb) 0;
+  }
+
+  .inner-padding .main-faq-section_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-faq-section_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-faq-section_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-faq-section_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-faq-section_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-rl);
+    padding-right: var(--xl-padding-rl);
+  }
+
+  .main-faq-section_wrapper.inner-padding .container,
+  .main-faq-section_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-rl);
+    --cp-spacer-right: var(--xl-padding-rl);
+  }
+
+  .main-faq-section .faq-item-video-placeholder {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    padding-top: 92%;
+    background-color: #d9d9d9;
+    position: relative;
+  }
+
+  .main-faq-section .faq-item-s.faq-item-showvideo > div.faq-item-video {
+    margin: 0px;
+  }
+
+  .main-faq-section .faq-placeholder {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: inherit;
+    transform: translate(-50%, -50%);
+  }
+
+  .main-faq-section .video-faq-icn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 127px;
+    z-index: 1;
+  }
+
+  .main-faq-section a {
+    transition: all 0.3s ease;
+  }
+
+  .main-faq-section a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .main-faq-section .faq-header-w {
+    text-align: var(--heading-align);
+  }
+
+  .main-faq-section .faq-header h2,
+  .main-faq-section .faq-header h1,
+  .main-faq-section .faq-header h3,
+  .main-faq-section .faq-header p,
+  .main-faq-section .faq-header {
+    font-size: var(--xl-heading-size);
+    font-weight: 700;
+    text-transform: var(--heading-transform);
+    color: var(--text-color);
+    line-height: normal;
+  }
+
+  .main-faq-section .faq-subtitle h2,
+  .main-faq-section .faq-subtitle h1,
+  .main-faq-section .faq-subtitle h3,
+  .main-faq-section .faq-subtitle p {
+    font-size: 24px;
+    line-height: 120%;
+    font-weight: 500;
+    color: var(--subtitle-color);
+    margin-bottom: 0;
+  }
+
+  .main-faq-section .faq-item:first-child {
+    margin-top: 0;
+  }
+
+  .main-faq-section .faq-item {
+    background: var(--faq-bg-color);
+    border: var(--faq-border-size) solid var(--faq-bdr-color);
+    border-radius: 10px;
+    margin-top: 24px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .main-faq-section .faq-question {
+    padding: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--title-color);
+  }
+
+  .main-faq-section .faq-answer {
+    padding: 0 20px 20px;
+    font-size: 16px;
+    color: var(--fg-text-color);
+  }
+
+  .main-faq-section .faq-item-s.faq-item-showvideo {
+    flex-direction: var(--direction);
+  }
+
+  .main-faq-section .faq-item-s.faq-item-showvideo video {
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .main-faq-section .faq-header {
+    margin-bottom: 7px;
+  }
+
+  .faq-section .faq-header-w {
+    margin-bottom: 56px;
+    line-height: 100%;
+  }
+
+  .faq-section .open .faq-question {
+    padding-bottom: 7px;
+  }
+
+  .faq-section .faq-question {
+    padding: 16px 32px 16px 32px;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-section .faq-answer {
+    padding: 0 32px 14px;
+    font-size: 16px;
+    display: none;
+  }
+
+  .faq-item .arrow {
+    transition: transform 0.3s;
+    background: #ebebeb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .faq-item .arrow {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      min-height: 32px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-faq-section .faq_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .main-faq-section .faq-subtitle h2,
+    .main-faq-section .faq-subtitle h1,
+    .main-faq-section .faq-subtitle h3,
+    .main-faq-section .faq-subtitle p {
+      font-size: 20px;
+    }
+
+    .faq-item .arrow {
+      width: 23px;
+      height: 23px;
+      min-width: 23px;
+      min-height: 23px;
+    }
+
+    .main-faq-section .faq-ite {
+      margin-top: 16px;
+    }
+
+    .main-faq-section .faq-item-video-placeholder {
+      padding-top: 88%;
+    }
+
+    .faq-section .faq-answer {
+      font-size: 12px;
+      padding: 0 20px 16px;
+    }
+
+    .faq-section .faq-question {
+      padding: 16px 20px 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .faq-section .open .faq-question {
+      padding-bottom: 0;
+      padding-top: 19px;
+    }
+
+    .faq-section .faq-header-w {
+      gap: 6px;
+      margin-bottom: 29px;
+    }
+
+    .outer-padding .main-faq-section_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-rl);
+      padding-right: var(--xs-padding-rl);
+    }
+
+    .main-faq-section_wrapper.inner-padding .container,
+    .main-faq-section_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-rl);
+      --cp-spacer-right: var(--xs-padding-rl);
+    }
+
+    .main-faq-section_container-wrapper {
+      padding: var(--xs-padding-tb) 0;
+    }
+
+    .main-faq-section .faq-header h2,
+    .main-faq-section .faq-header h1,
+    .main-faq-section .faq-header h3,
+    .main-faq-section .faq-header p,
+    .main-faq-section .faq-header {
+      font-size: var(--xs-heading-size);
+      line-height: 113%;
+      font-weight: 600;
+    }
+
+    .main-faq-section .faq-item-s.faq-item-showvideo {
+      flex-direction: var(--desk-direction);
+      margin-top: 16px;
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="faq_wrapper {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% if section.settings.video_aligment == 'right' %}
+      --desk-direction: column;
+    {% else %}
+      --desk-direction: column-reverse;
+    {% endif %}
+    {% if section.settings.video_aligment == 'right' %}
+      --direction: row-reverse;
+    {% else %}
+     --direction: row;
+    {% endif %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    --fg-text-color: {{ section.settings.text_color_block }};
+    --title-color: {{ section.settings.title_color_block }};
+    --faq-bdr-color: {{ section.settings.faq_border_color }};
+    --faq-border-size:  {{ section.settings.faq_border_size }}px;
+    --faq-bg-color: {{ section.settings.faq_background_color }};
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-align: left;
+      {% when 'center' %}
+      --heading-align: center;
+      {% when 'right' %}
+      --heading-align: right;
+    {% endcase %}
+    {% if section.settings.section_width == 'full' %}
+      --width-value: 100%;
+    {% else %}
+      --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --text-color: {{ section.settings.text_color }};
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-tb: {{ section.settings.padding_tb_desk }}px;
+    --xl-padding-rl: {{ section.settings.padding_lr_desk }}px;
+    --xs-padding-tb: {{ section.settings.padding_tb_mob }}px;
+    --xs-padding-rl: {{ section.settings.padding_lr_mob }}px;
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.title != blank or section.settings.under_title_text != blank -%}
+          <div class="faq-header-w word--break">
+            {%- if section.settings.title != blank -%}
+              <div class="faq-header word--break">{{ section.settings.title }}</div>
+            {%- endif -%}
+            {%- if section.settings.under_title_text != blank -%}
+              <div class="faq-subtitle word--break">{{ section.settings.under_title_text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <div class="faq-item-s {% if section.settings.show_video == true %}faq-item-showvideo{% endif %}">
+          {% if section.settings.show_video == true %}
+            <div class="faq-item-video">
+              {% if section.settings.video == blank and section.settings.video_mob == blank %}
+                <div class="faq-item-video-placeholder">
+                  <svg
+                    class="video-faq-icn"
+                    width="128"
+                    height="127"
+                    viewBox="0 0 128 127"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g filter="url(#filter0_d_9841_3052)">
+                    <circle cx="63.9996" cy="63.4039" r="32.941" fill="black"/>
+                    </g>
+                    <path d="M57.4913 55.8715C57.4913 54.311 59.1805 53.3357 60.532 54.1159L73.9007 61.8344C75.2521 62.6146 75.2521 64.5652 73.9007 65.3455L60.532 73.0639C59.1805 73.8441 57.4913 72.8688 57.4913 71.3083L57.4913 55.8715Z" fill="white"/>
+                    <defs>
+                    <filter id="filter0_d_9841_3052" x="0.651519" y="0.0558157" width="126.697" height="126.696" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                    <feMorphology radius="10.1357" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_9841_3052"/>
+                    <feOffset/>
+                    <feGaussianBlur stdDeviation="10.1357"/>
+                    <feComposite in2="hardAlpha" operator="out"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_9841_3052"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_9841_3052" result="shape"/>
+                    </filter>
+                    </defs>
+                  </svg>
+                  {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'faq-placeholder' -%}
+                </div>
+              {% else %}
+                {{
+                  section.settings.video
+                  | video_tag: controls: true, image_size: '1200x', class: 'faq-item-video-desk'
+                }}
+                {% if section.settings.video_mob == blank %}
+                  {{
+                    section.settings.video
+                    | video_tag: controls: true, image_size: '800x', class: 'faq-item-video-mob'
+                  }}
+                {% else %}
+                  {{
+                    section.settings.video_mob
+                    | video_tag: controls: true, image_size: '800x', class: 'faq-item-video-mob'
+                  }}
+                {% endif %}
+              {% endif %}
+            </div>
+          {% endif %}
+          <div class="faq-item-w">
+            {% for block in section.blocks %}
+              <div class="faq-item {% if forloop.first %}open{% endif %}">
+                <div class="faq-question">
+                  {{ block.settings.title }}
+                  <span class="arrow">{% render 'faq_arrow_icon' %}</span>
+                </div>
+                <div class="faq-answer">{{ block.settings.text }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.main-faq-section .faq-question').forEach((item) => {
+    item.addEventListener('click', () => {
+      const parent = item.parentNode;
+      document.querySelectorAll('.main-faq-section .faq-item').forEach((faq) => {
+        if (faq !== parent) {
+          faq.classList.remove('open');
+        }
+      });
+      parent.classList.toggle('open');
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Section",
+  "class": "faq-section main-faq-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Content"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Frequently Asked Questions</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "under_title_text",
+      "label": "Subtitle",
+      "default": "<h3>Got questions? We’ve got answers!</h3>"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F9F9F9"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Tittle Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#696969"
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video",
+      "label": "Show Video",
+      "default": true
+    },
+    {
+      "type": "radio",
+      "id": "video_aligment",
+      "label": "Video Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video_mob",
+      "label": "Video mobile"
+    },
+    {
+      "type": "header",
+      "content": "Blocks Settings"
+    },
+    {
+      "type": "color",
+      "id": "faq_background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "faq_border_color",
+      "label": "Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "faq_border_size",
+      "label": "Border Size",
+      "min": 0,
+      "max": 10,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "title_color_block",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color_block",
+      "label": "Text Color",
+      "default": "#696969"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_block",
+      "name": "Faq Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title For Block"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text For Block"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Section",
+      "category": "Info",
+      "blocks": [
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "What make [product name] different?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will my order arrive?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will i see results?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "is [product name] safe to use?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        },
+        {
+          "type": "faq_block",
+          "settings": {
+            "title": "can i cancel or return my order?",
+            "text": "Leverage your USPs when comparing your product with competitors."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

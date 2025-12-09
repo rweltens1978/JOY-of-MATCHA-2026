@@ -1,0 +1,437 @@
+{%- liquid
+  assign section_prefix_class = 'announcement-bar'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .announcement-bar :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .announcement-bar_content-wrapper a p {
+    margin: 0 auto;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .announcement-bar .static-bar .carousel .carousel-item{
+    flex: unset;
+  }
+
+  .announcement-bar .carousel .carousel-item a,
+  .carousel-item a p strong{
+    transition: all 0.3s ease;
+  }
+
+  .announcement-bar .carousel .carousel-item a:hover,
+  .carousel-item a:hover p strong {
+    color: var(--color-bg-btn);
+  }
+
+  .announcement-bar_wrapper{
+    display: var(--display-value);
+  }
+
+  .announcement-bar_content-wrapper {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .announcement-bar_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .announcement-bar_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .announcement-bar_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .announcement-bar_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .announcement-bar_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .announcement-bar_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .announcement-bar_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .announcement-bar_wrapper.inner-padding .container,
+  .announcement-bar_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .announcement-bar .carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: scroll-animate var(--scroll-speed) linear infinite;
+    grid-column-gap: var(--gap-icn);
+    position: relative;
+    height: auto;
+    color: var(--text-color);
+    width: 500%;
+    animation-direction: var(--animation-direction);
+  }
+
+  .announcement-bar .carousel:hover {
+    animation-play-state: paused;
+  }
+
+  .announcement-bar .carousel .carousel-item {
+    grid-column-gap: var(--gap-icn);
+    flex: none;
+    justify-content: space-around;
+    display: flex;
+    align-items: center;
+    height: auto;
+    color: var(--text-color);
+  }
+
+  .announcement-bar .carousel .carousel-item img {
+    max-width: 24px;
+    max-height: 24px;
+    width: auto;
+    height: auto;
+  }
+
+  .announcement-bar .carousel .carousel-item .material-symbols-outlined {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .announcement-bar .carousel .carousel-item a {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+
+  .announcement-bar .static-bar .carousel .carousel-item+.carousel-item {
+    display: none;
+  }
+
+  .announcement-bar .static-bar .carousel {
+    animation: unset;
+    flex-wrap: wrap;
+    gap: var(--gap-icn);
+    width: 100%;
+    justify-content: center;
+  }
+
+  .announcement-bar .static-bar .carousel .carousel-item {
+    grid-column-gap: var(--gap-icn);
+    justify-content: center;
+  }
+
+  .carousel-item_separator{
+    position: relative;
+    top: -0.07em;
+  }
+
+  .carousel-item_separator--image img{
+    height: 100%;
+    max-width: 50px;
+  }
+
+  .carousel-item a[aria-disabled="true"]{
+    pointer-events: none;
+  }
+
+  @media(min-width: 768xp){
+    .announcement-bar .carousel .carousel-item{
+      font-size: 16px;
+      line-height: 120%;
+      font-weight: 400;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .announcement-bar_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .announcement-bar .carousel .carousel-item{
+      font-size: 12px;
+      line-height: 120%;
+      font-weight: 400;
+    }
+    
+    .announcement-bar .carousel {
+      animation-duration: calc(var(--scroll-speed) * 0.5);
+    }
+
+    .outer-padding .announcement-bar_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .announcement-bar_wrapper.inner-padding .container,
+    .announcement-bar_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .announcement-bar_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+  }
+
+  @keyframes scroll-animate {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    --gap-icn: {{ section.settings.gap_icon }}px;
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div 
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="
+      --custom-width: {{ section.settings.custom_page_width }};
+    "
+  >
+    <div class="{{ section_width }}">
+      <div 
+        class="{{ section_prefix_class }}_content-wrapper static-bar"
+      >
+        <div class="carousel" >
+          <div class="carousel-item">
+            {% if section.settings.url != blank %}
+              <a {% if section.settings.url %}href="{{ section.settings.url }}"{% else %}aria-disable="true"{% endif %}>{{ section.settings.static }}</a>
+            {% else %}
+              {{ section.settings.static }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "tag": "section",
+  "class": "section logo_carousel announcement-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#fff"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display on",
+      "options": [
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "richtext",
+      "id": "static",
+      "label": "Static text ",
+      "info": "this text only for Static mode",
+      "default": "<p>Some kind of announcement goes here <strong>Shop Now</strong></p>"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link for static text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "category": "Info"
+    }
+  ]
+}
+{% endschema %}

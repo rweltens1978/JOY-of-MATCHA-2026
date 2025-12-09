@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main_register": {
+      "type": "main-register",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main_register" 
+  ]
+}

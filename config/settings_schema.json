@@ -1,0 +1,608 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Surge",
+    "theme_version": "1.0.0",
+    "theme_author": "Shopify",
+    "theme_documentation_url": "https:\/\/help.shopify.com\/manual\/online-store\/themes\/os20\/themes-by-shopify\/dawn",
+    "theme_support_url": "https:\/\/support.shopify.com\/"
+  },
+  {
+         "name": "License",
+        "settings": [
+          {
+            "type": "header",
+            "content": "License Configuration"
+          },
+          {
+            "type": "paragraph",
+            "content": "Enter your theme license key to activate all features. You can find your license key in your purchase confirmation email or customer portal."
+          },
+          {
+            "id": "license_key",
+            "type": "text",
+            "label": "License Key *",
+            "info": "Enter your purchased theme license key (REQUIRED)",
+            "placeholder": "GHBB86P6-D62RZ7YG-X79RQSRK-VCINFV"
+          },
+          {
+            "id": "store_url", 
+            "type": "text",
+            "label": "Shopify Store URL *",
+            "info": "Enter your Shopify Store URL WITHOUT the https://. If you’re using a custom domain, use that instead of the myshopify.com URL(REQUIRED)",
+            "placeholder": "yourstore.myshopify.com"
+          }
+        ]
+      },
+
+  {
+    "name": "t:settings_schema.colors.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.settings.header__1.content"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_btn",
+        "default": "#000",
+        "label": "Link hover color"
+      },
+      {
+        "type": "color",
+        "id": "colors_background_1",
+        "default": "#FFFFFF",
+        "label": "Background page default"
+      },
+      {
+        "type": "header",
+        "content": "Slider Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text_btn",
+        "default": "#FFFFFF",
+        "label": "Navigation hover background color"
+      },
+      {
+        "type": "color",
+        "id": "color_paginate",
+        "default": "#000",
+        "label": "Pagination slide"
+      },
+      {
+        "type": "color",
+        "id": "color_paginate_active",
+        "default": "#000",
+        "label": "Pagination active slide"
+      },
+      {
+        "type": "color",
+        "id": "color_arrow",
+        "default": "#000",
+        "label": "Arrows slider"
+      }
+    ]
+  },
+  {
+    "name": "Button",
+    "settings": [
+      {
+        "type": "color",
+        "id": "button_color_border",
+        "default": "#000",
+        "label": "Border color"
+      },
+      {
+        "type": "range",
+        "id": "button_border_size",
+        "label": "Button border size",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "button_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "default": 10
+      },
+      {
+        "type": "color",
+        "id": "button_color",
+        "label": "Button background",
+        "default": "transparent"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text color",
+        "default": "#fff"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.typography.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.typography.settings.header__1.content"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "default": "assistant_n4",
+        "label": "t:settings_schema.typography.settings.type_header_font.label",
+        "info": "t:settings_schema.typography.settings.type_header_font.info"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.typography.settings.header__2.content"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "default": "assistant_n4",
+        "label": "t:settings_schema.typography.settings.type_body_font.label",
+        "info": "t:settings_schema.typography.settings.type_body_font.info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.layout.name",
+    "settings": [
+      {
+        "type": "select",
+        "id": "page_width",
+        "options": [
+          {
+            "value": "1292",
+            "label": "t:settings_schema.layout.settings.page_width.options__1.label"
+          },
+          {
+            "value": "1430",
+            "label": "t:settings_schema.layout.settings.page_width.options__3.label"
+          },
+          {
+            "value": "1600",
+            "label": "t:settings_schema.layout.settings.page_width.options__2.label"
+          }
+        ],
+        "default": "1292",
+        "label": "t:settings_schema.layout.settings.page_width.label"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.social-media.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.social-media.settings.header.content"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "t:settings_schema.social-media.settings.social_twitter_link.label",
+        "info": "t:settings_schema.social-media.settings.social_twitter_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "t:settings_schema.social-media.settings.social_facebook_link.label",
+        "info": "t:settings_schema.social-media.settings.social_facebook_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "t:settings_schema.social-media.settings.social_instagram_link.label",
+        "info": "t:settings_schema.social-media.settings.social_instagram_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin_link",
+        "label": "LinkedIn",
+        "info": "https:\/\/www.linkedin.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "t:settings_schema.social-media.settings.social_youtube_link.label",
+        "info": "t:settings_schema.social-media.settings.social_youtube_link.info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.search_input.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.search_input.settings.header.content"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "default": true,
+        "label": "t:settings_schema.search_input.settings.predictive_search_enabled.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "default": false,
+        "label": "t:settings_schema.search_input.settings.predictive_search_show_vendor.label",
+        "info": "t:settings_schema.search_input.settings.predictive_search_show_vendor.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "default": true,
+        "label": "t:settings_schema.search_input.settings.predictive_search_show_price.label",
+        "info": "t:settings_schema.search_input.settings.predictive_search_show_price.info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.favicon.name",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:settings_schema.favicon.settings.favicon.label",
+        "info": "t:settings_schema.favicon.settings.favicon.info"
+      }
+    ]
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo site"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 25,
+        "max": 200,
+        "step": 5,
+        "unit": "px",
+        "label": "Width",
+        "default": 120
+      },
+      {
+        "type": "range",
+        "id": "logo_mobwidth",
+        "min": 25,
+        "max": 200,
+        "step": 5,
+        "unit": "px",
+        "label": "Mobile width",
+        "default": 60
+      }
+    ]
+  },
+  {
+    "name": "Payment Icons",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "payment_icon_1",
+        "label": "Payment icon 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icon_2",
+        "label": "Payment icon 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icon_3",
+        "label": "Payment icon 3"
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icon_4",
+        "label": "Payment icon 4"
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icon_5",
+        "label": "Payment icon 5"
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icon_6",
+        "label": "Payment icon 6"
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icon_7",
+        "label": "Payment icon 7"
+      }
+    ]
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "select",
+        "id": "section_enable_sticky",
+        "label": "Sticky header",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "on_scroll_up",
+            "label": "On scroll up"
+          },
+          {
+            "value": "stacked",
+            "label": "On scroll"
+          }
+        ],
+        "default": "stacked"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Shipping Bar Settings"
+      },
+      {
+        "type": "color",
+        "id": "progress_bar_color",
+        "label": "Progress bar color",
+        "default": "#000"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_enable_free_shipping_message",
+        "label": "Enable shipping bar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_label",
+        "label": "Free shipping label",
+        "default": "Free Shipping"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "cart_free_shipping_text",
+        "label": "Free shipping bar text",
+        "default": "You're <strong>||amount||</strong> Away From <strong>Free Shipping!</strong>",
+        "info": "Use ||amount|| to display progress towards free shipping."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_amount",
+        "label": "Minimum spend for free shipping",
+        "default": "160",
+        "info": "Use round numbers. Exclude currency, symbols, and letters."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_message",
+        "label": "Free shipping unlocked message",
+        "default": "✓ FREE Shipping Unlocked!"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_discount_amount",
+        "label": "Discount amount",
+        "default": "200",
+        "info": "Use round numbers. Exclude currency, symbols, and letters."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_discount_label",
+        "label": "Discount label",
+        "default": "20% OFF"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Goal Settings"
+      },
+      {
+        "type": "select",
+        "id": "cart_ship_goal_type",
+        "label": "Goal Type",
+        "options": [
+          {
+            "value": "shipping",
+            "label": "Shipping Goal Only"
+          },
+          {
+            "value": "discount",
+            "label": "Shipping & Discount Goal"
+          }
+        ],
+        "default": "shipping"
+      },
+      {
+        "type": "number",
+        "id": "cart_discount_percent",
+        "label": "Discount Percent",
+        "default": 0
+      },
+      {
+        "type": "text",
+        "id": "cart_discount_code",
+        "label": "Discount Code"
+      }
+    ]
+  },
+  {
+    "name": "Gift card",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "gift_card_banner_img",
+        "label": "Desktop banner image"
+      },
+      {
+        "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "gift_card_logo",
+        "label": "Logo site"
+      },
+      {
+        "type": "range",
+        "id": "gift_card_logo_width",
+        "min": 25,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Width",
+        "default": 120
+      },
+      {
+        "type": "range",
+        "id": "gift_card_logo_mobwidth",
+        "min": 25,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Mobile width",
+        "default": 60
+      },
+      {
+        "type": "header",
+        "content": "Continue shopping button"
+      },
+      {
+        "type": "select",
+        "id": "setting_continue_btn",
+        "label": "Settings",
+        "options": [
+          {
+            "value": "global",
+            "label": "Global"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ],
+        "default": "global"
+      },
+      {
+        "type": "range",
+        "id": "continue_btn_border_size",
+        "label": "Button border size",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "continue_btn_border_color",
+        "label": "Button border color",
+        "default": "#000"
+      },
+      {
+        "type": "checkbox",
+        "id": "continue_btn_show_arrow",
+        "label": "Show arrow button",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "continue_btn_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "default": 10
+      },
+      {
+        "type": "color",
+        "id": "continue_btn_color",
+        "label": "Button color",
+        "default": "transparent"
+      },
+      {
+        "type": "color",
+        "id": "continue_btn_text_color",
+        "label": "Button text color",
+        "default": "transparent"
+      },
+      {
+        "type": "header",
+        "content": "Print button"
+      },
+      {
+        "type": "select",
+        "id": "setting_print_btn",
+        "label": "Settings",
+        "options": [
+          {
+            "value": "global",
+            "label": "Global"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ],
+        "default": "global"
+      },
+      {
+        "type": "range",
+        "id": "print_btn_border_size",
+        "label": "Button border size",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "print_btn_border_color",
+        "label": "Button border color",
+        "default": "#000"
+      },
+      {
+        "type": "checkbox",
+        "id": "print_btn_show_arrow",
+        "label": "Show arrow button",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "print_btn_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "default": 10
+      },
+      {
+        "type": "color",
+        "id": "print_btn_color",
+        "label": "Button color",
+        "default": "transparent"
+      },
+      {
+        "type": "color",
+        "id": "print_btn_text_color",
+        "label": "Button text color",
+        "default": "transparent"
+      }
+    ]
+  }
+]

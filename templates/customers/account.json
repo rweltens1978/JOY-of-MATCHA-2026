@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "manage_subscriptions": {
+      "type": "manage-subscriptions",
+      "settings": {
+      }
+    },
+    "main_account": {
+      "type": "main-account",
+      "settings": { 
+      }
+    }
+  },
+  "order": [
+    "manage_subscriptions",
+    "main_account"
+  ]
+}

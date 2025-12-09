@@ -1,0 +1,2183 @@
+{%- liquid
+  assign section_prefix_class = 'main-featured-product-grid'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-featured-product-grid :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+
+  {% if collection.products_count == 0 %}
+    .main-featured-product-grid .featured-header-w{
+      margin 0;
+    }
+  {% endif %}
+</style>
+
+{%- stylesheet -%}
+  .featured-products_wrapper {
+    display: var(--display-value);
+    color: var(--text-color);
+  }
+  .product-item_top-wrap {
+    flex-grow: 1;
+  }
+  .product-item_bottom-wrap {
+    margin-top: 20px;
+    padding: 0 var(--card-padding) var(--card-padding) var(--card-padding);
+  }
+
+  /* .main-featured-product-grid_content-wrapper { padding: var(--xl-padding-tb) var(--xl-padding-rl); } */
+
+  .main-featured-product-grid a,
+  .main-featured-product-grid .btn,
+  .main-featured-product-grid .btn svg path {
+    transition: all 0.3s ease;
+  }
+
+  .main-featured-product-grid a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .main-featured-product-grid_facets-wrap {
+    margin-bottom: 60px;
+  }
+  .main-featured-product-grid_facets-wrap,
+  .main-featured-product-grid_facets-filters-dropdown {
+    align-items: flex-start;
+  }
+  .main-featured-product-grid_facets-toggler,
+  .main-featured-product-grid_facets-sort-toggler,
+  .mcpg-facets_toggler,
+  .mcpg-facets_box-head,
+  .mcpg-facets_price-fields,
+  .mcpg-facets_custom-checkbox-icn,
+  .mcpg-facets_head,
+  .mcpg-facets_head-text,
+  .main-featured-product-grid_facet-remover,
+  .main-featured-product-grid_facets-active-wrap {
+    align-items: center;
+  }
+  .main-featured-product-grid_facets-toggler,
+  .main-featured-product-grid_facets-wrap,
+  .main-featured-product-grid_facets-sort-toggler,
+  .main-featured-product-grid_facets-filters-dropdown,
+  .mcpg-facets_toggler,
+  .mcpg-facets_price-fields,
+  .mcpg-facets_custom-checkbox-icn,
+  .mcpg-facets_head,
+  .mcpg-facets_head-text,
+  .main-featured-product-grid_facet-remover,
+  .main-featured-product-grid_facets-active-wrap {
+    gap: 12px;
+    display: flex;
+  }
+  .main-featured-product-grid_facets-toggler,
+  .main-featured-product-grid_facets-sort-toggler,
+  .main-featured-product-grid_facets-sort-action-btn,
+  .mcpg-facets_btn-action,
+  .main-featured-product-grid_facets-closer {
+    border: 0;
+    padding: 4px 0;
+    border-radius: 0;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: left;
+  }
+  .main-featured-product-grid_facets-toggler,
+  .main-featured-product-grid_facets-sort-toggler,
+  .main-featured-product-grid_facets-sort-action-btn,
+  .mcpg-facets_toggler,
+  .mcpg-facets_btn-action,
+  .mcpg-facets_custom-checkbox-label {
+    cursor: pointer;
+  }
+  .main-featured-product-grid_facets-toggler,
+  .main-featured-product-grid_facets-sort-toggler,
+  .main-featured-product-grid_facets-sort-action-btn,
+  .mcpg-facets_toggler,
+  .mcpg-facets_subtitle,
+  .mcpg-facets_custom-checkbox-label {
+    color: #000;
+  }
+  .main-featured-product-grid_facets-sort-action-btn,
+  .mcpg-facets_price-fields input {
+    width: 100%;
+  }
+  .main-featured-product-grid_facets-sort-action-btn {
+    padding: 10px 0;
+  }
+  .main-featured-product-grid_facets-sort-action-btn,
+  .mcpg-facets_price-field-text,
+  .mcpg-facets_custom-checkbox-label,
+  .mcpg-facets_title-text,
+  .main-featured-product-grid_facet-remover {
+    font-size: 14px;
+  }
+  .main-featured-product-grid_facets-toggler-icn,
+  .mcpg-facets_custom-checkbox-icn,
+  .main-featured-product-grid_facets-closer,
+  .main-featured-product-grid_facet-remover-icn {
+    line-height: 0;
+  }
+  .main-featured-product-grid_facets-sorter-wrap,
+  .mcpg-facets_btn-wrap,
+  .mcpg-facets_head-action,
+  .mcpg-facets,
+  .mcpg-facets_toggler .main-featured-product-grid_facets-toggler-icn {
+    margin-left: auto;
+  }
+  .main-featured-product-grid_facets-dropdown-sort,
+  .main-featured-product-grid_facets-sort-action-btn,
+  .main-featured-product-grid_facets-filters-dropdown,
+  .mcpg-facets_custom-checkbox-label,
+  .mcpg-facets_custom-checkbox,
+  .mcpg-facets,
+  .mcpg-facets_head {
+    position: relative;
+  }
+  .mcpg-facets_custom-checkbox-icn,
+  .mcpg-facets_custom-checkbox-swatch,
+  .mcpg-facets_filter-content,
+  .main-featured-product-grid_facets-sort-content {
+    position: absolute;
+  }
+  .mcpg-facets_filter-content,
+  .main-featured-product-grid_facets-sort-content,
+  .mcpg-facets_head {
+    background-color: #fff;
+  }
+  .main-featured-product-grid_facets-sort-content {
+    top: 100%;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+  .mcpg-facets_filter-content,
+  .main-featured-product-grid_facets-sort-content,
+  .main-featured-product-grid_facets-filters-dropdown {
+    z-index: 2;
+  }
+  .main-featured-product-grid_facets-sort-content {
+    right: 0;
+    width: 230px;
+  }
+  .main-featured-product-grid_facets-sort-content,
+  .mcpg-facets_box-content {
+    max-height: 303px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .mcpg-facets_list.list-unstyled,
+  .main-featured-product-grid_facets-sort-list,
+  .main-featured-product-grid_facets-sort-list.list-unstyled {
+    margin-bottom: 0;
+  }
+  .main-featured-product-grid_facets-sort-list,
+  .main-featured-product-grid_facets-sort-list.list-unstyled {
+    padding: 14px 25px;
+  }
+  .main-featured-product-grid_facets-sort-action-btn:hover,
+  .main-featured-product-grid_facets-sort-action-btn--active,
+  .mcpg-facets_toggler:hover,
+  [open] > .mcpg-facets_toggler,
+  .mcpg-facets_btn-action:hover,
+  .main-featured-product-grid_facet-remover,
+  .products-grid--empty .main-featured-product-grid_facets-remove-all {
+    text-decoration: underline;
+  }
+  .main-featured-product-grid_facets-filters-dropdown-content,
+  .main-featured-product-grid_facets-sort-content,
+  .mcpg-facets_toggler::-webkit-details-marker,
+  .main-featured-product-grid_facets-sort-toggler [data-current-value],
+  .mcpg-facets_box-head,
+  .main-featured-product-grid_facets-active:has(.main-featured-product-grid_facets-active--hidden) {
+    display: none;
+  }
+  .main-featured-product-grid_facets-filters-dropdown-content.dropdown--open,
+  .main-featured-product-grid_facets-sort-content.dropdown--open,
+  .main-featured-product-grid_facets-dropdown-sort,
+  .main-featured-product-grid_facets-sort-action-btn,
+  .mcpg-facets_custom-checkbox-label,
+  .mcpg-facets_title-text,
+  .mcpg-facets_box-content .mcpg-facets_subtitle {
+    display: block;
+  }
+  .mcpg-facets_box-head,
+  .mcpg-facets_toggler {
+    gap: 8px;
+  }
+  .mcpg-facets_toggler {
+    list-style: none;
+  }
+  .main-featured-product-grid_facets-filters-dropdown,
+  .mcpg-facets {
+    gap: 30px;
+  }
+  .mcpg-facets_filter-content,
+  .mcpg-facets_custom-checkbox-icn,
+  .mcpg-facets_custom-checkbox-swatch {
+    left: 0;
+  }
+  .mcpg-facets_box-head,
+  .mcpg-facets_head {
+    border-bottom: 1px solid #d5d5d5;
+    padding: 10px 24px;
+  }
+  .mcpg-facets_subtitle,
+  .mcpg-facets_btn-action {
+    font-size: 12px;
+    line-height: 17px;
+  }
+  .mcpg-facets_subtitle,
+  .mcpg-facets_btn-action,
+  .mcpg-facets_title-text {
+    font-weight: 400;
+  }
+  .mcpg-facets_box-content {
+    padding: 20px 24px;
+    max-height: calc(100vh - 100px);
+  }
+  .mcpg-facets_price-fields {
+    gap: 20px;
+  }
+  .mcpg-facets_price-field-text,
+  .main-featured-product-grid_facets-sorter-wrap,
+  .mcpg-facets_head-action,
+  .mcpg-facets_toggler-bubble,
+  .main-featured-product-grid_facet-remover-icn {
+    flex-shrink: 0;
+  }
+  .mcpg-facets_price-fields input {
+    height: 36px;
+    border-radius: 4px;
+    border: 1px solid #000;
+    text-align: left;
+    padding: 5px 13px;
+  }
+  .mcpg-facets,
+  .main-featured-product-grid_facets-active-wrap {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .mcpg-facets_custom-checkbox-control {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    left: 0;
+    top: 0;
+  }
+  .mcpg-facets_custom-checkbox-control,
+  .mcpg-facets_custom-checkbox-icn svg {
+    opacity: 0;
+  }
+  .mcpg-facets_custom-checkbox-label,
+  .mcpg-facets_toggler {
+    word-break: break-word;
+  }
+  .mcpg-facets_custom-checkbox-label {
+    padding: 5px 5px 5px 44px;
+  }
+  .mcpg-facets_custom-checkbox-icn {
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    top: 3px;
+  }
+  .mcpg-facets_custom-checkbox-swatch {
+    top: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 100%;
+    background: var(--swatch--background);
+    background-position: var(--swatch-focal-point);
+    background-size: cover;
+    border: 2px solid #fff;
+  }
+  .mcpg-facets_list-item + .mcpg-facets_list-item {
+    margin-top: 18px;
+  }
+  .mcpg-facets_custom-checkbox-icn {
+    justify-content: center;
+  }
+  .mcpg-facets_custom-checkbox-control:checked
+    + .mcpg-facets_custom-checkbox-label
+    .mcpg-facets_custom-checkbox-icn
+    svg {
+    opacity: 1;
+  }
+  .mcpg-facets_custom-checkbox-control:checked
+    + .mcpg-facets_custom-checkbox-label
+    .mcpg-facets_custom-checkbox-swatch {
+    outline: 1px solid #000;
+  }
+  .main-featured-product-grid_facet-remover-icn,
+  .mcpg-facets_custom-checkbox-control:disabled + .mcpg-facets_custom-checkbox-label,
+  .main-featured-product-grid_facets-filters-dropdown-content,
+  .mcpg-facets_btn-action:disabled {
+    pointer-events: none;
+  }
+  .mcpg-facets_custom-checkbox-control:disabled + .mcpg-facets_custom-checkbox-label {
+    color: color-mix(in srgb, rgba(0, 0, 0, 0.4) 100%, #000 0%);
+  }
+  .main-featured-product-grid_facets-sort-toggler [data-current-value] {
+    margin-left: -8px;
+  }
+  .main-featured-product-grid_facets-filters-dropdown-content {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.4);
+    left: 0;
+  }
+  .mcpg-facets {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #fff;
+    width: 280px;
+    pointer-events: auto;
+  }
+  .main-featured-product-grid_facets-closer {
+    padding: 2px;
+  }
+  .mcpg-facets_title-text {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .mcpg-facets_head,
+  .main-featured-product-grid_facets-active {
+    margin-bottom: 15px;
+  }
+  .mcpg-facets_head {
+    z-index: 9;
+  }
+
+  .mcpg-facets_toggler {
+    border: 0;
+    padding: 10px 35px;
+    border-radius: 0;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: left;
+  }
+  .mcpg-facets_title-wrap {
+    margin-bottom: 10px;
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+  .mcpg-facets_toggler .main-featured-product-grid_facets-toggler-icn {
+    transform: rotate(-90deg);
+  }
+  .mcpg-facets_filter-content {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 100px;
+  }
+  [open] > .mcpg-facets_toggler {
+    position: absolute;
+    left: 0;
+    top: 65px;
+    right: 0;
+    padding-left: 23px;
+    padding-right: 23px;
+    z-index: 9;
+  }
+  [open] > .mcpg-facets_toggler .main-featured-product-grid_facets-toggler-icn {
+    order: -1;
+    margin-left: 0;
+    transform: rotate(90deg);
+  }
+  .mcpg-facets_box-content .mcpg-facets_subtitle {
+    margin-bottom: 30px;
+  }
+  .main-featured-product-grid_facet-remover,
+  .main-featured-product-grid_facets-remove-all {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .main-featured-product-grid_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-featured-product-grid_container-wrapper {
+    padding: var(--xl-padding-tb) 0;
+  }
+
+  .inner-padding .main-featured-product-grid_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-featured-product-grid_container-wrapper:has(.container-fluid) {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+
+  .outer-padding .main-featured-product-grid_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-featured-product-grid_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-featured-product-grid_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-featured-product-grid_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-rl);
+    padding-right: var(--xl-padding-rl);
+  }
+
+  .main-featured-product-grid_wrapper.inner-padding .container,
+  .main-featured-product-grid_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-rl);
+    --cp-spacer-right: var(--xl-padding-rl);
+  }
+
+  @media (max-width: 768px) {
+    .featured-products_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .main-featured-product-grid_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-rl);
+      padding-right: var(--xs-padding-rl);
+    }
+
+    .main-featured-product-grid_wrapper.inner-padding .container,
+    .main-featured-product-grid_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-rl);
+      --cp-spacer-right: var(--xs-padding-rl);
+    }
+
+    .main-featured-product-grid_container-wrapper {
+      padding: var(--xs-padding-tb) 0;
+    }
+
+    .main-featured-product-grid .products-grid {
+      grid-template-columns: repeat(auto-fit, minmax(calc((100% / var(--col-count)) - 20px), 1fr));
+    }
+  }
+  .main-featured-product-grid .section-title {
+    font-size: var(--xl-heading-size);
+    text-transform: var(--heading-transform);
+    color: var(--text-color);
+    line-height: 120%;
+    font-weight: 700;
+  }
+  .main-featured-product-grid .btn:hover {
+    color: var(--btn-background);
+    background: var(--btn-color);
+  }
+  .main-featured-product-grid .btn:hover svg path {
+    fill: var(--btn-background);
+  }
+  .main-featured-product-grid .btn {
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    color: var(--btn-color);
+    background: var(--btn-background);
+  }
+  .main-featured-product-grid .btn svg path {
+    fill: var(--fill);
+  }
+  .main-featured-product-grid .btn .icon_cart-btns {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .main-featured-product-grid .btn .icon_cart-btns img {
+    position: relative !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .main-featured-product-grid .section-title * {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+  }
+  @media (max-width: 768px) {
+    .main-featured-product-grid .section-title {
+      font-size: var(--xx-heading-size);
+    }
+
+    .main-featured-product-grid .section-subtitle h1,
+    .main-featured-product-grid .section-subtitle h2,
+    .main-featured-product-grid .section-subtitle h3,
+    .main-featured-product-grid .section-subtitle p{
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 150%;
+    }
+  }
+
+  .main-featured-product-grid .section-subtitle {
+    color: var(--sub-color);
+    font-family: var(--font-family);
+  }
+
+  .main-featured-product-grid .section-subtitle h1,
+  .main-featured-product-grid .section-subtitle h2,
+  .main-featured-product-grid .section-subtitle h3,
+  .main-featured-product-grid .section-subtitle p{
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 150%;
+  }
+
+  .main-featured-product-grid .product-item {
+    border-radius: var(--btn-radius);
+    box-shadow: var(--box-shadow);
+    border: var(--border-solid);
+    background-color: var(--card-bg);
+  }
+  .main-featured-product-grid .product-info {
+    order: var(--img-count);
+    padding: var(--card-padding);
+  }
+  .main-featured-product-grid .product-title {
+    text-transform: var(--card-transform);
+  }
+  .main-featured-product-grid .pagination__list {
+    gap: 20px;
+  }
+  .mcpg-facets_toggler-bubble {
+    border-radius: 14px;
+    background-color: #000;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    padding: 2px;
+    min-width: 14px;
+  }
+  .mcpg-facets_toggler-bubble,
+  .products-grid--empty {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .main-featured-product-grid_facets-sort-toggler [data-current-value] {
+      display: inline;
+    }
+    .main-featured-product-grid_facets-filters-dropdown-content,
+    [open] > .mcpg-facets_toggler {
+      position: static;
+    }
+    .main-featured-product-grid_facets-filters-dropdown-content,
+    .mcpg-facets {
+      background-color: transparent;
+      overflow: visible;
+    }
+    .mcpg-facets,
+    .mcpg-facets_box-head {
+      display: flex;
+    }
+    .mcpg-facets {
+      height: auto;
+      width: auto;
+      margin-left: 0;
+    }
+    .mcpg-facets_head,
+    .mcpg-facets_title-wrap,
+    .mcpg-facets_sorter-wrap,
+    .mcpg-facets_box-content .mcpg-facets_subtitle {
+      display: none;
+    }
+    .mcpg-facets_toggler {
+      padding: 4px 0;
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .mcpg-facets_toggler .main-featured-product-grid_facets-toggler-icn {
+      margin-left: 0;
+      transform: none;
+    }
+    .mcpg-facets_filter-wrap--price .mcpg-facets_filter-content {
+      width: 324px;
+    }
+    .mcpg-facets_filter-content {
+      top: 100%;
+      right: auto;
+      bottom: auto;
+      border: 1px solid #d5d5d5;
+      border-radius: 8px;
+      margin-top: 15px;
+      padding-top: 0;
+    }
+    .mcpg-facets_filter-wrap {
+      position: relative;
+    }
+    .mcpg-facets_box-content {
+      max-height: 303px;
+    }
+    [open] > .mcpg-facets_toggler .main-featured-product-grid_facets-toggler-icn {
+      transform: none;
+      order: unset;
+    }
+    [open] > .mcpg-facets_toggler {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .mcpg-facets_toggler-bubble {
+      position: absolute;
+      right: 10px;
+      top: -5px;
+      height: 14px;
+    }
+  }
+{%- endstylesheet -%}
+
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign results_url = collection.url
+  assign base_url = request.path
+  assign current_sort = ''
+  capture sort_value
+    for option in collection.sort_options
+      if option.value == sort_by
+        assign current_sort = option.name
+        echo option.value
+      endif
+    endfor
+  endcapture
+  assign base_url = base_url | append: '?' | append: 'sort_by' | append: '=' | append: sort_by
+-%}
+
+<section
+  id="{{ section.id }}"
+  class="featured-products-section featured-products_wrapper {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    --card-transform: {{ section.settings.card_title_typography }};
+    {% if section.settings.setting_btn == 'global' %}
+      --fill: {{ settings.button_text_color }};
+    {% else %}
+      --fill: {{section.settings.button_text_color}};
+    {% endif %}
+    {% if section.settings.setting_btn == 'global' %}
+      --btn-border-radius: {{ settings.button_radius }}px;
+      --btn-border: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --btn-color: {{ settings.button_text_color }};
+      --btn-background: {{ settings.button_color }};
+    {% else %}
+      --btn-border-radius: {{ section.settings.button_radius }}px;
+      --btn-border: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --btn-color: {{section.settings.button_text_color}};
+      --btn-background: {{section.settings.button_color}};
+    {% endif %}
+    {% if section.settings.mobile_layout == 'image_first' %}
+     --img-count: 2;
+    {% else %}
+     --img-count: 1;
+    {% endif %}
+    {% unless section.settings.card_background == 'transparent' or section.settings.card_background == '' %}
+      --card-padding: {{ section.settings.card_padding }}px;
+      {% else %}
+        --card-padding: {{ section.settings.card_padding }}px 0;
+    {% endunless %}
+    --card-bg: {{ section.settings.card_background }};
+     {% if section.settings.container_styling == 'shadow' %}
+        --box-shadow: {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_blur }}px {{ section.settings.box_shadow_spread }}px {{ section.settings.box_shadow_color }};
+      {% else %}
+        --box-shadow: none;
+    {% endif %}
+    {% if section.settings.container_styling == 'card' %}
+      --border-solid: {{ section.settings.card_border }}px solid {{ section.settings.card_border_color }};
+    {% else %}
+     --border-solid: none;
+    {% endif %}
+    --btn-radius: {{ section.settings.container_radius }}px;
+    --font-family: {{ section.settings.title_font.family }};
+    --sub-color: {{ section.settings.subtitle_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    {% if section.settings.section_width == 'full' %}
+    --width-value: 100%;
+    {% else %}
+    --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --col-count: {{ section.settings.column_prod_mob }};
+    --xl-padding-tb: {{ section.settings.padding_tb_desk }}px;
+    --xl-padding-rl: {{ section.settings.padding_lr_desk }}px;
+    --xs-padding-tb: {{ section.settings.padding_tb_mob }}px;
+    --xs-padding-rl: {{ section.settings.padding_lr_mob }}px;
+    --text-color: {{ section.settings.text_color }};
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- unless collection.all_products_count == 0 -%}
+          {% if collection.products_count > 0 %}
+            {%- if section.settings.title != blank or section.settings.under_title_text != blank -%}
+              <div class="featured-header-w">
+                {%- if section.settings.title != blank -%}
+                  <div class="section-title">{{ section.settings.title }}</div>
+                {%- endif -%}
+                {%- if section.settings.under_title_text != blank -%}
+                  <div class="section-subtitle">{{ section.settings.under_title_text }}</div>
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <div class="featured-header-w">
+                <div class="section-title">{{ collection.title }}</div>
+                {%- if collection.description != blank -%}
+                  <div class="section-subtitle">{{ collection.description }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {% else %}
+            <div class="featured-header-w">
+              <div class="section-title">NO PRODUCTS</div>
+            </div>
+          {% endif %}
+          {% if collection %}
+            <div class="main-featured-product-grid_facets-bar">
+              {%- liquid
+                for filter in collection.filters
+                  case filter.type
+                    when 'price_range'
+                      if filter.min_value.value != null or filter.max_value.value != null
+                        assign price_min_filter = filter.min_value.param_name
+                        assign price_max_filter = filter.max_value.param_name
+
+                        assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                        assign uses_comma_decimals = false
+                        if currencies_using_comma_decimals contains cart.currency.iso_code
+                          assign uses_comma_decimals = true
+                        endif
+
+                        assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', ''
+                        if uses_comma_decimals
+                          assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        endif
+
+                        if filter.max_value.value
+                          assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', ''
+                          if uses_comma_decimals
+                            assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                          endif
+                        else
+                          assign filter_max_value = filter.range_max | money_without_currency | replace: ',', ''
+                          if uses_comma_decimals
+                            assign filter_max_value = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+                          endif
+                        endif
+
+                        assign price_min_filter = price_min_filter | append: '=' | append: filter_min_value
+                        assign price_max_filter = price_max_filter | append: '=' | append: filter_max_value
+                        unless base_url contains '?'
+                          assign base_url = base_url | append: '?' | append: price_min_filter | append: '&' | append: price_max_filter
+                        else
+                          assign base_url = base_url | append: '&' | append: price_min_filter | append: '&' | append: price_max_filter
+                        endunless
+                      endif
+                    when 'boolean', 'list'
+                      for value in filter.active_values
+                        assign active_filter_param = value.param_name | append: '=' | append: value.value
+
+                        if base_url contains '?'
+                          assign base_url = base_url | append: '&' | append: active_filter_param
+                        else
+                          assign base_url = base_url | append: '?' | append: active_filter_param
+                        endif
+                      endfor
+                  endcase
+                endfor
+
+                capture filter_url
+                  unless base_url contains '?'
+                    echo base_url | append: '?'
+                  else
+                    echo base_url | append: '&'
+                  endunless
+                endcapture
+              -%}
+              <facets-filter
+                hidden
+                data-sections='
+                  [
+                    {
+                      "id": "{{ section.id }}",
+                      "selectors": ["[data-render-params]", "[data-render-grid]", "[data-render-facets]", "[data-render-actives]"]
+                    }
+                  ]
+                '
+              >
+                <input
+                  type="hidden"
+                  value="{% unless filter_url contains '?' %}?section_id=section-facets{% else %}&section_id=section-facets{% endunless %}"
+                  id="modal-section"
+                >
+                <input
+                  type="hidden"
+                  value="{% unless filter_url contains '?' %}?sections[]=section-facets&sections[]={{ section.id }}{% else %}&sections[]=section-facets&sections[]={{ section.id }}{% endunless %}"
+                  id="filters-sections"
+                >
+                <span data-render-params="">
+                  <input type="hidden" value="{{- filter_url -}}" id="filters-params">
+                </span>
+                <input type="hidden" value="{{- results_url -}}" id="base-url">
+              </facets-filter>
+              <div class="main-featured-product-grid_facets-wrap">
+                <div class="main-featured-product-grid_facets-modal-wrap" data-render-facets="">
+                  <filters-dropdown class="main-featured-product-grid_facets-filters-dropdown">
+                    <button
+                      type="button"
+                      aria-expanded="false"
+                      class="main-featured-product-grid_facets-toggler"
+                      data-dropdown-toggler=""
+                    >
+                      <i class="main-featured-product-grid_facets-toggler-icn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="19" viewBox="0 0 21 19" fill="none">
+                          <path d="M20.5 0.5H0.5L8.5 9.96V16.5L12.5 18.5V9.96L20.5 0.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </i>
+                      Filters
+                      <i class="main-featured-product-grid_facets-toggler-icn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="7" viewBox="0 0 13 7" fill="none">
+                          <path d="M0.5 0.5L6.5 6.5L12.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </i>
+                    </button>
+                    <div
+                      class="main-featured-product-grid_facets-filters-dropdown-content"
+                      data-dropdown-content=""
+                      data-frames='[{"opacity":"0"},{"opacity":"1"}]'
+                      data-options='{"duration":300,"easing":"ease","delay":0,"fill":"both","iterations":1}'
+                    >
+                      {%- render 'facets', results: collection -%}
+                    </div>
+                  </filters-dropdown>
+                </div>
+                <div class="main-featured-product-grid_facets-sorter-wrap">
+                  <sort-dropdown
+                    class="main-featured-product-grid_facets-dropdown-sort"
+                  >
+                    <button
+                      type="button"
+                      class="main-featured-product-grid_facets-sort-toggler"
+                      aria-expanded="false"
+                      data-dropdown-toggler=""
+                    >
+                      Sort by <span data-current-value="">{{ current_sort -}}</span>
+                      <i class="main-featured-product-grid_facets-toggler-icn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="7" viewBox="0 0 13 7" fill="none">
+                          <path d="M0.5 0.5L6.5 6.5L12.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </i>
+                    </button>
+                    <div
+                      class="main-featured-product-grid_facets-sort-content"
+                      data-frames='[{"opacity":"0","transform":"translateY(10px)"},{"opacity":"1","transform":"translateY(0px)"}]'
+                      data-options='{"duration":300,"easing":"ease","delay":0,"fill":"both","iterations":1}'
+                      data-dropdown-content=""
+                    >
+                      <ul class="list-unstyled main-featured-product-grid_facets-sort-list">
+                        {%- for option in collection.sort_options -%}
+                          <li class="main-featured-product-grid_facets-sort-list-item">
+                            <button
+                              data-btn-sort=""
+                              type="button"
+                              class="main-featured-product-grid_facets-sort-action-btn {% if option.value == sort_by %}main-featured-product-grid_facets-sort-action-btn--active{% endif %}"
+                              data-value="{{- option.value | escape -}}"
+                              data-text="{{- option.name | escape -}}"
+                            >
+                              {{- option.name | escape -}}
+                            </button>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                    <input type="hidden" name="sort_by" value="{{- sort_value -}}">
+                  </sort-dropdown>
+                </div>
+              </div>
+              {%- liquid
+                assign active_filters_size = 0
+
+                for filter in collection.filters
+                  for value in filter.active_values
+                    assign active_filters_size = active_filters_size | plus: 1
+                  endfor
+
+                  if filter.type == 'price_range'
+                    if filter.min_value.value != null or filter.max_value.value != null
+                      assign active_filters_size = active_filters_size | plus: 1
+                    endif
+                  endif
+                endfor
+              -%}
+              <div class="main-featured-product-grid_facets-active" data-render-actives="">
+                <div class="main-featured-product-grid_facets-active-wrap {% unless active_filters_size > 0 %}main-featured-product-grid_facets-active--hidden{% endunless %}">
+                  {%- for filter in collection.filters -%}
+                    {%- for value in filter.active_values -%}
+                      <facet-remove-button
+                        data-name="{{- filter.param_name -}}"
+                        data-value="{{- value.value -}}"
+                      >
+                        <button type="button" class="main-featured-product-grid_facet-remover">
+                          {{- value.label | escape -}}
+                          <i class="main-featured-product-grid_facet-remover-icn">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                            >
+                              <path d="M18 6L6 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M6 6L18 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </i>
+                        </button>
+                      </facet-remove-button>
+                    {%- endfor -%}
+                    {% if filter.type == 'price_range' %}
+                      {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                        <facet-remove-button
+                          data-name="{{- filter.param_name -}}"
+                        >
+                          <button type="button" class="main-featured-product-grid_facet-remover">
+                            {%- liquid
+                              if filter.min_value.value
+                                echo filter.min_value.value | money
+                              else
+                                echo 0 | money
+                              endif
+                              echo ' - '
+                              if filter.max_value.value
+                                echo filter.max_value.value | money
+                              else
+                                echo filter.range_max | money
+                              endif
+                            -%}
+                            <i class="main-featured-product-grid_facet-remover-icn">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                              >
+                                <path d="M18 6L6 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 6L18 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                            </i>
+                          </button>
+                        </facet-remove-button>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <facet-remove-button
+                    data-name="all"
+                  >
+                    <button type="button" class="main-featured-product-grid_facets-remove-all">Reset all</button>
+                  </facet-remove-button>
+                </div>
+              </div>
+            </div>
+            <div data-render-grid="">
+              {%- unless collection.products.size == 0 -%}
+                {%- paginate collection.products by section.settings.products_per_page -%}
+                  <div class="products-grid">
+                    {% for product in collection.products %}
+                      {%- liquid
+                        assign placeholder_index = forloop.index | modulo: 4
+                        if placeholder_index == 0
+                          assign placeholder_index = 4
+                        endif
+
+                        assign variant = product.selected_or_first_available_variant
+                        assign is_product_available = product.available
+
+                        # Check if variant is available considering inventory management
+                        assign is_variant_available = false
+                        if variant.available
+                          if variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny'
+                            if variant.inventory_quantity > 0
+                              assign is_variant_available = true
+                            endif
+                          else
+                            assign is_variant_available = true
+                          endif
+                        endif
+
+                        # Product is considered available only if both product and variant are available
+                        assign show_button = false
+                        if is_product_available and is_variant_available
+                          assign show_button = true
+                        endif
+                      -%}
+                      <div
+                        class="product-item"
+                        {% if section.settings.card_clickable == true and show_button %}
+                          onclick="location.href='{{ product.url }}'"
+                        {% elsif section.settings.card_clickable == true %}
+                          style="cursor: default;"
+                        {% endif %}
+                        data-render-columns=""
+                      >
+                        <div class="product-item_top-wrap">
+                          <div class="product-image-wrapper {% if section.settings.secondary_image_highlight and product.images[1] %}has_second-img{% endif %}">
+                            {%- if product.featured_image != blank -%}
+                              {%- liquid
+                                assign max_width = product.featured_image.width
+                                if product.featured_image > 1200
+                                  assign max_width = 1200
+                                endif
+                                assign image_height = max_width | divided_by: product.featured_image.aspect_ratio | round
+
+                                capture image_alt
+                                  if product.featured_image.alt != blank
+                                    echo product.featured_image.alt
+                                  else
+                                    echo product.title
+                                  endif
+                                endcapture
+
+                                capture sizes_attr
+                                  echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 30px), (max-width: 1199px) 23.214vw'
+                                endcapture
+                              -%}
+                              {{-
+                                product.featured_image
+                                | image_url: width: max_width
+                                | image_tag:
+                                  loading: 'lazy',
+                                  width: max_width,
+                                  height: image_height,
+                                  sizes: sizes_attr,
+                                  alt: image_alt,
+                                  class: 'primary-image'
+                              -}}
+                            {%- else -%}
+                              {%- render 'placeholder-svgs',
+                                type: 'product',
+                                index: placeholder_index,
+                                class: 'primary-image'
+                              -%}
+                            {%- endif -%}
+                            {% if section.settings.secondary_image_highlight and product.images[1] %}
+                              {%- liquid
+                                assign max_width = product.images[1].width
+                                if product.images[1] > 1200
+                                  assign max_width = 1200
+                                endif
+                                assign image_height = max_width | divided_by: product.images[1].aspect_ratio | round
+
+                                capture image_alt
+                                  if product.images[1].alt != blank
+                                    echo product.images[1].alt
+                                  else
+                                    echo 'Secondary image'
+                                  endif
+                                endcapture
+
+                                capture sizes_attr
+                                  echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 21.412vw'
+                                endcapture
+                              -%}
+                              {{-
+                                product.images[1]
+                                | image_url: width: max_width
+                                | image_tag:
+                                  loading: 'lazy',
+                                  width: max_width,
+                                  height: image_height,
+                                  sizes: sizes_attr,
+                                  alt: image_alt,
+                                  class: 'secondary-image'
+                              -}}
+                            {% endif %}
+                          </div>
+                          <div class="product-info">
+                            <h3
+                              class="product-title"
+                              style="
+                                                                  {% if section.settings.card_title_line %}
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                {% endif %}
+                              "
+                            >
+                              {{ product.title }}
+                            </h3>
+                            <p>
+                              {% if variant.compare_at_price > variant.price %}
+                                <span class="product-compare-price">{{ variant.compare_at_price | money }}</span>
+                              {% endif %}
+                              <span class="product-price">{{ variant.price | money }}</span>
+                            </p>
+                          </div>
+                        </div>
+                        {% if section.settings.show_cta and show_button %}
+                          {%- liquid
+                            capture product_clean_url
+                              if product.url contains '?'
+                                assign parts = product.url | split: '?'
+                                echo parts[0]
+                              else
+                                echo product.url
+                              endif
+                            endcapture
+                          -%}
+                          <div class="product-item_bottom-wrap">
+                            <button class="btn" onclick="location.href='{{ product_clean_url }}'">
+                              {{ section.settings.text_btn_card }}
+                              {% if section.settings.show_arrow == true %}
+                                {% if section.settings.icon != blank %}
+                                  <i class="icon_cart-btns">
+                                    {%- liquid
+                                      assign max_width = section.settings.icon.width
+                                      if section.settings.icon > 150
+                                        assign max_width = 150
+                                      endif
+                                      assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                                      capture image_alt
+                                        if section.settings.icon.alt != blank
+                                          echo section.settings.icon.alt
+                                        else
+                                          echo 'Icon' | escape
+                                        endif
+                                      endcapture
+                                    -%}
+                                    {{-
+                                      section.settings.icon
+                                      | image_url: width: max_width
+                                      | image_tag:
+                                        loading: 'lazy',
+                                        width: max_width,
+                                        height: image_height,
+                                        alt: image_alt,
+                                        class: ''
+                                    -}}
+                                  </i>
+                                {% elsif section.settings.icon_alt != blank %}
+                                  <i class="icon_cart-btns material-symbols-outlined">
+                                    {{ section.settings.icon_alt }}
+                                  </i>
+                                {% else %}
+                                  <i class="icon_cart-btns">
+                                    {% render 'icon_arrow_submit2' %}
+                                  </i>
+                                {% endif %}
+                              {% endif %}
+                            </button>
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {%- if paginate.pages > 1 -%}
+                    <div class="viewmore_btn-w">
+                      {% render 'pagination', paginate: paginate, anchor: '' %}
+                    </div>
+                  {%- endif -%}
+                {%- endpaginate -%}
+              {%- else -%}
+                <div class="products-grid--empty">
+                  <p>Use fewer filters or</p>
+                  <facet-remove-button
+                    data-name="all"
+                  >
+                    <button type="button" class="main-featured-product-grid_facets-remove-all">Reset all</button>
+                  </facet-remove-button>
+                </div>
+              {%- endunless -%}
+            </div>
+          {% else %}
+            <div class="featured-header-w">
+              <div class="section-title">Collection not available</div>
+            </div>
+          {% endif %}
+        {%- else -%}
+          <div class="featured-header-w">
+            <div class="section-title">NO PRODUCTS</div>
+          </div>
+        {%- endunless -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- javascript -%}
+  const trapFocus = (container, elementToFocus = container, shouldTrap = true) => {
+    const handlers = trapFocus._handlers || (trapFocus._handlers = {});
+    const getFocusableElements = (container) => {
+      return Array.from(
+        container.querySelectorAll(
+          "summary, a[href], button:enabled, [tabindex]:not([tabindex^='-']), [draggable], area, input:not([type=hidden]):enabled, select:enabled, textarea:enabled, object, iframe"
+        )
+      );
+    };
+    const remove = (focusTarget = null) => {
+      document.removeEventListener('focusin', handlers.focusin);
+      document.removeEventListener('focusout', handlers.focusout);
+      document.removeEventListener('keydown', handlers.keydown);
+      if (focusTarget) focusTarget.focus();
+    };
+    if (!shouldTrap) {
+      remove(elementToFocus);
+      return;
+    }
+    const elements = getFocusableElements(container);
+    const first = elements[0];
+    const last = elements[elements.length - 1];
+    remove();
+    handlers.keydown = (event) => {
+      if (event.code.toUpperCase() !== 'TAB') return;
+      if (event.target === last && !event.shiftKey) {
+        event.preventDefault();
+        first.focus();
+      }
+      if ((event.target === container || event.target === first) && event.shiftKey) {
+        event.preventDefault();
+        last.focus();
+      }
+      if (!container.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    handlers.focusin = (event) => {
+      if (event.target !== container && event.target !== last && event.target !== first) return;
+      document.addEventListener('keydown', handlers.keydown);
+    };
+    handlers.focusout = () => {
+      document.removeEventListener('keydown', handlers.keydown);
+    };
+    document.addEventListener('focusin', handlers.focusin);
+    document.addEventListener('focusout', handlers.focusout);
+    elementToFocus.focus();
+    if (
+      elementToFocus.tagName === 'INPUT' &&
+      ['search', 'text', 'email', 'url'].includes(elementToFocus.type) &&
+      elementToFocus.value
+    ) {
+      elementToFocus.setSelectionRange(0, elementToFocus.value.length);
+    }
+  };
+  const debounce = (fn, wait) => {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  };
+  const setFilterParam = (param, value, remove = false, getParams = false) => {
+    const input = document.getElementById('filters-params');
+    const url = new URL(input.value, window.location.origin);
+    if (getParams) return new URLSearchParams(url.searchParams).toString();
+    switch (remove) {
+      case true:
+        if (param.includes('price')) {
+          [...url.searchParams.keys()].forEach((key) => key.includes('filter.v.price') && url.searchParams.delete(key));
+        } else {
+          if (!value) {
+            url.searchParams.delete(param);
+          } else {
+            const valToDel = value;
+            const values = url.searchParams.getAll(param);
+            const updatedValues = values.filter((value) => value !== valToDel);
+            url.searchParams.delete(param);
+            updatedValues.forEach((value) => url.searchParams.append(param, value));
+          }
+        }
+        break;
+      case 'all':
+        [...url.searchParams.keys()].forEach((key) => key.includes('filter') && url.searchParams.delete(key));
+        break;
+
+      default:
+        if (param.includes('price')) {
+          url.searchParams.set(param, value);
+        } else {
+          url.searchParams.append(param, value);
+        }
+        break;
+    }
+
+    input.value = url.toString();
+  };
+  const toggleLoader = (state) => {
+    const loader = document.querySelector('[data-theme-loader]');
+    if (!loader) return;
+    if (state) {
+      loader.style.display = 'flex';
+      loader.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 300,
+        fill: 'forwards',
+        easing: 'ease',
+      }).onfinish = () => {
+        loader.classList.add('theme-loader--active');
+      };
+      return;
+    }
+    loader.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 300,
+      fill: 'forwards',
+      easing: 'ease',
+    }).onfinish = () => {
+      loader.classList.remove('theme-loader--active');
+      loader.style.display = 'none';
+    };
+  };
+  class FiltersDropdown extends HTMLElement {
+    constructor() {
+      super();
+
+      this.button = this.querySelector('[data-dropdown-toggler]');
+      this.content = this.querySelector('[data-dropdown-content]');
+      this.items = this.querySelectorAll('input');
+      this.closeButton = this.querySelector('[data-dropdown-close-btn]');
+      if (!this.button || !this.content) return;
+      this.button.addEventListener('click', (event) => {
+        if (this.button.getAttribute('aria-expanded') === 'true') return this.closeDropdown();
+        this.openDropdown();
+      });
+    }
+    connectedCallback() {
+      const self = this;
+      const doAnimate = (element) => {
+        const parseJSON = (key) => {
+          try {
+            return JSON.parse(self.content.dataset[key]);
+          } catch (e) {
+            return null;
+          }
+        };
+        const animationFrames = parseJSON('frames');
+        const timing = parseJSON('options');
+        if (!animationFrames || !timing) return;
+        element.animate(animationFrames, timing);
+      };
+      const applyColorScheme = () => {
+        const { colorScheme, schemeQuery } = this.dataset;
+        if (!colorScheme) return;
+        const classes = colorScheme.trim().split(/\s+/);
+        const query = parseFloat(schemeQuery);
+        if (!schemeQuery || isNaN(query)) {
+          this.content.classList.add(...classes);
+          return;
+        }
+        if (screen.width >= query) this.content.classList.add(...classes);
+      };
+      const openDropdown = () => {
+        self.button.setAttribute('aria-expanded', true);
+        self.content.classList.add('dropdown--open');
+        doAnimate(self.content);
+        self.content.focus();
+        trapFocus(self.content);
+        document.body.addEventListener('click', onBodyClick);
+        self.addEventListener('keyup', onKeyUp);
+        this.initFilters();
+        if (this.closeButton) this.closeButton.addEventListener('click', this.closeDropdown);
+      };
+      const closeDropdown = () => {
+        closeDetailsTag();
+        self.button.setAttribute('aria-expanded', false);
+        self.content.classList.remove('dropdown--open');
+        self.button.focus();
+        document.body.removeEventListener('click', onBodyClick);
+        self.removeEventListener('keyup', onKeyUp);
+        this.fields.forEach((field) => {
+          field.removeEventListener('input', this.debouncedOnSubmit.bind(this));
+        });
+        if (this.closeButton) this.closeButton.removeEventListener('click', this.closeDropdown);
+      };
+      const onBodyClick = (event) => {
+        const target = event.target;
+        if (
+          self.contains(target) ||
+          target === self ||
+          (target === self.button && self.button.getAttribute('aria-expanded') === 'true')
+        )
+          return;
+        closeDropdown();
+      };
+      const onKeyUp = (event) => {
+        if (event.key !== 'Escape') return;
+        event.stopPropagation();
+        closeDropdown();
+      };
+      const closeDetailsTag = () => {
+        const tags = this.querySelectorAll('details');
+        tags.forEach((tag) => {
+          tag.removeAttribute('open');
+        });
+      };
+      applyColorScheme();
+      this.openDropdown = openDropdown;
+      this.closeDropdown = closeDropdown;
+    }
+
+    initFilters() {
+      this.debouncedOnSubmit = debounce((event) => {
+        this.onSubmitHandler(event);
+      }, 300);
+      this.fields = this.querySelectorAll('input');
+      this.fields.forEach((field) => {
+        field.addEventListener('input', this.debouncedOnSubmit.bind(this));
+      });
+    }
+
+    onSubmitHandler(event) {
+      event.preventDefault();
+      const target = event.target;
+      switch (target.type) {
+        case 'checkbox':
+          setFilterParam(target.name, target.value, !target.checked);
+          break;
+        case 'number':
+          setFilterParam(target.name, target.value);
+          break;
+        default:
+          break;
+      }
+      const facetsFilter = document.querySelector('facets-filter');
+      facetsFilter.onSubmitHandler(target.id);
+    }
+  }
+  if (!customElements.get('filters-dropdown')) {
+    customElements.define('filters-dropdown', FiltersDropdown);
+  }
+  class SortDropdown extends HTMLElement {
+    constructor() {
+      super();
+
+      this.button = this.querySelector('[data-dropdown-toggler]');
+      this.content = this.querySelector('[data-dropdown-content]');
+      this.items = this.content.querySelectorAll('[data-btn-sort]');
+      this.closeButton = this.querySelector('[data-dropdown-close-btn]');
+      if (!this.button || !this.content) return;
+      this.button.addEventListener('click', (event) => {
+        if (this.button.getAttribute('aria-expanded') === 'true') return this.closeDropdown();
+        this.openDropdown();
+      });
+    }
+    connectedCallback() {
+      const self = this;
+      const doAnimate = (element) => {
+        const parseJSON = (key) => {
+          try {
+            return JSON.parse(self.content.dataset[key]);
+          } catch (e) {
+            return null;
+          }
+        };
+        const animationFrames = parseJSON('frames');
+        const timing = parseJSON('options');
+        if (!animationFrames || !timing) return;
+        element.animate(animationFrames, timing);
+      };
+      const setCurrentValue = (target) => {
+        const elem = self.button.querySelector('[data-current-value]');
+        elem.textContent = target.dataset.text;
+        setFilterParam('sort_by', target.dataset.value);
+        const facetsFilter = document.querySelector('facets-filter');
+        facetsFilter.onSubmitHandler();
+        self.closeDropdown();
+      };
+      const onSortSelect = (event) => {
+        const target = event.target;
+        self.items.forEach((item) =>
+          item.classList.remove('main-featured-product-grid_facets-sort-action-btn--active')
+        );
+        target.classList.add('main-featured-product-grid_facets-sort-action-btn--active');
+        setCurrentValue(target);
+      };
+      const applyColorScheme = () => {
+        const { colorScheme, schemeQuery } = this.dataset;
+        if (!colorScheme) return;
+        const classes = colorScheme.trim().split(/\s+/);
+        const query = parseFloat(schemeQuery);
+        if (!schemeQuery || isNaN(query)) {
+          this.content.classList.add(...classes);
+          return;
+        }
+        if (screen.width >= query) this.content.classList.add(...classes);
+      };
+      const openDropdown = () => {
+        self.button.setAttribute('aria-expanded', true);
+        self.content.classList.add('dropdown--open');
+        doAnimate(self.content);
+        self.content.focus();
+        trapFocus(self.content);
+        document.body.addEventListener('click', onBodyClick);
+        self.addEventListener('keyup', onKeyUp);
+        self.items.forEach((item) => {
+          item.addEventListener('click', self.sortSelect);
+        });
+        if (this.closeButton) this.closeButton.addEventListener('click', this.closeDropdown);
+      };
+      const closeDropdown = () => {
+        const outerSelf = self.closest('menu-dropdown[data-level="1"]');
+        self.button.setAttribute('aria-expanded', false);
+        self.content.classList.remove('dropdown--open');
+        if (self.dataset.level === '2') trapFocus(outerSelf.content);
+        self.button.focus();
+        document.body.removeEventListener('click', onBodyClick);
+        self.removeEventListener('keyup', onKeyUp);
+        this.items.forEach((item) => {
+          item.removeEventListener('click', self.sortSelect);
+        });
+        if (this.closeButton) this.closeButton.removeEventListener('click', this.closeDropdown);
+      };
+      const onBodyClick = (event) => {
+        const target = event.target;
+        if (
+          self.contains(target) ||
+          target === self ||
+          (target === self.button && self.button.getAttribute('aria-expanded') === 'true')
+        )
+          return;
+        closeDropdown();
+      };
+      const onKeyUp = (event) => {
+        if (event.key !== 'Escape') return;
+        event.stopPropagation();
+        closeDropdown();
+      };
+      applyColorScheme();
+      this.sortSelect = onSortSelect.bind(this);
+      this.openDropdown = openDropdown;
+      this.closeDropdown = closeDropdown;
+    }
+  }
+  if (!customElements.get('sort-dropdown')) {
+    customElements.define('sort-dropdown', SortDropdown);
+  }
+
+  class FacetRemoveButton extends HTMLElement {
+    connectedCallback() {
+      this.button = this.querySelector('button');
+      if (!this.button) return;
+
+      this.button.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const { name, value, valueArr } = this.dataset;
+        const values = valueArr || value || null;
+
+        setFilterParam(name === 'all' ? null : name, values, name === 'all' ? 'all' : true);
+
+        const facetsFilter = document.querySelector('facets-filter');
+        facetsFilter?.onSubmitHandler?.();
+      });
+    }
+  }
+
+  if (!customElements.get('facet-remove-button')) customElements.define('facet-remove-button', FacetRemoveButton);
+
+  class FacetsFilter extends HTMLElement {
+    constructor() {
+      super();
+
+      this.cachedResults = [];
+      window.addEventListener('popstate', this.onHistoryChange.bind(this));
+    }
+
+    connectedCallback() {
+      this.initParams = setFilterParam(null, null, false, true);
+    }
+
+    onHistoryChange(event) {
+      if (event.state && this.cachedResults.length === 0) {
+        const searchParams = event.state ? event.state.searchParams : this.initParams;
+        const sectionsInput = document.querySelector('#filters-sections');
+        const baserUrl = document.querySelector('#base-url');
+        const url = baserUrl.value + '?' + searchParams + sectionsInput.value;
+        this.renderFetch(url, false, searchParams);
+        return;
+      }
+
+      if (this.cachedResults && this.cachedResults.length > 0) {
+        const searchParams = event.state ? event.state.searchParams : this.initParams;
+        const term = { params: searchParams };
+        if (this.cachedResults.some((key) => key.params === term.params))
+          return this.renderFromCache(this.cachedResults, term, false);
+        const sectionsInput = document.querySelector('#filters-sections');
+        const baserUrl = document.querySelector('#base-url');
+        const url = baserUrl.value + '?' + searchParams + sectionsInput.value;
+        this.renderFetch(url, false, searchParams);
+      }
+    }
+
+    onSubmitHandler(target) {
+      toggleLoader(true);
+      const input = document.querySelector('#filters-params');
+      let inputValue = input.value;
+      if (!inputValue.includes('?')) inputValue = input.value + '?';
+      const sectionsInput = document.querySelector('#filters-sections');
+      const url = inputValue + sectionsInput.value;
+      const searchParams = setFilterParam(null, null, false, true);
+      const term = { params: searchParams };
+      if (this.cachedResults.length > 0 && this.cachedResults.some((key) => key.params === term.params)) {
+        this.renderFromCache(this.cachedResults, term, true, target);
+        return;
+      }
+      this.renderFetch(url, true, searchParams, target);
+    }
+
+    renderFetch(url, updateURLHash = false, searchParams, target = null) {
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          const secArr = JSON.parse(this.dataset.sections);
+          secArr.forEach((section) => {
+            const html = new DOMParser().parseFromString(data[section.id], 'text/html').getElementById(section.id);
+            section.selectors.forEach((selector) => {
+              const targetElement = document.querySelector(selector);
+              const sourceElement = html.querySelector(selector);
+              if (targetElement && sourceElement) {
+                targetElement.outerHTML = sourceElement.outerHTML;
+              }
+            });
+          });
+          const cacheObj = { params: searchParams, content: data };
+          this.cachedResults.push(cacheObj);
+        })
+        .catch((e) => {
+          throw e;
+        })
+        .finally(() => {
+          if (updateURLHash) this.updateURLHash(searchParams);
+          const filtersDropdown = document.querySelector('filters-dropdown');
+          filtersDropdown.button.dispatchEvent(new Event('click'));
+          if (target) this.handleDropdown(target);
+          toggleLoader(false);
+        });
+    }
+
+    handleDropdown(target) {
+      const org = document.getElementById(target);
+      const dropdown = org.closest('details');
+      dropdown.setAttribute('open', '');
+      org.focus();
+    }
+
+    renderFromCache(cache, filter, updateURLHash = false, target = null) {
+      const cacheDataArr = cache;
+      const cachedResults = cacheDataArr.find((results) => results.params === filter.params);
+      const secArr = JSON.parse(this.dataset.sections);
+      secArr.forEach((section) => {
+        const html = new DOMParser()
+          .parseFromString(cachedResults.content[section.id], 'text/html')
+          .getElementById(section.id);
+        section.selectors.forEach((selector) => {
+          const targetElement = document.querySelector(selector);
+          const sourceElement = html.querySelector(selector);
+          if (targetElement && sourceElement) {
+            targetElement.outerHTML = sourceElement.outerHTML;
+          }
+        });
+      });
+      if (updateURLHash) this.updateURLHash(filter.params);
+      toggleLoader(false);
+    }
+
+    updateURLHash(searchParams) {
+      const updatedSearchParams = setFilterParam(null, null, false, true);
+      history.pushState(
+        { searchParams },
+        '',
+        `${window.location.pathname}${updatedSearchParams && '?'.concat(updatedSearchParams)}`
+      );
+    }
+  }
+  if (!customElements.get('facets-filter')) customElements.define('facets-filter', FacetsFilter);
+{%- endjavascript -%}
+{% schema %}
+{
+  "name": "Collection Product Grid",
+  "class": "spaced-section collection-grid-section featured-product-grid main-featured-product-grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 16,
+      "label": "Products per page"
+    },
+    {
+      "type": "header",
+      "content": "Header Content"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Discover our top-rated bestsellers</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "under_title_text",
+      "label": "Subtitle",
+      "default": "<h3>Join thousands who’ve already [achieved desired outcome] with these top picks</h3>"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Product Cards Settings"
+    },
+    { "type": "checkbox", "id": "secondary_image_highlight", "label": "Secondary Image On Hover", "default": false },
+    { "type": "checkbox", "id": "show_reviews", "label": "Show Review Stars", "default": true },
+    { "type": "checkbox", "id": "card_title_line", "label": "Card title two line", "default": true },
+    {
+      "type": "select",
+      "id": "card_title_typography",
+      "label": "Card title Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    { "type": "checkbox", "id": "card_clickable", "label": "Card clickable", "default": true },
+    {
+      "type": "select",
+      "id": "container_styling",
+      "label": "Container Styling",
+      "options": [
+        {
+          "value": "no_card",
+          "label": "No Card"
+        },
+        {
+          "value": "card",
+          "label": "Card"
+        },
+        {
+          "value": "shadow",
+          "label": "Shadow"
+        }
+      ],
+      "default": "card"
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_offset",
+      "label": "Box shadow offset",
+      "min": -10,
+      "max": 10,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_blur",
+      "label": "Box shadow blur",
+      "min": 0,
+      "max": 15,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_spread",
+      "label": "Box shadow spread",
+      "min": 0,
+      "max": 15,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Box shadow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Padding card info",
+      "min": 0,
+      "max": 25,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "card_border",
+      "label": "Card border",
+      "info": "Container Styling Card",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "container_radius",
+      "label": "Container Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "column_prod_mob",
+      "label": "one column or two in mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "One"
+        },
+        {
+          "value": "2",
+          "label": "Two"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    { "type": "checkbox", "id": "show_cta", "label": "Show CTA Button", "default": true },
+    { "type": "checkbox", "id": "show_arrow", "label": "Show arrow Button", "default": true },
+    {
+      "type": "select",
+      "id": "setting_btn",
+      "label": "Settings",
+      "options": [
+        { "value": "global", "label": "Global" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "global"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "transparent"
+    },
+    {
+      "type": "text",
+      "id": "text_btn_card",
+      "label": "Text For Card Buttons",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Button Icon image"
+    },
+    {
+      "type": "text",
+      "id": "icon_alt",
+      "label": "Button Google Icon"
+    }
+  ]
+}
+{% endschema %}

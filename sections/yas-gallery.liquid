@@ -1,0 +1,1076 @@
+{%- liquid
+  assign section_prefix_class = 'main-image-gallery'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-image-gallery :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-image-gallery_content-wrapper a p {
+    color: var(--text-color);
+  }
+
+  .main-image-gallery .main-image-gallery_wrapper {
+    display: var(--display-value);
+    text-align: var(--heading-align);
+  }
+
+  .main-image-gallery_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-image-gallery_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-image-gallery_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-image-gallery_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-image-gallery_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-image-gallery_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-image-gallery_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-image-gallery_wrapper.inner-padding .container,
+  .main-image-gallery_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-image-gallery_content-wrapper {
+    text-align: var(--heading-align);
+  }
+
+  .main-image-gallery .title h1,
+  .main-image-gallery .title h2,
+  .main-image-gallery .title h3,
+  .main-image-gallery .title p {
+    font-size: var(--xl-heading-size);
+    text-transform: var(--heading-transform);
+    color: var(--title-color);
+    font-weight: 700;
+    text-align: var(--heading-align);
+  }
+
+  .main-image-gallery .subtitle h1,
+  .main-image-gallery .subtitle h2,
+  .main-image-gallery .subtitle h3,
+  .main-image-gallery .subtitle p {
+    color: var(--subtitle-color);
+  }
+
+  .main-image-gallery .carousel .carousel-item {
+    background-color: var(--card-bg);
+    border: var(--border-size);
+    border-radius: var(--bdr-radius);
+    box-shadow: var(--box-shadow);
+    color: var(--body-color);
+  }
+
+  .carousel-nav .arrow {
+    transition: all 0.3s ease;
+  }
+
+  .carousel-nav .arrow:hover {
+    background-color: var(--color-text-btn);
+  }
+
+  .carousel-nav .arrow:hover svg {
+    color: var(--payment-terms-background-color);
+  }
+
+  .carousel-nav .arrow:hover svg path {
+    fill: var(--payment-terms-background-color);
+  }
+
+  .main-image-gallery .subtitle {
+    font-weight: 500;
+    line-height: 120%;
+    margin-bottom: 0;
+  }
+
+  .yas_gallery .carousel-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    padding: 100px 0 0 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .yas_gallery .carousel .carousel-item img,
+  .svg_img {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0;
+  }
+
+  .yas_gallery .carousel .carousel-item .name {
+    font-weight: 700;
+    line-height: 120%;
+    margin: 0 0 3px 13px;
+    width: 160px;
+    text-align: left;
+  }
+
+  .yas_gallery .top-slide-content {
+    display: flex;
+    width: 233px;
+    margin: 39px 32px 21px 32px;
+  }
+
+  .yas_gallery .carousel .carousel-item .status {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 0 3px 13px;
+    width: 160px;
+    text-align: left;
+  }
+
+  .gallery-pagination {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .main-image-gallery .title {
+      margin-bottom: 18px;
+    }
+
+    .main-image-gallery .subtitle p,
+    .main-image-gallery .subtitle h1,
+    .main-image-gallery .subtitle h2,
+    .main-image-gallery .subtitle h3 {
+      font-size: 24px;
+    }
+
+    .yas_gallery .carousel .carousel-item .name {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .outer-padding .main-image-gallery_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-image-gallery_wrapper.inner-padding .container,
+    .main-image-gallery_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-image-gallery_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .gallery-pagination {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .main-image-gallery .main-image-gallery_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .yas_gallery .carousel .carousel-item .status {
+      font-size: 12px;
+    }
+
+    .yas_gallery .carousel .carousel-item .name {
+      font-size: 16px;
+    }
+
+    .yas_gallery .carousel-wrapper {
+      max-width: 100%;
+      padding: 9px 0 0 0;
+    }
+
+    .main-image-gallery .subtitle p,
+    .main-image-gallery .subtitle h1,
+    .main-image-gallery .subtitle h2,
+    .main-image-gallery .subtitle h3 {
+      font-size: 20px;
+    }
+
+    .main-image-gallery .title {
+      margin-bottom: 28px;
+    }
+
+    .main-image-gallery .heading {
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-image-gallery .title h2,
+    .main-image-gallery .title h1,
+    .main-image-gallery .title h3,
+    .main-image-gallery .title h4,
+    .main-image-gallery .title p {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+      margin: 0;
+      margin-bottom: 16px;
+    }
+
+    .main-image-gallery .subtitle h2,
+    .main-image-gallery .subtitle h1,
+    .main-image-gallery .subtitle h3,
+    .main-image-gallery .subtitle h4,
+    .main-image-gallery .subtitle p {
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    .main-image-gallery .uppertitle h2,
+    .main-image-gallery .uppertitle h3,
+    .main-image-gallery .uppertitle h4,
+    .main-image-gallery .uppertitle p {
+      color: var(--upper-title);
+      font-size: 12px;
+      line-height: 14px;
+      font-weight: 400;
+      margin: 0;
+    }
+  }
+{%- endstylesheet -%}
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    --upper-title: {{ section.settings.uppertitle_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    --body-color: {{ section.settings.body_color }};
+    {% if section.settings.container_styling == 'shadow' %}
+      --box-shadow: {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_offset }}px {{ section.settings.box_shadow_blur }}px {{ section.settings.box_shadow_spread }}px {{ section.settings.box_shadow_color }};
+    {% else %}
+      --box-shadow: none;
+    {% endif %}
+    --bdr-radius: {{ section.settings.container_radius }}px;
+    {% if section.settings.container_styling == 'card' %}
+     --border-size: {{ section.settings.card_border }}px solid {{ section.settings.card_border_color }};
+    {% else %}
+     --border-size: none;
+    {% endif %}
+    --card-bg: {{ section.settings.card_background }};
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    --title-color: {{ section.settings.title_color }};
+    --status-color: {{ section.settings.status_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+      --heading-align: left;
+      {% when 'center' %}
+      --heading-align: center;
+      {% when 'right' %}
+      --heading-align: right;
+    {% endcase %}
+    --heading-align: {{ section.settings.heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --text-color: {{ section.settings.text_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+          <div class="heading word--break">
+            <div class="title word--break">
+              {%- if section.settings.title != blank -%}
+                {{ section.settings.title }}
+              {%- endif -%}
+            </div>
+            <div class="subtitle word--break">
+              {%- if section.settings.subtitle != blank -%}
+                {{ section.settings.subtitle }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <div class="slider-container">
+          <div class="carousel-wrapper">
+            <div class="carousel" data-section-id="{{ section.id }}">
+              {% for block in section.blocks %}
+                {%- liquid
+                  assign placeholder_index = forloop.index | modulo: 4
+                  if placeholder_index == 0
+                    assign placeholder_index = 4
+                  endif
+                -%}
+                <div class="carousel-item">
+                  {% if block.type == 'testimonial_slide' %}
+                    <div class="top-slide-content">
+                      {% if block.settings.image != blank %}
+                        {%- liquid
+                          assign max_width = block.settings.image.width
+                          if block.settings.image > 1400
+                            assign max_width = 1400
+                          endif
+                          assign image_height = max_width | divided_by: block.settings.image.aspect_ratio | round
+
+                          capture image_alt
+                            if block.settings.image.alt != blank
+                              echo block.settings.image.alt
+                            else
+                              echo block.settings.name
+                            endif
+                          endcapture
+
+                          capture sizes_attr
+                            echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 30px), (max-width: 1199px) 23.294vw'
+                          endcapture
+                        -%}
+                        {{-
+                          block.settings.image
+                          | image_url: width: max_width
+                          | image_tag:
+                            loading: 'lazy',
+                            width: max_width,
+                            height: image_height,
+                            sizes: sizes_attr,
+                            alt: image_alt,
+                            class: ''
+                        -}}
+                      {% else %}
+                        {%- render 'placeholder-svgs', type: 'hero', index: placeholder_index, class: 'svg_img' -%}
+                      {% endif %}
+                      <div>
+                        <div class="name">{{ block.settings.name }}</div>
+                        <div class="status">{{ block.settings.status }}</div>
+                        <div class="rating">
+                          <span class="star_span">
+                            {%- for i in (1..5) -%}
+                              {%- render 'star_comparison' -%}
+                            {%- endfor -%}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    {{ block.settings.text | truncate: 150 }}
+                  {% else %}
+                    {% if block.settings.image != blank %}
+                      {%- liquid
+                        assign max_width = block.settings.image.width
+                        if block.settings.image > 1400
+                          assign max_width = 1400
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.image.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.image.alt != blank
+                            echo block.settings.image.alt
+                          elsif block.settings.image.alt == blank
+                            echo 'image_alternative.by_index' | t: index: forloop.index
+                          else
+                            echo block.settings.name
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 30px), (max-width: 1199px) 23.294vw'
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.image
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          sizes: sizes_attr,
+                          alt: image_alt,
+                          class: 'imgslide'
+                      -}}
+                    {% else %}
+                      {%- render 'placeholder-svgs', type: 'hero', index: placeholder_index, class: 'imgslide' -%}
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="carousel-nav">
+            {% if section.settings.enable_arrow %}
+              <div class="arrow" data-direction="prev">{% render 'swiper-arrow-left-n' %}</div>
+            {% endif %}
+            <div class="gallery-pagination">
+              {% for block in section.blocks %}
+                <div class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}"></div>
+              {% endfor %}
+            </div>
+            {% if section.settings.enable_arrow %}
+              <div class="arrow" data-direction="next">{% render 'swiper-arrow-right-n' %}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    setTimeout(initCarousel, 100); 
+    });
+  });
+
+  function initCarousel() {
+    const sectionId = '{{ section.id }}';
+    const carousel = document.querySelector(`#shopify-section-${sectionId} .carousel`);
+    const dots = document.querySelectorAll(`#shopify-section-${sectionId} .dot`);
+    const arrows = document.querySelectorAll(`#shopify-section-${sectionId} .arrow`);
+    const autoScrollEnabled = {{ section.settings.auto_scroll | json }};
+    const scrollSpeed = {{ section.settings.scroll_speed | times: 1000 }};
+    let currentIndex = 0;
+    let autoScrollInterval = null;
+
+    const totalItems = carousel.children.length;
+    const itemWidth = carousel.children[0].offsetWidth + 24;
+    const visibleItems = Math.ceil(carousel.parentElement.offsetWidth / itemWidth);
+
+  
+    const originalItems = Array.from(carousel.children);
+    for (let i = 0; i < 2; i++) {
+      originalItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        carousel.appendChild(clone);
+      });
+    }
+
+    const realTotalItems = carousel.children.length;
+
+    currentIndex = totalItems;
+    carousel.style.transition = 'none';
+    carousel.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+
+    setTimeout(() => {
+      carousel.style.transition = 'transform 0.5s ease';
+    }, 50);
+
+    function updateCarousel(transition = true) {
+      const offset = -currentIndex * itemWidth;
+      carousel.style.transition = transition ? 'transform 0.5s ease' : 'none';
+      carousel.style.transform = `translateX(${offset}px)`;
+
+  
+      if (currentIndex >= totalItems * 2) {
+        setTimeout(() => {
+          currentIndex = totalItems;
+          carousel.style.transition = 'none';
+          carousel.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+          setTimeout(() => {
+            carousel.style.transition = 'transform 0.5s ease';
+          }, 50);
+        }, 500);
+      } else if (currentIndex < totalItems) {
+        setTimeout(() => {
+          currentIndex = totalItems * 2 - visibleItems;
+          carousel.style.transition = 'none';
+          carousel.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+          setTimeout(() => {
+            carousel.style.transition = 'transform 0.5s ease';
+          }, 50);
+        }, 500);
+      }
+
+    
+      let dotIndex = currentIndex % totalItems;
+      if (dotIndex >= {{ section.blocks.size }}) {
+        dotIndex = dotIndex - ({{ section.blocks.size }} % totalItems);
+      }
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === dotIndex);
+      });
+    }
+
+    function startAutoScroll() {
+      stopAutoScroll();
+      if (autoScrollEnabled === true) {
+        autoScrollInterval = setInterval(() => {
+          currentIndex++;
+          updateCarousel(true);
+        }, scrollSpeed / totalItems);
+      }
+    }
+
+    function stopAutoScroll() {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+      }
+    }
+
+    arrows.forEach(arrow => {
+      arrow.addEventListener('click', () => {
+        stopAutoScroll();
+        const direction = arrow.getAttribute('data-direction');
+        currentIndex += direction === 'prev' ? -1 : 1;
+        updateCarousel(true);
+        if (autoScrollEnabled){
+          setTimeout(function(){
+            startAutoScroll();
+          }, 5000)
+        }
+      });
+    });
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        stopAutoScroll();
+        const index = parseInt(dot.getAttribute('data-index'));
+        currentIndex = totalItems + index;
+        updateCarousel(true);
+        if (autoScrollEnabled){
+          setTimeout(function(){
+            startAutoScroll();
+          }, 5000)
+        }
+      });
+    });
+
+    carousel.addEventListener('mouseenter', stopAutoScroll);
+    carousel.addEventListener('mouseleave', () => {
+      if (autoScrollEnabled) startAutoScroll();
+    });
+
+    let touchStartX = 0;
+    let touchCurrentX = 0;
+    let isDragging = false;
+
+    carousel.addEventListener('touchstart', (e) => {
+      stopAutoScroll();
+      touchStartX = e.touches[0].clientX;
+      touchCurrentX = touchStartX;
+      isDragging = true;
+      carousel.style.transition = 'none';
+    });
+
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      touchCurrentX = e.touches[0].clientX;
+      const diff = touchCurrentX - touchStartX;
+      const newOffset = -currentIndex * itemWidth + diff;
+      carousel.style.transform = `translateX(${newOffset}px)`;
+    });
+
+    carousel.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = touchCurrentX - touchStartX;
+      const threshold = itemWidth / 3;
+
+      if (Math.abs(diff) > threshold) {
+        currentIndex += diff > 0 ? -1 : 1;
+      }
+
+      carousel.style.transition = 'transform 0.5s ease';
+      updateCarousel(true);
+      if (autoScrollEnabled) startAutoScroll();
+    });
+
+    
+    updateCarousel(false);
+    startAutoScroll();
+  }
+</script>
+{% schema %}
+{
+  "name": "Gallery",
+  "tag": "section",
+  "class": "section image_slider yas_gallery main-image-gallery",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666"
+    },
+    {
+      "type": "color",
+      "id": "status_color",
+      "label": "Verified Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 77
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 38
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll Speed (seconds)",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Enable Auto Scroll",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_arrow",
+      "label": "Enable arrow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>What people are saying</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>Real stories from people who made the switch.</h3>"
+    },
+    {
+      "type": "header",
+      "content": "Product Cards Settings"
+    },
+    {
+      "type": "select",
+      "id": "container_styling",
+      "label": "Container Styling",
+      "options": [
+        {
+          "value": "no_card",
+          "label": "No Card"
+        },
+        {
+          "value": "card",
+          "label": "Card"
+        },
+        {
+          "value": "shadow",
+          "label": "Shadow"
+        }
+      ],
+      "default": "card"
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_offset",
+      "label": "Box shadow offset",
+      "min": -10,
+      "max": 10,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_blur",
+      "label": "Box shadow blur",
+      "min": 0,
+      "max": 15,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "box_shadow_spread",
+      "label": "Box shadow spread",
+      "min": 0,
+      "max": 15,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Box shadow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#F4F4F4"
+    },
+    {
+      "type": "range",
+      "id": "card_border",
+      "label": "Card border",
+      "info": "Container Styling Card",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "container_radius",
+      "label": "Container Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo_slide",
+      "name": "Photo Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "testimonial_slide",
+      "name": "Testimonial Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "rating",
+          "label": "Rating",
+          "default": "<p>★★★★★</p>"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Leslie Alexander"
+        },
+        {
+          "type": "text",
+          "id": "status",
+          "label": "Status",
+          "default": "Verified Customer"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Fantastic experience overall. The product feels reliable, easy to use, and worth every penny.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "photo_slide"
+        },
+        {
+          "type": "testimonial_slide"
+        },
+        {
+          "type": "photo_slide"
+        },
+        {
+          "type": "testimonial_slide"
+        },
+        {
+          "type": "photo_slide"
+        },
+        {
+          "type": "testimonial_slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

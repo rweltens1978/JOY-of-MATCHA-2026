@@ -1,0 +1,773 @@
+{%- liquid
+  assign sid = section.id
+  assign section_prefix_class = 'before-after-v2-section'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .before-after-v2 :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+
+{%- stylesheet -%}
+  .before-after-text {
+    flex: 1 1 42%;
+  }
+
+  .before-after-v2-section_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .before-after-v2-section_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .before-after-v2-section_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .before-after-v2-section_container-wrapper {
+    background: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .before-after-v2-section_wrapper.inner-padding .container {
+    background: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .before-after-v2-section_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .before-after-v2-section_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .before-after-v2-section_wrapper.inner-padding .container,
+  .before-after-v2-section_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .before-after-v2-section .heading {
+    margin-bottom: 20px;
+    text-align: var(--heading-align);
+  }
+
+  .before-after-v2-section .title h1,
+  .before-after-v2-section .title h2,
+  .before-after-v2-section .title h3,
+  .before-after-v2-section .title p {
+    font-size: var(--font-size-heading);
+    line-height: 110%;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-color);
+    text-transform: var(--headline-transform);
+    margin: 0;
+    text-align: var(--heading-align);
+  }
+
+  .before-after-v2-section .subtitle h2,
+  .before-after-v2-section .subtitle h3,
+  .before-after-v2-section .subtitle h1,
+  .before-after-v2-section .subtitle p {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 150%;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    margin: 0;
+    text-align: var(--heading-align);
+  }
+
+  .v2-before-after-slider {
+    flex: 1 1 50%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .v2-before-after-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #cbcbcb;
+    overflow: hidden;
+  }
+
+  .v2-before-after-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--image-radius);
+  }
+
+  .v2-before-image {
+    clip-path: inset(0 50% 0 0);
+  }
+
+  .v2-before-image,
+  .v2-after-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .v2-before-image img,
+  .v2-after-image img,
+  .v2-before-image svg,
+  .v2-after-image svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .v2-after-image {
+    clip-path: inset(0 0 0 50%);
+  }
+
+  .v2-divider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: var(--marker-color);
+    cursor: ew-resize;
+    z-index: 10;
+  }
+
+  .v2-handle {
+    position: absolute;
+    top: 50%;
+    left: -35px;
+    width: 70px;
+    height: 70px;
+    background: var(--marker-color);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--marker-symbol);
+    font-weight: bold;
+  }
+
+  .v2-labels {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    z-index: 5;
+    height: 66px;
+    text-align: center;
+  }
+
+  .v2-before-label,
+  .v2-after-label {
+    font-size: 21px;
+    line-height: 125%;
+    font-weight: bold;
+    color: var(--text-color);
+  }
+
+  .before-after-v2 .swiper-button-prev,
+  .before-after-v2 .swiper-button-next {
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    color: var(--marker-color);
+    display: none;
+  }
+
+  .before-after-v2 .swiper-button-prev {
+    left: 10px;
+  }
+
+  .before-after-v2 .swiper-button-next {
+    right: 10px;
+  }
+
+  .before-after-v2 .v2-before-after-item {
+    border-radius: var(--image-radius);
+  }
+
+  @media (min-width: 769px) {
+    .before-after-v2 {
+      display: var(--display-value);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .before-after-v2 .before-after-v2-section {
+      display: var(--xs-display-value);
+    }
+
+    .before-after-v2-section .subtitle h2,
+    .before-after-v2-section .subtitle h3,
+    .before-after-v2-section .subtitle h1,
+    .before-after-v2-section .subtitle p {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .outer-padding .before-after-v2-section_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .before-after-v2-section_wrapper.inner-padding .container,
+    .before-after-v2-section_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .before-after-v2-section_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .before-after-v2 .swiper-button-prev,
+    .before-after-v2 .swiper-button-next {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+    }
+
+    .before-after-v2 .swiper-button-prev {
+      left: 5px;
+    }
+
+    .before-after-v2 .swiper-button-next {
+      right: 5px;
+    }
+
+    .before-after-v2 .swiper-button-prev:after,
+    .before-after-v2 .swiper-button-next:after {
+      font-size: 16px;
+    }
+
+    .before-after-v2 .swiper .swiper-pagination-bullet-active {
+      background: var(--marker-color);
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="before-after-v2-section {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  data-section-id="{{ sid }}"
+  style="
+      {% case section.settings.display_on %}
+        {% when 'all' %}
+          --display-value: block;
+        {% when 'mobile_only' %}
+          --display-value: none;
+        {% when 'desktop_only' %}
+          --display-value: block;
+      {% endcase %}
+      {% case section.settings.display_on %}
+        {% when 'all' %}
+          --xs-display-value: block;
+        {% when 'mobile_only' %}
+          --xs-display-value: block;
+        {% when 'desktop_only' %}
+          --xs-display-value: none;
+      {% endcase %}
+      {% if section.settings.section_width == 'full' %}
+        --width-value: 100%;
+      {% else %}
+        --width-value: {{ settings.page_width }}px;
+      {% endif %}
+     --text-color: {{ section.settings.text_color }};
+     --background-color: {{ section.settings.background_color }};
+     --heading-align: {{ section.settings.heading_align }};
+     --headline-transform: {{ section.settings.headline_typography }};
+     --font-size-heading: {% case section.settings.heading_size %}{% when 'small' %}28px{% when 'medium' %}40px{% when 'large' %}48px{% endcase %};
+     --font-size-heading-mob: {% case section.settings.heading_size %}{% when 'small' %}20px{% when 'medium' %}32px{% when 'large' %}32px{% endcase %};
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+     --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+     --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+     --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+     --image-radius: {{ section.settings.image_round }}px;
+     --marker-color: {{ section.settings.marker_color }};
+     --marker-symbol: {{ section.settings.marker_symbol }};
+     --tooltip-color: {{ section.settings.tooltip_color }};
+     --tooltip-text: {{ section.settings.tooltip_text }};
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="        --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        <div class="v2-before-after-wrapper">
+          <div class="before-after-text">
+            {% if section.settings.uppertitle != blank
+              or section.settings.title != blank
+              or section.settings.subtitle != blank
+            %}
+              <div class="heading word-break">
+                {% if section.settings.uppertitle != blank %}
+                  <div class="uppertitle word-break">
+                    <span class="star_span" aria-label="5 out of 5 stars">
+                      {% for i in (1..5) %}
+                        {% render 'star_comparison' %}
+                      {% endfor %}
+                    </span>
+                    {{ section.settings.uppertitle }}
+                  </div>
+                {% endif %}
+                <div class="title word-break">
+                  {% if section.settings.title != blank %}{{ section.settings.title }}{% endif %}
+                </div>
+                <div class="subtitle word-break">
+                  {% if section.settings.subtitle != blank %}{{ section.settings.subtitle }}{% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          <div class="swiper v2-before-after-slider">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                {% if block.settings.before_image and block.settings.after_image %}
+                  <div class="swiper-slide" {{ block.shopify_attributes }}>
+                    <div class="v2-before-after-item">
+                      <div class="v2-before-after-container">
+                        <div class="v2-before-image">
+                          {% if block.settings.before_image != blank %}
+                            {%- liquid
+                              assign max_width = block.settings.before_image.width
+                              if block.settings.before_image > 710
+                                assign max_width = 710
+                              endif
+                              assign image_height = max_width | divided_by: block.settings.before_image.aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings.before_image.alt != blank
+                                  echo block.settings.before_image.alt
+                                elsif block.settings.before_image.alt == blank
+                                  echo 'image_alternative.static' | t
+                                else
+                                  echo block.settings.before_label
+                                endif
+                              endcapture
+
+                              capture sizes_attr
+                                echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings.before_image
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                sizes: sizes_attr,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% else %}
+                            {%- render 'placeholder-svgs', type: 'hero', index: 1, class: '' -%}
+                          {% endif %}
+                        </div>
+                        <div class="v2-after-image">
+                          {% if block.settings.after_image != blank %}
+                            {%- liquid
+                              assign max_width = block.settings.after_image.width
+                              if block.settings.after_image > 710
+                                assign max_width = 710
+                              endif
+                              assign image_height = max_width | divided_by: block.settings.after_image.aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings.after_image.alt != blank
+                                  echo block.settings.after_image.alt
+                                elsif block.settings.after_image.alt == blank
+                                  echo 'image_alternative.static' | t
+                                else
+                                  echo block.settings.after_label
+                                endif
+                              endcapture
+
+                              capture sizes_attr
+                                echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings.after_image
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                sizes: sizes_attr,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% else %}
+                            {%- render 'placeholder-svgs', type: 'hero', index: 2, class: '' -%}
+                          {% endif %}
+                        </div>
+                        <div class="v2-divider">
+                          <div class="v2-handle">
+                            {% render 'handle-icon' %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="v2-labels">
+                        <span class="v2-before-label word-break">{{ block.settings.before_label }}</span>
+                        <span class="v2-after-label word-break">{{ block.settings.after_label }}</span>
+                      </div>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="swiper-slide" {{ block.shopify_attributes }}>
+                    <div class="v2-before-after-item">
+                      <div class="v2-before-after-container">
+                        <div class="v2-before-image">
+                          {%- render 'placeholder-svgs', type: 'hero', index: 1, class: '' -%}
+                        </div>
+                        <div class="v2-after-image">
+                          {%- render 'placeholder-svgs', type: 'hero', index: 2, class: '' -%}
+                        </div>
+                        <div class="v2-divider">
+                          <div class="v2-handle">
+                            {% render 'handle-icon' %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="v2-labels">
+                        <span class="v2-before-label word-break">Before</span>
+                        <span class="v2-after-label word-break">After</span>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Before After Slider v2",
+  "class": "before-after-v2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 7
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "image_round",
+      "label": "Image Round Corner",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "marker_color",
+      "label": "Marker Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "marker_symbol",
+      "label": "Marker Symbol Color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Real Results Our Customers See In Just [Timeframe]</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>[Short Line Adding Trust, Proof, Or How It Improves Life]</h3>"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After Image"
+        },
+        {
+          "type": "text",
+          "id": "before_label",
+          "label": "Before Label",
+          "default": "Before"
+        },
+        {
+          "type": "text",
+          "id": "after_label",
+          "label": "After Label",
+          "default": "After 2 Weeks"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before After Slider v2",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

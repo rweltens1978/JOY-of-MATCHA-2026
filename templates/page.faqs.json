@@ -1,0 +1,89 @@
+{
+  "wrapper": "div.page__faq",
+  "sections": {
+    "yas_faq_7984cc": {
+      "type": "yas-faq",
+      "blocks": { 
+        "faq_block_68QtNJ": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What makes [Your product name] Different than others?",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        },
+        "faq_block_eERAet": {
+          "type": "faq_block",
+          "settings": {
+            "title": "What if i don’t like [product name]?",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        },
+        "faq_block_xw3hgf": {
+          "type": "faq_block",
+          "settings": {
+            "title": "How fast will my order arrive?",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        },
+        "faq_block_WCq4BP": {
+          "type": "faq_block",
+          "settings": {
+            "title": "how fast will I see results?",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        },
+        "faq_block_zQn6EG": {
+          "type": "faq_block",
+          "settings": {
+            "title": "Is [Product Name] Safe to Use?",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        },
+        "faq_block_4iiUgx": {
+          "type": "faq_block",
+          "settings": {
+            "title": "Can I Cancel or Return My Order?",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        }
+      },
+      "block_order": [
+        "faq_block_68QtNJ",
+        "faq_block_eERAet",
+        "faq_block_xw3hgf",
+        "faq_block_WCq4BP",
+        "faq_block_zQn6EG",
+        "faq_block_4iiUgx"
+      ],
+      "name": "FAQ Section",
+      "settings": {
+        "title": "<h2>FREQUENTLY ASKED QUESTIONS</h2>",
+        "under_title_text": "<h3>Got questions? We’ve got answers!</h3>",
+        "heading_align": "left",
+        "background_color": "transparent",
+        "heading_size": "large",
+        "headline_typography": "capitalize",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "padding_lr_desk": 20,
+        "padding_tb_desk": 20,
+        "padding_lr_mob": 20,
+        "padding_tb_mob": 20,
+        "text_color": "#000000",
+        "subtitle_color": "#696969",
+        "display_on": "all",
+        "show_video": false,
+        "video_aligment": "left",
+        "faq_background_color": "#ffffff",
+        "faq_border_color": "#e0e0e0",
+        "faq_border_size": 1,
+        "title_color_block": "#000000",
+        "text_color_block": "#696969"
+      }
+    }
+  },
+  "order": [
+    "yas_faq_7984cc"
+  ]
+}

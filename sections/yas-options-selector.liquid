@@ -1,0 +1,265 @@
+<div class="content-section produсt-options-section" data-section-type="content">
+  <custom-variant class="product-options-section">
+    {% for block in section.blocks %}
+      {% case block.type %}
+  
+        {% when 'default' %}
+          {% assign opt = product.options_with_values[1].name %}   
+          {% if opt != blank %}
+              {% for option in product.options_with_values %}
+                {% assign name_op = option.name | downcase %}       
+                {% if name_op != 'color' and name_op != 'size' %}
+                  <div class="option-group custom-variant-select">
+                    <label>{{ name_op}}</label>
+                    <div class="custom-select" tabindex="0">
+                      <div class="select-trigger">Select option </div>
+                      <div class="select-options">
+                          {% for velue in option.values %}
+                          <div class="option-value" data-value="{{ velue.name }}" data-option-name="{{ option.name }}">
+                            {{ velue.name }}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+              {% endif %}
+  
+         {% when 'color' %}
+            {% assign option_color = blank %}
+            {% for opt in product.options_with_values %}
+              {% assign opt_name_lower = opt.name | downcase %}
+              {% if opt_name_lower == 'color' or opt_name_lower == 'colors' %}
+                {% assign option_color = opt %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            {% if option_color != blank and option_color.values.size > 0 %}
+            {% case block.settings.color_style %}
+              {% when 'drop_color_d' %}
+                    <div class="option-group custom-variant-select">
+                      <label>{{ block.settings.label }}</label>
+                      <div class="custom-select" tabindex="0">
+                        <div class="select-trigger">Select option</div>
+                        <div class="select-options">
+                            {% for velue in option_color.values %}
+                            <div class="option-value" data-value="{{ velue.name }}" data-option-name="{{ option_color.name }}">
+                              {{ velue.name }}
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+  
+          {% when 'drop_color_c' %}
+                    <div class="option-group custom-variant-select">
+                      <label>{{ block.settings.label }}</label>
+                      <div class="custom-select" tabindex="0">
+                        <div class="select-trigger">Select option</div>
+                        <div class="select-options">
+                            {% for velue in option_color.values %}
+                            <div class="option-value" data-value="{{ velue.name }}" data-option-name="{{ option_color.name }}">
+                            <i class="custom_color_{{ velue.name | strip | escape | downcase | replace: ' ', '_'   }}"></i> {{ velue.name }}
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+  
+          {% when 'color_circles_rtext' %}
+                <div class="option-block color-circles color-circles-right">
+                  <label>{{ block.settings.label }}</label>
+                  <div class="color-circle-list">
+                    {% for color in option_color.values %}
+                      <label class="color-circle-item" title="{{ color }}">
+                        <input
+                          type="radio"
+                          name="option_color"
+                          value="{{ color }}"
+                          class="color-radio"
+                        >
+                        <span class="circle custom_color_{{ color | strip | escape | downcase | replace: ' ', '_'   }}"></span>
+                        <span class="label">{{ color }}</span>
+                      </label>
+                    {% endfor %}
+                  </div>
+                </div>
+  
+          {% when 'color_circles_btext' %}
+                <div class="option-block color-circles">
+                  <label>{{ block.settings.label }}</label>
+                  <div class="color-circle-list">
+                    {% for color in option_color.values %}
+                      <label class="color-circle-item" title="{{ color }}">
+                        <input
+                          type="radio"
+                          name="option_color"
+                          value="{{ color }}"
+                          class="color-radio"
+                        >
+                        <span class="circle custom_color_{{ color | strip | escape | downcase | replace: ' ', '_'   }}"></span>
+                        <span class="label">{{ color }}</span>
+                      </label>
+                    {% endfor %}
+                  </div>
+                </div>
+  
+          {% when 'color_circles_btext_active' %}
+                <div class="option-block color-circles color-circles-active">
+                  <label>{{ block.settings.label }}</label>
+                  <div class="color-circle-list">
+                    {% for color in option_color.values %}
+                      <label class="color-circle-item" title="{{ color }}">
+                        <input
+                          type="radio"
+                          name="option_color"
+                          value="{{ color }}"
+                          class="color-radio"
+                        >
+                        <span class="circle custom_color_{{ color | strip | escape | downcase | replace: ' ', '_'   }}"></span>
+                        <span class="label">{{ color }}</span>
+                      </label>
+                    {% endfor %}
+                  </div>
+                </div>
+  
+          {% when 'color_circles_lbtext' %}
+                <div class="option-block color-circles color-circles-active">
+                  <label>{{ block.settings.label }}: <span class="active-color"></span></label>
+                  <div class="color-circle-list">
+                    {% for color in option_color.values %}
+                      <label class="color-circle-item" title="{{ color }}">
+                        <input
+                          type="radio"
+                          name="option_color"
+                          value="{{ color }}"
+                          class="color-radio"
+                          data-label="{{ color }}"
+                        >
+                        <span class="circle custom_color_{{ color | strip | escape | downcase | replace: ' ', '_'   }}"></span>
+                      </label>
+                    {% endfor %}
+                  </div>
+                </div>
+         {% endcase %}
+        {% endif %}
+  
+        {% when 'size_buttons' %}
+          {% assign size_option = blank %}
+          {% for opt in product.options_with_values %}
+            {% assign opt_name_lower = opt.name | downcase %}
+            {% if opt_name_lower == 'size' or opt_name_lower == 'sizes' %}
+              {% assign size_option = opt %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+          {% if size_option != blank and size_option.values.size > 0 %}
+            <div class="option-block size-buttons">
+              <label>{{ block.settings.label }}</label>
+              <div class="size-button-list">
+                {% for size in size_option.values %}
+                  <div class="size-button" data-size="{{ size }}">{{ size }}</div>
+                {% endfor %}
+             </div>
+            </div>
+          {% endif %}
+        {% endcase %}
+    {% endfor %}
+  </custom-variant>
+</div>
+
+{% schema %}
+{
+  "name": "Product Option Selector",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "default",
+      "name": "Default Dropdown",
+       "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Choose an option",
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "name": "Color option",
+       "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Choose a color"
+        },
+        {
+          "type": "select",
+          "id": "color_style",
+          "label": "Color style option",
+          "options": [
+            {
+              "value": "drop_color_d",
+              "label": "Drop down variant option default"
+            },
+            {
+              "value": "drop_color_c",
+              "label": "Drop down variant option with image/colour"
+            },
+            {
+              "value": "color_circles_rtext",
+              "label": "Color Circles text right",
+            },
+            {
+              "value": "color_circles_btext",
+              "label": "Color Circles text bottom",
+            },
+            {
+              "value": "color_circles_btext_active",
+              "label": "Color Circles text bottom only active",
+            },
+            {
+              "value": "color_circles_lbtext",
+              "label": "Color Circles text only label",
+            },
+          ],
+          "default": "drop_color_d"
+        }
+      ]
+    },
+    {
+      "type": "size_buttons",
+      "name": "Size Buttons",
+       "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Select size"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "presets": [
+    {
+      "name": "Product Option Selector",
+      "category": "Product Sections",
+      "blocks": [
+        { "type": "default" },
+        { "type": "color" },
+        { "type": "size_buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

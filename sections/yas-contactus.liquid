@@ -1,0 +1,988 @@
+{%- liquid
+  assign section_prefix_class = 'main-contact-section'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-contact-section :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-contact-section_wrapper {
+    display: var(--display-value);
+  }
+
+  .main-contact-section_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-contact-section_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-contact-section_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-contact-section_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-contact-section_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-contact-section_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-contact-section_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-contact-section_wrapper.inner-padding .container,
+  .main-contact-section_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-contact-section .contact-section .section-title {
+    font-size: var(--xl-heading-size);
+    font-weight: 700;
+    text-transform: var(--heading-transform);
+    color: var(--text-color);
+  }
+
+  .main-contact-section .submit-button .icon_cart-btns {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .main-contact-section .submit-button .icon_cart-btns img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-contact-section .contact-section {
+    color: var(--text-color);
+  }
+
+  .main-contact-section .contact-section .contact-header .title p,
+  .main-contact-section .contact-section .contact-header .title h1,
+  .main-contact-section .contact-section .contact-header .title h2,
+  .main-contact-section .contact-section .contact-header .title h3 {
+    font-weight: 700;
+    font-size: var(--xl-heading-size);
+    line-height: 100%;
+  }
+
+  .main-contact-section .contact-section .contact-header .title * {
+    text-transform: var(--heading-transform);
+    color: var(--text-color);
+  }
+
+  .main-contact-section .contact-section .contact-header .subtitle * {
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 150%;
+  }
+
+  .main-contact-section .submit-button {
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    color: var(--btn-color);
+    background: var(--btn-background);
+    cursor: pointer;
+    padding: 18px 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .main-contact-section .submit-button svg path {
+    fill: var(--fill);
+  }
+
+  .main-contact-section .contact-section input,
+  .main-contact-section .contact-section textarea {
+    color: var(--input-color);
+  }
+
+  .main-contact-section .contact-section .contact-form textarea,
+  .main-contact-section .contact-section .contact-form input,
+  .main-contact-section .contact-section .contact-form input:focus-visible {
+    border-color: var(--input-bdr-color);
+  }
+
+  .main-contact-section .contact-form ::-webkit-input-placeholder {
+    color: var(--input-color);
+    font-size: 24px;
+  }
+
+  .main-contact-section .contact-form :-moz-placeholder {
+    color: var(--input-color);
+    font-size: 24px;
+  }
+
+  .main-contact-section .contact-form ::-moz-placeholder {
+    color: var(--input-color);
+    font-size: 24px;
+  }
+
+  .main-contact-section .contact-form :-ms-input-placeholder {
+    color: var(--input-color);
+    font-size: 24px;
+  }
+
+  .main-contact-section .contact-form ::-ms-input-placeholder {
+    color: var(--input-color);
+    font-size: 24px;
+  }
+
+  .main-contact-section .contact-form ::placeholder {
+    color: var(--input-color);
+    font-size: 24px;
+  }
+
+  .main-contact-section .contact-section .contact-header-w {
+    width: 100%;
+    text-align: var(--heading-hor-align);
+    justify-content: var(--heading-ver-align);
+  }
+
+  .main-contact-section .social-icons a,
+  .main-contact-section .submit-button,
+  .main-contact-section .submit-button svg path {
+    transition: all 0.3s ease;
+  }
+
+  .main-contact-section .social-icons a:hover {
+    border: 1px solid #000000;
+  }
+
+  .main-contact-section .submit-button:hover {
+    color: var(--btn-background);
+    background: var(--btn-color);
+    border: 1px solid var(--btn-background);
+  }
+
+  .main-contact-section .submit-button:hover svg path {
+    fill: var(--btn-background);
+  }
+
+  .main-contact-section .form-row input {
+    font-weight: 500;
+    padding: 10px 10px 25px;
+  }
+
+  @media (min-width: 768px) {
+    .contact-section .contact-header .subtitle * {
+      margin: 0 0 19px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-contact-section_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .outer-padding .main-contact-section_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-contact-section_wrapper.inner-padding .container,
+    .main-contact-section_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-contact-section_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .main-contact-section .contact-section .contact-header .title br {
+      display: none;
+    }
+
+    .main-contact-section .contact-section .contact-header-w {
+      text-align: var(--xs-heading-hor-align);
+    }
+
+    .main-contact-section .contact-section .contact-header .subtitle * {
+      font-size: 16px;
+    }
+
+    .main-contact-section .contact-section .contact-header .title p,
+    .main-contact-section .contact-section .contact-header .title h1,
+    .main-contact-section .contact-section .contact-header .title h2,
+    .main-contact-section .contact-section .contact-header .title h3 {
+      font-size: var(--xs-heading-size);
+      font-weight: 600;
+    }
+
+    .contact-section .contact-header .subtitle * {
+      margin: 0 0 3px;
+    }
+
+    .main-contact-section .form-row input {
+      font-size: 20px;
+    }
+
+    .main-contact-section .contact-section .contact-header {
+      margin-bottom: 26px;
+    }
+
+    .main-contact-section .form-row input {
+      padding: 10px 10px 18px;
+    }
+
+    .main-contact-section .form-row {
+      gap: 25px;
+    }
+
+    .main-contact-section .contact-form textarea {
+      font-size: 20px;
+      min-height: 109px;
+    }
+
+    .main-contact-section .submit-button {
+      margin-top: 30px;
+      padding: 17px 56px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .main-contact-section .submit-button {
+      width: 100%;
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% case section.settings.heading_horizontal_align_mob %}
+      {% when 'left' %}
+        --xs-heading-hor-align: left;
+      {% when 'center' %}
+        --xs-heading-hor-align: center;
+      {% when 'right' %}
+        --xs-heading-hor-align: right;
+    {% endcase %}
+    {% case section.settings.heading_horizontal_align_desk %}
+      {% when 'left' %}
+        --heading-hor-align: left;
+      {% when 'center' %}
+        --heading-hor-align: center;
+      {% when 'right' %}
+        --heading-hor-align: right;
+    {% endcase %}
+      {% case section.settings.heading_vertical_align %}
+      {% when 'start' %}
+        --heading-ver-align: flex-start;
+      {% when 'center' %}
+        --heading-ver-align: center;
+      {% when 'end' %}
+        --heading-ver-align: flex-end;
+    {% endcase %}
+    --input-bdr-color: {{ section.settings.input_border_color }};
+    --input-color: {{ section.settings.input_color }};
+    {% if section.settings.setting_btn == 'global' %}
+      --fill: {{ settings.button_text_color }};
+    {% else %}
+      --fill: {{ section.settings.button_text_color }};
+    {% endif %}
+    {% if section.settings.setting_btn == 'global' %}
+      --btn-border-radius: {{ settings.button_radius }}px;
+      --btn-border: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --btn-color: {{ settings.button_text_color }};
+      --btn-background: {{ settings.button_color }};
+    {% else %}
+      --btn-border-radius: {{ section.settings.button_radius }}px;
+      --btn-border: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --btn-color: {{ section.settings.button_text_color }};
+      --btn-background: {% if section.settings.button_color != 'rgba(0,0,0,0)' %}{{ section.settings.button_color }}{% else %}var(--color-bg-btn){% endif %};
+    {% endif %}
+    --bg-color: {{ section.settings.background_color }};
+    --xl-padding-y: {{ section.settings.padding_tb_desk }}px;
+    --xl-padding-x: {{ section.settings.padding_lr_desk }}px;
+    --xs-padding-y: {{ section.settings.padding_tb_mob }}px;
+    --xs-padding-x: {{ section.settings.padding_lr_mob }}px;
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+        --xs-heading-size: 24px;
+      {% when 'medium' %}
+        --xs-heading-size: 32px;
+      {% when 'large' %}
+        --xs-heading-size: 32px;
+    {% endcase %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+        --xl-heading-size: 28px;
+      {% when 'medium' %}
+        --xl-heading-size: 40px;
+      {% when 'large' %}
+        --xl-heading-size: 48px;
+    {% endcase %}
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="content-wrapper {{ section_prefix_class }}_content-wrapper">
+        <div class="contact-section">
+          <div class="contact-header">
+            {% if section.settings.title != blank or section.settings.before_title != blank %}
+              <div class="contact-header-w">
+                <div class="subtitle word--break">
+                  {% if section.settings.before_title != blank %}
+                    {{ section.settings.before_title }}
+                  {% endif %}
+                </div>
+                <div class="title word--break">
+                  {% if section.settings.title != blank %}
+                    {{ section.settings.title }}
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+            <div class="social-icons">
+              {% if section.settings.social_facebook != blank %}
+                <a href="{{ section.settings.social_facebook }}" target="_blank">
+                  {%- if section.settings.social_facebook_icon == blank -%}
+                    {% render 'icon_fb' %}
+                  {%- else -%}
+                    {%- liquid
+                      assign max_width = section.settings.social_facebook_icon.width
+                      if section.settings.social_facebook_icon > 50
+                        assign max_width = 50
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.social_facebook_icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.social_facebook_icon.alt != blank
+                          echo section.settings.social_facebook_icon.alt
+                        else
+                          echo 'Facebook'
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.social_facebook_icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  {%- endif -%}
+                </a>
+              {% endif %}
+              {% if section.settings.social_instagram != blank %}
+                <a href="{{ section.settings.social_instagram }}" target="_blank">
+                  {%- if section.settings.social_instagram_icon == blank -%}
+                    {% render 'icon_inst' %}
+                  {%- else -%}
+                    {%- liquid
+                      assign max_width = section.settings.social_instagram_icon.width
+                      if section.settings.social_instagram_icon > 50
+                        assign max_width = 50
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.social_instagram_icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.social_instagram_icon.alt != blank
+                          echo section.settings.social_instagram_icon.alt
+                        else
+                          echo 'Instagram'
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.social_instagram_icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  {%- endif -%}
+                </a>
+              {% endif %}
+              {% if section.settings.social_twitter != blank %}
+                <a href="{{ section.settings.social_twitter }}" target="_blank">
+                  {%- if section.settings.social_twitter_icon == blank -%}
+                    {% render 'icon_twit' %}
+                  {%- else -%}
+                    {%- liquid
+                      assign max_width = section.settings.social_twitter_icon.width
+                      if section.settings.social_twitter_icon > 50
+                        assign max_width = 50
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.social_twitter_icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.social_twitter_icon.alt != blank
+                          echo section.settings.social_twitter_icon.alt
+                        else
+                          echo 'Twitter'
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.social_twitter_icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  {%- endif -%}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+          {%- form 'contact', id: 'ContactForm', class: 'contact-form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="form-row form-status-success">
+                <div class="form-status form__message" autofocus>
+                  {{ section.settings.success_form }}
+                </div>
+              </div>
+            {% else %}
+              <div class="form-row">
+                <input type="text" placeholder="Your Name" name="contact[name]">
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  name="contact[email]"
+                  pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+                >
+                <input type="tel" placeholder="Phone Number (Optional)" name="contact[phone]">
+              </div>
+              <textarea placeholder="Message" name="contact[message]"></textarea>
+              <button class="submit-button">
+                {{ section.settings.button_text -}}
+                {%- if section.settings.show_arrow == true %}
+                  {% if section.settings.icon != blank %}
+                    <i class="icon_cart-btns">
+                      {%- liquid
+                        assign max_width = section.settings.icon.width
+                        if section.settings.icon > 150
+                          assign max_width = 150
+                        endif
+                        assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                        capture image_alt
+                          if section.settings.icon.alt != blank
+                            echo section.settings.icon.alt
+                          else
+                            echo 'Icon' | escape
+                          endif
+                        endcapture
+                      -%}
+                      {{-
+                        section.settings.icon
+                        | image_url: width: max_width
+                        | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                      -}}
+                    </i>
+                  {% elsif section.settings.icon_alt != blank %}
+                    <i class="icon_cart-btns material-symbols-outlined">
+                      {{ section.settings.icon_alt }}
+                    </i>
+                  {% else %}
+                    <i class="icon_cart-btns">
+                      {% render 'icon_arrow_submit2' %}
+                    </i>
+                  {% endif %}
+                {% endif %}
+              </button>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- javascript -%}
+  document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.querySelector('#ContactForm');
+    if (!contactForm) return;
+
+    const nameInput = contactForm.querySelector('input[name="contact[name]"]');
+    const emailInput = contactForm.querySelector('input[name="contact[email]"]');
+    const submitBtn = contactForm.querySelector('.submit-button');
+
+    if (!nameInput || !emailInput || !submitBtn) return;
+
+    // Initially disable submit
+    submitBtn.disabled = true;
+
+    const validateForm = () => {
+      const nameValid = nameInput.value.trim().length > 0;
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim());
+      submitBtn.disabled = !(nameValid && emailValid);
+    };
+
+    // Listen for input changes
+    nameInput.addEventListener('input', validateForm);
+    emailInput.addEventListener('input', validateForm);
+
+    // Optionally, prevent submission if JS disabled somehow
+    contactForm.addEventListener('submit', (e) => {
+      if (submitBtn.disabled) e.preventDefault();
+    });
+  });
+{%- endjavascript -%}
+
+{% schema %}
+{
+  "name": "Contact Us",
+  "class": "contact-section main-contact-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Content"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Need Help? Get in Touch <br>With Our Team</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "before_title",
+      "label": "Subtitle",
+      "default": "<h3>Get Started</h3>"
+    },
+    {
+      "type": "header",
+      "content": "Form setting"
+    },
+    {
+      "type": "richtext",
+      "id": "success_form",
+      "label": "Text success form",
+      "default": "<h2>Thanks for contacting us. We'll get back to you as soon as possible.</h2>"
+    },
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "heading_horizontal_align_desk",
+      "label": "Heading Horizontal Alignment",
+      "info": "for desktop",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "heading_horizontal_align_mob",
+      "label": "Heading Horizontal Alignment",
+      "info": "for mobile",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "heading_vertical_align",
+      "label": "Heading Vertical Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Form color"
+    },
+    {
+      "type": "color",
+      "id": "input_color",
+      "label": "input Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "input border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "setting_btn",
+      "label": "Settings",
+      "options": [
+        {
+          "value": "global",
+          "label": "Global"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "global"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow Button",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Leave Us A Message"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Button Icon image"
+    },
+    {
+      "type": "text",
+      "id": "icon_alt",
+      "label": "Button Google Icon"
+    },
+    {
+      "type": "header",
+      "content": "Icons Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_facebook_icon",
+      "label": "Facebook Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_instagram_icon",
+      "label": "Instagram Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_twitter_icon",
+      "label": "Twitter Icon"
+    },
+    {
+      "type": "text",
+      "id": "social_facebook",
+      "label": "Facebook URL",
+      "default": "https://facebook.com/"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram",
+      "label": "Instagram URL",
+      "default": "http://instagram.com/"
+    },
+    {
+      "type": "text",
+      "id": "social_twitter",
+      "label": "Twitter URL",
+      "default": "https://twitter.com/"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Us",
+      "category": "Contact"
+    }
+  ]
+}
+{% endschema %}

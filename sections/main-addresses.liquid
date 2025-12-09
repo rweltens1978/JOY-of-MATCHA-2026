@@ -1,0 +1,225 @@
+<script src="{{ 'customer.js' | asset_url }}"></script>
+{%- paginate customer.addresses by 5 -%}
+<section class="account-page" data-customer-addresses>
+    <div class="container">
+        <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+            <div class="text-center mb-20 mb-md-50">
+                <h1 class="title">{{ 'customer.addresses.title' | t }}</h1>
+                <h4 class="subtitle"><a href="{{ routes.account_url }}" class="d-flex align-items-center justify-content-center"><span class="material-icons mr-10">keyboard_arrow_left</span> {{ 'customer.account.return' | t }}</a></h4>
+            </div>
+            <div class="account-page__address addresses">
+                {% if customer.addresses.size > 0 %}
+                    <div class="pure-g justify-content-center">
+                        {%- for address in customer.addresses -%}
+                            <div class="pure-u-1 pure-u-md-1-2 pure-u-xl-1-3 pure-u-lg-1-3 mb-30 mb-lg-0" data-address>
+                                {%- if address == customer.default_address -%}
+                                    <label class="table-label mb-10 mb-md-20 d-block fw-700 text-4">{{ 'customer.addresses.default' | t }}</label>
+                                {%- else -%}
+                                  {% if section.settings.other_address_text != blank %}
+                                    <label class="table-label mb-10 mb-md-20 d-block fw-700 text-4">{{section.settings.other_address_text}}</label>
+                                  {% endif %}
+                                {%- endif -%}
+                                <div class="addresses">
+                                    <div class="addresses-body">
+                                        {{ address | format_address }}
+                                    </div>
+                                    <div class="addresses-footer justify-content-between align-items-center d-flex">
+                                        <button type="button" id="EditFormButton_{{ address.id }}" aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}" aria-controls="EditAddress_{{ address.id }}" aria-expanded="false" data-address-id="{{ address.id }}" class="link fw-700 text-grey text-3">{{ 'customer.addresses.edit' | t }}</button>
+                                        <button type="button" class="link fw-700 text-grey text-3" aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}" data-target="{{ address.url }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">{{ 'customer.addresses.delete' | t }}</button>
+                                        <div id="EditAddress_{{ address.id }}" class="editAddressWrapper">
+                                          <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+                                              <div class="text-center mb-20 mb-md-50">
+                                                  <h5 class="title mt-0">{{ 'customer.addresses.edit_address' | t }}</h5>
+                                              </div>
+                                              {%- form 'customer_address', address -%}
+                                                <div class="form-row form-group">
+                                                  <label for="AddressFirstName_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.first_name' | t }}</label>
+                                                  <input type="text" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{{ 'customer.addresses.first_name' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter first name">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressLastName_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.last_name' | t }}</label>
+                                                  <input type="text" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter last name">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressCompany_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.company' | t }}</label>
+                                                  <input type="text" id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}" autocomplete="organization" placeholder="{{ 'customer.addresses.company' | t }}" class="form-input form-control">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressAddress1_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.address1' | t }}</label>
+                                                  <input type="text" id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter address">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressAddress2_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.address2' | t }}</label>
+                                                  <input type="text" id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}" class="form-input form-control">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressCity_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.city' | t }}</label>
+                                                  <input type="text" id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter city">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressCountry_{{ form.id }}" class="form-label fw-700">
+                                                    {{ 'customer.addresses.country' | t }}
+                                                  </label>
+                                                  <div class="select">
+                                                    <select
+                                                      id="AddressCountry_{{ form.id }}"
+                                                      name="address[country]"
+                                                      data-address-country-select
+                                                      data-default="{{ form.country }}"
+                                                      data-form-id="{{ form.id }}"
+                                                      autocomplete="country"
+                                                     class="form-select form-control" required data-pristine-required-message="Please select country">
+                                                      {{ all_country_option_tags }}
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                                <div id="AddressProvinceContainer_{{ form.id }}" class="form-row form-group" style="display:none;">
+                                                  <label for="AddressProvince_{{ form.id }}" class="form-label fw-700">
+                                                    {{ 'customer.addresses.province' | t }}
+                                                  </label>
+                                                  <div class="select">
+                                                    <select
+                                                      id="AddressProvince_{{ form.id }}"
+                                                      name="address[province]"
+                                                      data-default="{{ form.province }}"
+                                                      autocomplete="address-level1"
+                                                      class="form-select form-control" required data-pristine-required-message="Please select province"
+                                                    >
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressZip_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.zip' | t }}</label>
+                                                  <input type="text" id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code" placeholder="{{ 'customer.addresses.zip' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter zipcode">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  <label for="AddressPhone_{{ form.id }}" class="form-label fw-700">{{ 'customer.addresses.phone' | t }}</label>
+                                                  <input type="tel" id="AddressPhone_{{ form.id }}"  name="address[phone]" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ 'customer.addresses.phone' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter phone number">
+                                                </div>
+                                                <div class="form-row form-group">
+                                                  {{ form.set_as_default_checkbox }}
+                                                  <label for="address_default_address_{{ form.id }}" class="form-label fw-700">
+                                                    {{ 'customer.addresses.set_default' | t }}
+                                                  </label>
+                                                </div>
+                                                <div class="form-button text-center mt-30 mt-md-50">
+                                                  <button type="submit" class="btn btn--icon-hand mb-30 btn--fixed-width">{{ 'customer.addresses.update' | t }}</button>
+                                                  <button type="reset" class="btn btn--icon-hand mb-30 btn--fixed-width reset-address-button">{{ 'customer.addresses.cancel' | t }}</button>
+                                                </div>
+                                              {%- endform -%}
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {%- endfor -%}
+                    </div>
+                    {%- if paginate.pages > 1 -%}
+                        {% render 'pagination', paginate: paginate %}
+                    {%- endif -%}
+                {% endif %}
+                <div class="form-button text-center mt-30 mt-md-50">
+                    <button type="button" aria-expanded="false" aria-controls="AddAddress" class="btn btn--fixed-width expand-add-new-address">{{ 'customer.addresses.add_new' | t }}</button>
+                    <div id="AddAddress" class="AddAddressWrapper text-left">
+                      <div class="pure-g justify-content-center">
+                          <div class="pure-u-1 pure-u-md-17-24 pure-u-xl-10-24 pure-u-lg-1-2">
+                              <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+                                  <div class="text-center mb-20 mb-md-50">
+                                      <h3 class="title mt-0">{{ 'customer.addresses.add_new' | t }}</h3>
+                                  </div>
+                                  {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+                                    <div class="form-row form-group">
+                                      <label for="AddressFirstNameNew" class="form-label fw-700">{{ 'customer.addresses.first_name' | t }}</label>
+                                      <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{{ 'customer.addresses.first_name' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter first name">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressLastNameNew" class="form-label fw-700">{{ 'customer.addresses.last_name' | t }}</label>
+                                      <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter last name">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressCompanyNew" class="form-label fw-700">{{ 'customer.addresses.company' | t }}</label>
+                                      <input type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}" autocomplete="organization" placeholder="{{ 'customer.addresses.company' | t }}" class="form-input form-control">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressAddress1New" class="form-label fw-700">{{ 'customer.addresses.address1' | t }}</label>
+                                      <input type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter address">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressAddress2New" class="form-label fw-700">{{ 'customer.addresses.address2' | t }}</label>
+                                      <input type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}" class="form-input form-control">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressCityNew" class="form-label fw-700">{{ 'customer.addresses.city' | t }}</label>
+                                      <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter city">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressCountryNew" class="form-label fw-700">{{ 'customer.addresses.country' | t }}</label>
+                                      <div class="select">
+                                        <select
+                                          id="AddressCountryNew"
+                                          name="address[country]"
+                                          data-default="{{ form.country }}"
+                                          autocomplete="country" 
+                                          class="form-select form-control" required data-pristine-required-message="Please select country"
+                                        >
+                                          {{ all_country_option_tags }}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div id="AddressProvinceContainerNew" class="form-row form-group" style="display: none">
+                                      <label for="AddressProvinceNew" class="form-label fw-700">{{ 'customer.addresses.province' | t }}</label>
+                                      <div class="select">
+                                        <select
+                                          id="AddressProvinceNew"
+                                          name="address[province]"
+                                          data-default="{{ form.province }}"
+                                          autocomplete="address-level1" 
+                                          class="form-select form-control" required data-pristine-required-message="Please select province"
+                                        >
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressZipNew" class="form-label fw-700">{{ 'customer.addresses.zip' | t }}</label>
+                                      <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code" placeholder="{{ 'customer.addresses.zip' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter zipcode">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      <label for="AddressPhoneNew" class="form-label fw-700">{{ 'customer.addresses.phone' | t }}</label>
+                                      <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ 'customer.addresses.phone' | t }}" class="form-input form-control" required data-pristine-required-message="Please enter phone number">
+                                    </div>
+                                    <div class="form-row form-group">
+                                      {{ form.set_as_default_checkbox }}
+                                      <label for="address_default_address_new" class="form-label fw-700">{{ 'customer.addresses.set_default' | t }}</label>
+                                    </div>
+                                    <div class="form-button text-center mt-30 mt-md-50">
+                                      <button type="submit" class="btn btn--icon-hand mb-30 btn--fixed-width">{{ 'customer.addresses.add' | t }}</button>
+                                      <button type="reset" class="btn btn--icon-hand mb-30 btn--fixed-width reset-address-button">{{ 'customer.addresses.cancel' | t }}</button>
+                                    </div>
+                                  {%- endform -%}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{%- endpaginate -%}
+<script>
+  window.onload = () => {
+    typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+  }
+</script>
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": [
+    {
+      "type": "text",
+      "id": "other_address_text",
+      "label": "Other address text"
+    }
+  ]
+}
+{% endschema %}

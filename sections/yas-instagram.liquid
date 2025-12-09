@@ -1,0 +1,684 @@
+{%- liquid
+  assign section_prefix_class = 'main-instagram'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  /* Font overrides */
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-instagram :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+
+  /* Per-block background images */
+  {% for block in section.blocks %}
+    {% if block.settings.image != blank %}
+      .main-instagram .story[data-idx="{{ forloop.index }}"] {
+        background-image: url({{ block.settings.image | img_url: 'x600' }});
+      }
+    {% endif %}
+  {% endfor %}
+</style>
+{%- stylesheet -%}
+  .main-instagram_wrapper {
+    display: var(--display-value);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-instagram_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-instagram_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-instagram_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .outer-padding .main-instagram_container-wrapper {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-instagram_wrapper.inner-padding .container {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .main-instagram_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-instagram_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-instagram_wrapper.inner-padding .container,
+  .main-instagram_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .main-instagram a {
+    transition: all 0.3s ease;
+  }
+
+  .main-instagram a:hover {
+    color: var(--color-bg-btn);
+  }
+
+  .main-instagram_content-wrapper {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .main-instagram .title h1,
+  .main-instagram .title h2,
+  .main-instagram .title h3,
+  .main-instagram .title p {
+    font-size: var(--xl-heading-size);
+    line-height: 110%;
+    font-weight: 600;
+    text-transform: var(--heading-transform);
+    color: var(--text-color);
+    margin: 0;
+  }
+
+
+  .main-instagram .uppertitle {
+    display: flex;
+    align-items: center;
+    margin: 0 0 14.5px 0;
+    justify-content: var(--justify-align);
+  }
+
+  .main-instagram .uppertitle .star_span {
+    margin-right: 8px;
+  }
+
+  .main-instagram .uppertitle svg path {
+    fill: var(--fill);
+  }
+
+  .main-instagram .subtitle h2,
+  .main-instagram .subtitle h3,
+  .main-instagram .subtitle h1,
+  .main-instagram .subtitle p {
+    font-size: 18px;
+    line-height: 150%;
+    font-weight: 500;
+  }
+
+  .main-instagram .subtitle{
+    color: var(--sub-color);
+    font-style: italic;
+    margin: 0;
+  }
+
+  .main-instagram .stories {
+    width: 72%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+  }
+
+  .main-instagram .story {
+    border-radius: var(--image-radius);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .main-instagram .story-fallback {
+    background-image: url({{ 'instagram-placeholder.png' | asset_url }});
+  }
+
+  .main-instagram .story-fallback svg {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+  }
+
+  .main-instagram .title{
+    margin-bottom: 17px;
+  }
+
+  .main-instagram .subtitle{
+    margin-bottom: 0;
+  }
+
+  @media(min-width: 768px){
+    .instagram .heading {
+      flex-grow: 1;
+      margin: 0 auto;
+      align-content: center;
+    }
+
+    .main-instagram_wrapper,
+    .main-instagram .subtitle h2,
+    .main-instagram .subtitle h3,
+    .main-instagram .subtitle h1,
+    .main-instagram .subtitle p,
+    .main-instagram .title h1,
+    .main-instagram .title h2,
+    .main-instagram .title h3,
+    .main-instagram .title p,
+    .main-instagram_content-wrapper {
+      text-align: var(--heading-align);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-instagram_wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .main-instagram_wrapper,
+    .main-instagram .subtitle h2,
+    .main-instagram .subtitle h3,
+    .main-instagram .subtitle h1,
+    .main-instagram .subtitle p,
+    .main-instagram .title h1,
+    .main-instagram .title h2,
+    .main-instagram .title h3,
+    .main-instagram .title p,
+    .main-instagram_content-wrapper {
+      text-align: var(--mob-heading-align);
+    }
+
+    .main-instagram .title{
+      margin-bottom: 3px;
+    }
+
+    .outer-padding .main-instagram_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-instagram_wrapper.inner-padding .container,
+    .main-instagram_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-instagram_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .main-instagram_content-wrapper {
+      flex-wrap: wrap;
+    }
+
+    .main-instagram .title h1,
+    .main-instagram .title h2,
+    .main-instagram .title h3,
+    .main-instagram .title p {
+      font-size: var(--xs-heading-size);
+      line-height: 120%;
+    }
+
+    .main-instagram .subtitle h2,
+    .main-instagram .subtitle h1,
+    .main-instagram .subtitle h3,
+    .main-instagram .subtitle p {
+      font-size: 20px;
+    }
+
+    .main-instagram .heading {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .main-instagram .stories {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="{{  section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}"
+  style="
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    --image-radius: {{ section.settings.image_round }}px;
+    --fill: {{ section.settings.star_color }};
+    --sub-color: {{ section.settings.subtitle_color }};
+    --text-color: {{ section.settings.text_color }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+      {% if section.settings.section_width == 'full' %}
+    --width-value: 100%;
+    {% else %}
+    --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --heading-align: {{ section.settings.heading_align }};
+    {% case section.settings.heading_align %}
+      {% when 'left' %}
+        --justify-align: flex-start;
+      {% when 'center' %}
+        --justify-align: center;
+      {% when 'right' %}
+        --justify-align: flex-end;
+    {% endcase %}
+    --mob-heading-align: {{ section.settings.mob_heading_align }};
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+    style="      --custom-width: {{ section.settings.custom_page_width }};"
+  >
+    <div class="{{ section_width }}">
+      <div class="{{ section_prefix_class }}_content-wrapper">
+        {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+          <div class="heading">
+            {% if section.settings.uppertitle != blank %}
+              <div class="uppertitle">
+                <span class="star_span">
+                  {% for i in (1..5) %}
+                    {% render 'star_comparison' %}
+                  {% endfor %}
+                </span>
+                {{ section.settings.uppertitle }}
+              </div>
+            {% endif %}
+            <div class="title">
+              {%- if section.settings.title != blank -%}
+                {{ section.settings.title }}
+              {%- endif -%}
+            </div>
+            <div class="subtitle">
+              {%- if section.settings.subtitle != blank -%}
+                {{ section.settings.subtitle }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <div class="stories">
+          {% for block in section.blocks %}
+            {%- liquid
+              assign placeholder_index = forloop.index | modulo: 4
+              if placeholder_index == 0
+                assign placeholder_index = 4
+              endif
+            -%}
+            {% if block.settings.image != blank %}
+              <div
+                class="story story-{{ forloop.index }}"
+                data-idx="{{ forloop.index }}"
+                {{ block.shopify_attributes }}
+              ></div>
+            {% else %}
+              <div class="story story-fallback" data-idx="{{ forloop.index }}" {{ block.shopify_attributes }}>
+                {%- render 'placeholder-svgs', type: 'product', index: placeholder_index, class: '' -%}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Instagram stories",
+  "tag": "section",
+  "class": "section instagram main-instagram",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Desktop Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mob_heading_align",
+      "label": "Mobile Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 50,
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        {
+          "value": "all",
+          "label": "All Devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop Only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "uppertitle",
+      "label": "Uppertitle"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FF8E00"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<h2>Join our community</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>@Username</p>"
+    },
+    {
+      "type": "range",
+      "id": "image_round",
+      "label": "Image Round Corner",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

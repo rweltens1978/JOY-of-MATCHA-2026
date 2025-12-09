@@ -1,0 +1,732 @@
+{%- liquid
+  assign section_prefix_class = 'features-section'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .features-section :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+
+  .features-section {
+    padding: var(--xl-padding-tb) 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .features-section.inner-padding .container,
+  .features-section.outer-padding {
+    background: {{ section.settings.section_bg_color }};
+    color: {{ section.settings.text_color }};
+    background-image: url({{ section.settings.bg_image | image_url: width: 2000 }});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .features-section_content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  .features-section_custom-page-width .container{
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .outer-padding.features-section .container{
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .features-section.inner-padding .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .inner-padding.features-section .container{
+    --cp-spacer-left: var(--xl-padding-rl);
+    --cp-spacer-right: var(--xl-padding-rl);
+  }
+
+  .outer-padding.features-section .container-fluid{
+    --cp-spacer-left: var(--xl-padding-rl);
+    --cp-spacer-right: var(--xl-padding-rl);
+  }
+
+  .outer-padding.features-section:has(.container){
+    padding-left: var(--xl-padding-rl);
+    padding-right: var(--xl-padding-rl);
+  }
+
+  .features-section__header {
+    text-align: {{ section.settings.heading_align }};
+    margin-bottom: 60px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .features-section__title h2,
+  .features-section__title h1,
+  .features-section__title h3,
+  .features-section__title p {
+    font-size: var(--xl-heading-size);
+    line-height: 120%;
+    font-weight: 700;
+    text-transform: var(--heading-transform);
+    margin-bottom: 20px;
+    color: {{ section.settings.text_color }};
+  }
+
+  .features-section__subtitle {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 150%;
+    color: {{ section.settings.text_color }};
+    opacity: 0.9;
+    line-height: 1.5;
+  }
+
+  .features-section__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .features-section__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: {{ section.settings.text_color }};
+  }
+
+  .features-section__image-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .features-section__image,
+  .features-section__image.placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .features-section__card-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .features-section__card-desc {
+    font-size: 14px;
+    line-height: 1.4;
+    opacity: 0.8;
+  }
+
+  .features-section__footer {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .features-section__footer-text {
+    font-size: 14px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+  }
+
+  .features-section__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    color: var(--btn-color);
+    background: var(--btn-background);
+    gap: 10px;
+  }
+
+  .features-section__btn:hover {
+    background-color: var(--btn-color);
+    color: var(--btn-background);
+    transition: all 300ms ease-in-out;
+  }
+
+  @media (max-width: 1199px) {
+    .features-section__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 991px) {
+    .features-section__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .outer-padding.features-section:has(.container){
+      padding-left: var(--xs-padding-rl);
+      padding-right: var(--xs-padding-rl);
+    }
+
+    .features-section__subtitle {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 150%;
+    }
+
+    .features-section__title h2,
+    .features-section__title h1,
+    .features-section__title h3,
+    .features-section__title p {
+      font-size: var(--xs-heading-size);
+      line-height: 120%;
+      font-weight: 700;
+    }
+
+    .features-section {
+      padding: var(--xs-padding-tb) 0;
+    }
+
+    .outer-padding.features-section .container-fluid{
+      --cp-spacer-left: var(--xs-padding-rl);
+      --cp-spacer-right: var(--xs-padding-rl);
+    }
+
+    .inner-padding.features-section .container{
+      --cp-spacer-left: var(--xs-padding-rl);
+      --cp-spacer-right: var(--xs-padding-rl);
+    }
+
+    .features-section__grid {
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 575px) {
+  }
+</style>
+
+<section
+  class="features-section {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %} {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+  style="
+    --heading-transform: {{ section.settings.headline_typography }};
+    --xl-padding-tb: {{ section.settings.padding_tb_desk }}px;
+    --xl-padding-rl: {{ section.settings.padding_lr_desk }}px;
+    --xs-padding-tb: {{ section.settings.padding_tb_mob }}px;
+    --xs-padding-rl: {{ section.settings.padding_lr_mob }}px;
+    --custom-width: {{ section.settings.custom_page_width }};
+    {% if section.settings.settging_btn == 'global' %}
+      --btn-border-radius: {{ settings.button_radius }}px;
+      --btn-border: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --btn-color: {{ settings.button_text_color }};
+      --btn-background: {{ settings.button_color }};
+    {% else %}
+      --btn-border-radius: {{ section.settings.button_radius }}px;
+      --btn-border: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --btn-color: {{section.settings.button_text_color}};
+      --btn-background: {% if section.settings.button_color != 'transparent' %}{{section.settings.button_color}}{% else %}var(--color-bg-btn){% endif %};
+    {% endif %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+  "
+>
+  <div class="{{ section_width }}">
+    <div class="{{ section_prefix_class }}_content-wrapper">
+      <div class="features-section__header">
+        {% if section.settings.title != blank %}
+          <div class="features-section__title">{{ section.settings.title }}</div>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <div class="features-section__subtitle">
+            {{ section.settings.subtitle }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="features-section__grid">
+        {% for block in section.blocks %}
+          <div class="features-section__card">
+            <div class="features-section__image-wrapper">
+              {% if block.settings.image != blank %}
+                {{
+                  block.settings.image
+                  | image_url: width: 600
+                  | image_tag: loading: 'lazy', class: 'features-section__image', alt: block.settings.image.alt
+                  | escape
+                }}
+              {% else %}
+                {%- render 'placeholder-svgs',
+                  type: 'hero',
+                  class: 'features-section__image placeholder-svg',
+                  index: forloop.index
+                -%}
+              {% endif %}
+            </div>
+            {% if block.settings.title != blank %}
+              <h3 class="features-section__card-title">
+                {{ block.settings.title }}
+              </h3>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <div class="features-section__card-desc">
+                {{ block.settings.description }}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="features-section__footer">
+        {% if section.settings.footer_text != blank %}
+          <div class="features-section__footer-text">
+            {{ section.settings.footer_text }}
+          </div>
+        {% endif %}
+        {% if section.settings.button_text != blank %}
+          <a
+            href="{{ section.settings.button_link }}"
+            class="features-section__btn"
+          >
+            {{ section.settings.button_text }}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5 12H19"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12 5L19 12L12 19"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Features Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header content"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "<h2>40+ Blocks.<br>140+ Optimized Components.<br>Unlimited Possibilities.</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Each SURGE Block Is Crafted From Conversion-Proven Frameworks. Combine And Customize With Ease. No Coding, No Fluff, Just Performance.</p>"
+    },
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#000"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Title format",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Footer Content"
+    },
+    {
+      "type": "richtext",
+      "id": "footer_text",
+      "label": "Footer Text",
+      "default": "<p><strong>Limited spots available!</strong> Don't miss your chance to revolutionize your store.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Join The 500 Founding Members"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "settging_btn",
+      "label": "Settings",
+      "options": [
+        {
+          "value": "global",
+          "label": "Global"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "global"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1000,
+      "max": 1600,
+      "step": 10,
+      "default": 1200,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_desk",
+      "label": "Horizontal padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_desk",
+      "label": "Vertical padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_lr_mob",
+      "label": "Horizontal padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_tb_mob",
+      "label": "Vertical padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "FEATURE TITLE"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Feature description goes here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Section",
+      "category": "Info",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "HERO SECTIONS",
+            "description": "Visually striking and conversion-optimized hero sections."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "PRODUCT SECTIONS",
+            "description": "Compelling product sections that drive sales."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "SOCIAL PROOF",
+            "description": "Authentic social proof blocks that build trust."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "SOCIAL PROOF",
+            "description": "Authentic social proof blocks that build trust."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "BENEFIT BLOCKS",
+            "description": "Highlight the key benefits of streamlined project management."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "BEFORE & AFTER",
+            "description": "Showcase the advantages of enhanced ecom functionality."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "TIMELINES",
+            "description": "Emphasize the value of authentic user-generated content."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "STATISTICS",
+            "description": "Explain how easy it is to navigate with our optimized blocks."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,54 @@
+{
+  "type": "footer",
+  "name": "Footer Group",
+  "sections": {
+    "yas-footer": {
+      "type": "yas-footer",
+      "blocks": {
+        "link_list_arPNaM": {
+          "type": "link_list",
+          "settings": {
+            "title": "Quick Links",
+            "menu": "footer"
+          }
+        },
+        "link_list_rgnCRK": {
+          "type": "link_list",
+          "settings": {
+            "title": "Legal",
+            "menu": "legal"
+          }
+        }
+      },
+      "block_order": [
+        "link_list_arPNaM",
+        "link_list_rgnCRK"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/Surge_Logo.png",
+        "text": "<p>The most optimized Shopify theme ever built.</p>",
+        "newsletter_title": "Join The Community",
+        "newsletter_subtitle": "Sign up for £5 off your first order",
+        "privacy_text": "Some kind of privacy statement here",
+        "sidebar_banner_enable_payment_icons": true,
+        "background_color": "#121212",
+        "font_variant": "default",
+        "title_font": "montserrat_n4",
+        "section_width": "contained-content",
+        "enable_custom_width": false,
+        "custom_page_width": 1472,
+        "mob_alignment": "center",
+        "mob_menu_alignment": "left",
+        "padding_lr_desk": 20,
+        "padding_tb_desk": 70,
+        "padding_lr_mob": 20,
+        "padding_tb_mob": 44,
+        "text_color": "#ffffff",
+        "display_on": "all"
+      }
+    }
+  },
+  "order": [
+    "yas-footer"
+  ]
+}

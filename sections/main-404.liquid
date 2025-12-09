@@ -1,0 +1,24 @@
+<section class="error">
+    <div class="container">
+        <div class="pure-g justify-content-center">
+            <div class="pure-u-1-2 text-center">
+                <h1 class="title"><b>{{ 'templates.404.subtext' | t }}</b></h1>
+                {% if section.settings.sub_title != blank %}
+                  <h4 class="subtitle">{{section.settings.sub_title}}</h4>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "Main 404",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub title"
+    }
+  ]
+}
+{% endschema %}

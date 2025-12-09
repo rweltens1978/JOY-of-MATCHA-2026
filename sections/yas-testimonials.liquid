@@ -1,0 +1,987 @@
+{%- liquid
+  assign section_prefix_class = 'main-testimonial-sec'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+-%}
+<style>
+  /* Font overrides */
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-testimonial-sec :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+
+{%- stylesheet -%}
+  .main-testimonial-sec * {
+    box-sizing: border-box;
+  }
+  .testimonials-title-section * {
+    margin: 0;
+  }
+
+  .main-testimonial-sec_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .main-testimonial-sec_container-wrapper {
+    padding: var(--xl-padding-y) 0;
+  }
+
+  .inner-padding .main-testimonial-sec_content-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .main-testimonial-sec_wrapper.outer-padding .container {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .outer-padding .main-testimonial-sec_container-wrapper:has(.container) {
+    padding-left: var(--xl-padding-x);
+    padding-right: var(--xl-padding-x);
+  }
+
+  .main-testimonial-sec_wrapper.inner-padding .container,
+  .main-testimonial-sec_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: var(--xl-padding-x);
+    --cp-spacer-right: var(--xl-padding-x);
+  }
+
+  .testimonials-title-section h2,
+  .testimonials-title-section h1,
+  .testimonials-title-section h3,
+  .testimonials-title-section p {
+    font-weight: 700;
+    font-size: var(--xl-heading-size);
+    line-height: normal;
+    text-transform: var(--text-transform);
+    color: var(--title-color);
+  }
+  .main-testimonial-sec .testimonials-title-section h3 {
+    color: var(--subtitle-color);
+  }
+  .testimonials-title-section p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0;
+    color: var(--subtitle-color);
+  }
+  .main-testimonial-sec,
+  .main-testimonial-sec_main-wrapper {
+    color: var(--text-color);
+    text-align: center;
+    position: relative;
+  }
+  .main-testimonial-sec_main-wrapper {
+    display: var(--display-value);
+    background: var(--bg-color);
+  }
+  .main-testimonial-sec_main-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 60%;
+    background: var(--bg-top);
+    display: block;
+    width: 100%;
+    z-index: 0;
+  }
+  .main-testimonial-sec .testimonials-container {
+    max-width: var(--width-value);
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .main-testimonial-sec .testimonials-title-section p.testimonials-subtitle {
+    font-size: 20px;
+    color: var(--subtitle-color);
+  }
+  .main-testimonial-sec .testimonial-info-cont * {
+    color: var(--info-color);
+  }
+  .main-testimonial-sec .testimonial-text {
+    color: var(--text-color);
+  }
+  .main-testimonial-sec .carousel-button,
+  .main-testimonial-sec a {
+    transition: all 0.3s ease;
+  }
+  .main-testimonial-sec a:hover {
+    color: var(--color-bg-btn);
+  }
+  .main-testimonial-sec .carousel-button:hover {
+    color: var(--btn-background);
+    background: var(--btn-color);
+  }
+  .main-testimonial-sec .carousel-button_blanked {
+    pointer-events: none;
+  }
+  .main-testimonial-sec .carousel-button {
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    color: var(--btn-color);
+    background: var(--btn-background);
+    outline: none;
+    padding: 16px 44px;
+    gap: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+  }
+  .main-testimonial-sec .carousel-button .icon_cart-btns {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .main-testimonial-sec .carousel-button .icon_cart-btns img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .main-testimonial-sec .swiper-pagination-w {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 58px;
+    margin-bottom: 58px;
+    gap: 63px;
+  }
+  .main-testimonial-sec .testimonials-subtitle h1,
+  .main-testimonial-sec .testimonials-subtitle h2,
+  .main-testimonial-sec .testimonials-subtitle h3,
+  .main-testimonial-sec .testimonials-subtitle p{
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 120%;
+  }
+  @media (max-width: 768px) {
+    .outer-padding .main-testimonial-sec_container-wrapper:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .main-testimonial-sec_main-wrapper {
+      display: var(--xs-display-value);
+    }
+
+    .main-testimonial-sec_wrapper.inner-padding .container,
+    .main-testimonial-sec_wrapper.outer-padding .container-fluid {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .main-testimonial-sec .swiper-pagination-w {
+      gap: 28px;
+    }
+
+    .main-testimonial-sec_container-wrapper {
+      padding: var(--xs-padding-y) 0;
+    }
+    .main-testimonial-sec .testimonials-title-section h2,
+    .main-testimonial-sec .testimonials-title-section h3,
+    .main-testimonial-sec .testimonials-title-section h1,              
+    .main-testimonial-sec .testimonials-title-section p {
+      font-size: var(--xs-heading-size);
+      line-height: 100%;
+    }
+    .main-testimonial-sec .testimonials-subtitle h1,
+    .main-testimonial-sec .testimonials-subtitle h2,
+    .main-testimonial-sec .testimonials-subtitle h3,
+    .main-testimonial-sec .testimonials-subtitle p{
+      font-size: 20px;
+    }
+    .testimonials-title-section p {
+      font-weight: 400;
+      font-size: 12px;
+    }
+    .main-testimonial-sec.testimonials-section .testimonial-card {
+      max-width: 250px;
+    }
+    .main-testimonial-sec.testimonials-section .testimonials-title-section div {
+      flex-direction: column-reverse;
+    }
+    .main-testimonial-sec.testimonials-section .testimonial-card .testimonial-photo {
+      display: block;
+    }
+    .testimonials-section .testimonials-section .testimonial-card {
+      max-width: 250px;
+    }
+  }
+{%- endstylesheet -%}
+
+<div
+  class="{{ section_prefix_class }}_main-wrapper"
+  style="
+    {% if section.settings.settging_btn == 'global' %}
+      --btn-border-radius: {{ settings.button_radius }}px;
+      --btn-border: {{ settings.button_border_size }}px solid {{ settings.button_color_border }};
+      --btn-color: {{ settings.button_text_color }};
+      --btn-background: {{ settings.button_color }};
+    {% else %}
+      --btn-border-radius: {{ section.settings.button_radius }}px;
+      --btn-border: {{ section.settings.button_border_size }}px solid {{ section.settings.button_border_color }};
+      --btn-color: {{ section.settings.button_text_color }};
+      --btn-background: {{ section.settings.button_color }};
+    {% endif %}
+    --info-color: {{ section.settings.text_color_info }};
+    --bg-top: {{ section.settings.background_top }};
+    --subtitle-color: {{ section.settings.subtitle_color }};
+    --title-color: {{ section.settings.title_color }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xs-heading-size: 20px;
+      {% when 'medium' %}
+      --xs-heading-size: 32px;
+      {% when 'large' %}
+      --xs-heading-size: 32px;
+    {% endcase %}
+    {% if section.settings.section_width == 'full' %}
+      --width-value: 100%;
+    {% else %}
+      --width-value: {{ settings.page_width }}px;
+    {% endif %}
+    --bdr-radius: {{ section.settings.corner_radius }}px;
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+    --text-color: {{ section.settings.text_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --text-h: {{ section.settings.text_color_h }};
+    --text-transform: {{ section.settings.title_format }};
+    --heading-transform: {{ section.settings.headline_typography }};
+    --heading-align: {{ section.settings.heading_align }};
+    {% case section.settings.heading_size %}
+      {% when 'small' %}
+      --xl-heading-size: 28px;
+      {% when 'medium' %}
+      --xl-heading-size: 40px;
+      {% when 'large' %}
+      --xl-heading-size: 48px;
+    {% endcase %}
+  "
+>
+  <div class="testimonials-container {{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %}">
+    <div
+      class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+      style="
+        --custom-width: {{ section.settings.custom_page_width }};
+        {% if section.settings.section_width == 'contained-content' %}
+        overflow: hidden;
+        {% endif %}
+      "
+    >
+      <div class="{{ section_width }}">
+        <div class="{{ section_prefix_class }}_content-wrapper">
+          <div class="testimonials-title-section word--break">
+            {% if section.settings.reviewd_text != blank %}
+              <div class="word--break">
+                {{ section.settings.reviewd_text }}
+                <span class="star_span">
+                  {%- for i in (1..5) -%}
+                    {%- render 'star_comparison' -%}
+                  {%- endfor -%}
+                </span>
+              </div>
+            {% endif %}
+            {% if section.settings.heading != blank %}
+              {{ section.settings.heading }}
+            {% endif %}
+            {% if section.settings.subtitle != blank %}
+              <div class="testimonials-subtitle word--break">{{ section.settings.subtitle }}</div>
+            {% endif %}
+          </div>
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                {%- liquid
+                  assign placeholder_index = forloop.index | modulo: 4
+                  if placeholder_index == 0
+                    assign placeholder_index = 4
+                  endif
+                -%}
+                <div class="swiper-slide testimonial-card">
+                  {% if section.settings.show_image == true %}
+                    <div class="testimonial-photo">
+                      {% if block.settings.photo_review != blank %}
+                        {%- liquid
+                          assign max_width = block.settings.photo_review.width
+                          if block.settings.photo_review > 600
+                            assign max_width = 600
+                          endif
+                          assign image_height = max_width | divided_by: block.settings.photo_review.aspect_ratio | round
+
+                          capture image_alt
+                            if block.settings.photo_review.alt != blank
+                              echo block.settings.photo_review.alt
+                            else
+                              echo 'image_alternative.static' | t
+                            endif
+                          endcapture
+
+                          capture sizes_attr
+                            echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 30px), (max-width: 1199px) 20.143vw'
+                          endcapture
+                        -%}
+                        {{-
+                          block.settings.photo_review
+                          | image_url: width: max_width
+                          | image_tag:
+                            loading: 'lazy',
+                            width: max_width,
+                            height: image_height,
+                            sizes: sizes_attr,
+                            alt: image_alt,
+                            class: ''
+                        -}}
+                      {% else %}
+                        {%- render 'placeholder-svgs', type: 'hero', index: placeholder_index, class: '' -%}
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  <div class="testimonial-info">
+                    <div class="testimonial-info-body">
+                      <div class="testimonial-info-img">
+                        {% if block.settings.photo != blank %}
+                          {%- liquid
+                            assign max_width = block.settings.photo.width
+                            if block.settings.photo > 62
+                              assign max_width = 62
+                            endif
+                            assign image_height = max_width | divided_by: block.settings.photo.aspect_ratio | round
+
+                            capture image_alt
+                              if block.settings.photo.alt != blank
+                                echo block.settings.photo.alt
+                              elsif block.settings.photo.alt == blank
+                                echo 'image_alternative.static' | t
+                              else
+                                echo block.settings.name
+                              endif
+                            endcapture
+                          -%}
+                          {{-
+                            block.settings.photo
+                            | image_url: width: max_width
+                            | image_tag:
+                              loading: 'lazy',
+                              width: max_width,
+                              height: image_height,
+                              alt: image_alt,
+                              class: ''
+                          -}}
+                        {% else %}
+                          {%- render 'placeholder-svgs', type: 'product', index: placeholder_index, class: '' -%}
+                        {% endif %}
+                      </div>
+                      <div class="testimonial-info-cont">
+                        <p class="testimonial-name word--break">{{ block.settings.name }}</p>
+                        {% if block.settings.verified_text != blank %}
+                          <p class="testimonial-verified word--break">
+                            {% render 'icon-verifed' -%}
+                            {{- block.settings.verified_text }}
+                          </p>
+                        {% endif %}
+                        <p class="testimonial-rating word--break">
+                          {% for i in (1..block.settings.rating) %}
+                            <svg
+                              width="13"
+                              height="13"
+                              viewBox="0 0 13 13"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M6.5 0L8.03444 4.96556H13L8.98278 8.03444L10.5172 13L6.5 9.93112L2.48278 13L4.01722 8.03444L0 4.96556H4.96556L6.5 0Z" fill="#FF8E00"/>
+                            </svg>
+                          {% endfor %}
+                        </p>
+                      </div>
+                    </div>
+                    <p class="testimonial-text word--break">{{ block.settings.testimonial_text }}</p>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-pagination-w">
+              <div class="swiper-b-prev">{% render 'swiper-arrow-left-n' %}</div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-b-next">{% render 'swiper-arrow-right-n' %}</div>
+            </div>
+          </div>
+          {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+            <a
+              class="carousel-button word--break"
+              {% if section.settings.button_link %}
+                href="{{ section.settings.button_link }}"
+              {% endif %}
+            >
+              {{ section.settings.button_text }}
+              {% if section.settings.show_arrow == true %}
+                {% if section.settings.icon != blank %}
+                  <i class="icon_cart-btns">
+                    {%- liquid
+                      assign max_width = section.settings.icon.width
+                      if section.settings.icon > 150
+                        assign max_width = 150
+                      endif
+                      assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                      capture image_alt
+                        if section.settings.icon.alt != blank
+                          echo section.settings.icon.alt
+                        else
+                          echo 'Icon' | escape
+                        endif
+                      endcapture
+                    -%}
+                    {{-
+                      section.settings.icon
+                      | image_url: width: max_width
+                      | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                    -}}
+                  </i>
+                {% elsif section.settings.icon_alt != blank %}
+                  <i class="icon_cart-btns material-symbols-outlined">
+                    {{ section.settings.icon_alt }}
+                  </i>
+                {% else %}
+                  <i class="icon_cart-btns">
+                    {% render 'icon_arrow_submit2' %}
+                  </i>
+                {% endif %}
+              {% endif %}
+            </a>
+          {% else %}
+            {% if section.settings.button_text != blank %}
+              <a
+                class="carousel-button word--break"
+                {% if section.settings.button_link %}
+                  href="{{ section.settings.button_link }}"
+                {% endif %}
+              >
+                {{ section.settings.button_text }}
+                {% if section.settings.show_arrow == true %}
+                  {% if section.settings.icon != blank %}
+                    <i class="icon_cart-btns">
+                      {%- liquid
+                        assign max_width = section.settings.icon.width
+                        if section.settings.icon > 150
+                          assign max_width = 150
+                        endif
+                        assign image_height = max_width | divided_by: section.settings.icon.aspect_ratio | round
+
+                        capture image_alt
+                          if section.settings.icon.alt != blank
+                            echo section.settings.icon.alt
+                          else
+                            echo 'Icon' | escape
+                          endif
+                        endcapture
+                      -%}
+                      {{-
+                        section.settings.icon
+                        | image_url: width: max_width
+                        | image_tag: loading: 'lazy', width: max_width, height: image_height, alt: image_alt, class: ''
+                      -}}
+                    </i>
+                  {% elsif section.settings.icon_alt != blank %}
+                    <i class="icon_cart-btns material-symbols-outlined">
+                      {{ section.settings.icon_alt }}
+                    </i>
+                  {% else %}
+                    <i class="icon_cart-btns">
+                      {% render 'icon_arrow_submit2' %}
+                    </i>
+                  {% endif %}
+                {% endif %}
+              </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelectorAll('.main-testimonial-sec .testimonial-card')) {
+      var cards = document.querySelectorAll('.main-testimonial-sec .testimonial-card');
+      var textElements = [];
+
+      // Collect all .testimonial-text elements that exist
+      cards.forEach((card) => {
+        if (card.querySelector('.testimonial-text')) {
+          var textEl = card.querySelector('.testimonial-text');
+          textElements.push(textEl);
+        }
+      });
+      if (textElements.length > 0) {
+        textElements.forEach((el) => {
+          el.style.height = 'auto';
+        });
+        setTimeout(() => {
+          let maxHeight = 0;
+          textElements.forEach((el) => {
+            var height = el.offsetHeight;
+            if (height > maxHeight) {
+              maxHeight = height;
+            }
+          });
+          textElements.forEach((el) => {
+            el.style.height = maxHeight + 'px';
+          });
+        }, 500);
+      }
+    }
+    let swiper = new Swiper('.main-testimonial-sec .swiper-container', {
+      loop: true,
+      navigation: {
+        nextEl: '.main-testimonial-sec .swiper-b-next',
+        prevEl: '.main-testimonial-sec .swiper-b-prev',
+      },
+      pagination: {
+        el: '.main-testimonial-sec .swiper-pagination',
+        clickable: true,
+        dynamicBullets: false,
+      },
+      slidesPerView: 1,
+      spaceBetween: 24,
+      breakpoints: {
+        240: {
+          slidesPerView: 1,
+        },
+        768: {
+          slidesPerView: 3,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+      },
+      grabCursor: true,
+      on: {
+        init: function () {
+          if (
+            document
+              .querySelector('.main-testimonial-sec .swiper-pagination')
+              .classList.contains('swiper-pagination-lock')
+          ) {
+            document.querySelector('.main-testimonial-sec .swiper-pagination-w').classList.add('pagination-lock');
+          }
+        },
+      },
+    });
+
+    swiper.on('paginationUpdate', function () {
+      if (
+        document.querySelector('.main-testimonial-sec .swiper-pagination').classList.contains('swiper-pagination-lock')
+      ) {
+        document.querySelector('.main-testimonial-sec .swiper-pagination-w').classList.add('pagination-lock');
+      } else {
+        if (
+          document.querySelector('.main-testimonial-sec .swiper-pagination-w').classList.contains('pagination-lock')
+        ) {
+          document.querySelector('.main-testimonial-sec .swiper-pagination-w').classList.remove('pagination-lock');
+        }
+      }
+    });
+  });
+  window.addEventListener('resize', () => {
+    if (document.querySelectorAll('#shopify-section-{{section.id}} .testimonial-card')) {
+      var cards = document.querySelectorAll('#shopify-section-{{section.id}} .testimonial-card');
+      var textElements = [];
+
+      // Collect all .testimonial-text elements that exist
+      cards.forEach((card) => {
+        if (card.querySelector('.testimonial-text')) {
+          var textEl = card.querySelector('.testimonial-text');
+          textElements.push(textEl);
+        }
+      });
+      if (textElements.length > 0) {
+        textElements.forEach((el) => {
+          el.style.height = 'auto';
+        });
+        setTimeout(() => {
+          let maxHeight = 0;
+          textElements.forEach((el) => {
+            var height = el.offsetHeight;
+            if (height > maxHeight) {
+              maxHeight = height;
+            }
+          });
+          textElements.forEach((el) => {
+            el.style.height = maxHeight + 'px';
+          });
+        }, 500);
+      }
+    }
+  });
+</script>
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "testimonials-section main-testimonial-sec",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Content"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Title",
+      "default": "<h2>What people are saying about [product/brand name]</h2>"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<h3>Read through some reviews and see what real people say about [product/brand name]</h3>"
+    },
+    {
+      "type": "richtext",
+      "id": "reviewd_text",
+      "label": "Uppertitle",
+      "default": "<p>Reviewed by +100 Happy Customers</p>"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color and review color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "linear-gradient(180deg, #E5E7EB 0%, #FFFFFF 100%)"
+    },
+
+    {
+      "type": "color",
+      "id": "background_top",
+      "label": "Header Background Color",
+      "default": "#898989"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "title_format",
+      "label": "Headline Typography",
+      "options": [
+        { "value": "uppercase", "label": "AA" },
+        { "value": "capitalize", "label": "Aa" },
+        { "value": "lowercase", "label": "aa" }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "contained-content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical Padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical Padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display On",
+      "options": [
+        { "value": "all", "label": "All Devices" },
+        { "value": "mobile_only", "label": "Mobile Only" },
+        { "value": "desktop_only", "label": "Desktop Only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Testimonials Cards Settings"
+    },
+    {
+      "type": "color",
+      "id": "text_color_info",
+      "label": "Title Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#52525b"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "settging_btn",
+      "label": "Settings",
+      "options": [
+        { "value": "global", "label": "Global" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "CHECK ALL XX REVIEWS"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Button Icon image"
+    },
+    {
+      "type": "text",
+      "id": "icon_alt",
+      "label": "Button Google Icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "button_border_size",
+      "label": "Button Border Size",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    { "type": "color", "id": "button_border_color", "label": "Button Border Color", "default": "#000" },
+    { "type": "color", "id": "button_color", "label": "Button background", "default": "#000000" },
+    { "type": "color", "id": "button_text_color", "label": "Button Text Color", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "photo_review",
+          "label": "Photo review"
+        },
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Customer Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Leslie Alexander"
+        },
+        {
+          "type": "text",
+          "id": "verified_text",
+          "label": "Verification Text",
+          "default": "Verified Customer"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Testimonial Text",
+          "default": "Impressed with the quality and performance. The product works smoothly and delivers great results."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "category": "Reviews",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

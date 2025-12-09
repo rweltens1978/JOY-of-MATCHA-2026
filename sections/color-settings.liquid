@@ -1,0 +1,50 @@
+<style>
+{% for block in section.blocks %}
+  {% if block.settings.img != blank %}
+  {% assign color = block.settings.img | image_url | prepend: 'url(' | append: ') no-repeat center' %}
+  {% else %}
+  {% assign color = block.settings.color %}  
+  {% endif %}
+  
+     i.custom_color_{{ block.settings.title | strip | escape | downcase | replace: ' ', '_' }} {background: {{ color }} !important;background-size: cover !important;}
+     .custom_color_{{ block.settings.title | strip | escape | downcase | replace: ' ', '_' }} {background: {{ color }} !important;background-size: cover !important;}
+{% endfor %}
+   color-look{cursor: pointer;}
+</style>
+{% schema %}
+  {
+    "name": "Color Variant Settings",
+    "settings": [ 
+    ],
+    "blocks": [
+      {
+        "type": "color",
+        "name": "Product color css",
+        "settings": [
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Color",
+            "default": "#FFFFFF"
+          },
+             {
+            "type": "image_picker",
+            "id": "img",
+            "label": "Photo"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Color Name at Product"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

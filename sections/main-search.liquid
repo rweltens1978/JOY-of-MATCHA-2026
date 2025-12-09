@@ -1,0 +1,98 @@
+{% assign hasproduct = false %}
+{% assign hasarticle = false %}
+{% if search.results.size > 0 %}
+  {%- for item in search.results -%}
+    {% if item.object_type == "product" %}
+      {% assign hasproduct = true %}
+      {% break %}
+    {% endif %}
+  {%- endfor -%}
+  {%- for item in search.results -%}
+    {% if item.object_type == "article" %}
+      {% assign hasarticle = true %}
+      {% break %}
+    {% endif %}
+  {%- endfor -%}
+{% endif %}
+<section class="{% if hasarticle or hasproduct%}search pt-20 pb-25 py-md-90 bg-info-light d-none d-lg-block{% else %}search pt-20 pb-25 py-md-90{% endif %}">
+    <div class="container">
+        <div class="pure-g justify-content-center">
+            <div class="pure-u-1 pure-u-md-5-8">
+                {% if section.settings.title != blank %}
+                  <h1 class="title">{{section.settings.title}}</h1>
+                {% endif %}
+                {% if section.settings.sub_title != blank %}
+                    <h4 class="subtitle">{{section.settings.sub_title}}</h4>
+                {% endif %}
+                <form action="{{ routes.search_url }}" id="searchForm" method="get" role="search" class="search search__form">
+                    <div class="form-group">
+                        <label class="form-label fw-700">{{section.settings.search_label}}</label>
+                        <div class="search__box">
+                            <button type="submit" class="form-icon">
+                                <span class="material-icons">search</span>
+                            </button>
+                            <input class="form-input" id="Search-In-Template" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.search' | t }}">
+                        </div>
+                    </div>
+                </form>
+                {% if section.blocks.size > 0 %}
+                <div class="search__popular">
+                  {% if section.settings.popular_search_title != blank %}
+                    <span class="text-1 text-grey search__popular-title">{{ section.settings.popular_search_title}}</span>
+                  {% endif %}
+                    <ul class="list-unstyled search__popular-list">
+                        {% for block in section.blocks %}
+                          {% if block.settings.title != blank %}
+                            <li><a href="{{ routes.search_url }}?q={{block.settings.title}}">{{block.settings.title}}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<hr>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub title"
+    },
+    {
+      "type": "text",
+      "id": "popular_search_title",
+      "label": "Popular search title"
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search label",
+      "default": "What are you looking for?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "popular-search",
+      "name": "Popular search",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

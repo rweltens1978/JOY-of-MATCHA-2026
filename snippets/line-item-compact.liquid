@@ -1,0 +1,319 @@
+{%- comment -%}
+  renders line item of cart
+  usage
+    {% render 'line-item-compact', item: item, loading_attr: 'lazy' %}
+{%- endcomment -%}
+{%- liquid
+  assign final_image = block.settings.image | default: item.image
+
+  assign max_width = final_image.width
+  if final_image.width > width
+    assign max_width = width
+  endif
+  assign image_height = max_width | divided_by: final_image.aspect_ratio | round
+
+  assign parent_attr = 'data-parent-line-item-' | append: item.id | append: '-' | append: index
+
+  capture sizes_attr
+    echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(100vw - 30px), (max-width: 1199px) 8.698vw'
+  endcapture
+-%}
+<div class="line-item" {{ parent_attr }} data-init-qty="{{- item.quantity -}}">
+  <div class="line-item_col" data-title="Product">
+    <div class="line-item_infos-wrap">
+      {%- if item.variant.url != blank -%}
+        <a href="{{- item.variant.url -}}" class="line-item_image">
+      {%- else -%}
+        <a href="{{- item.product.title -}}" class="line-item_image">
+      {%- endif -%}
+      {%- if item.image != blank -%}
+        {%- liquid
+          capture image_alt
+            if item.image.alt != blank
+              echo item.image.alt | escape
+            else
+              echo item.product.title
+            endif
+          endcapture
+        -%}
+        {{-
+          final_image
+          | image_url: width: max_width
+          | image_tag:
+            loading: loading_attr,
+            width: max_width,
+            height: image_height,
+            sizes: sizes_attr,
+            alt: image_alt,
+            class: 'object-fit object-fit--absolute'
+        -}}
+      {%- else -%}
+        {{- 'product-apparel-1' | placeholder_svg_tag: 'object-fit object-fit--absolute' -}}
+      {%- endif -%}
+      <span class="visually-hidden">{{ item.product.title }}</span>
+      {%- if item.variant.url != blank -%}
+        </a>
+      {%- else -%}
+        </a>
+      {%- endif -%}
+      <div class="line-item_infos-details --q-direction --q-display">
+        <div class="info-col_one">
+          {%- if settings.show_drawer_vendor -%}
+            <em class="line-item-compact_text-heading --word-break">
+              by
+              {{- item.product.vendor -}}
+            </em>
+          {%- endif -%}
+          <div class="line-item_title-head --q-display --q-gap --q-align-justify --q-align-alignment">
+            <strong
+              class="line-item_heading text-size--large --font-weight --word-break --q-display"
+              style="--font-weight: 400;"
+            >
+              {%- if item.variant.url != blank -%}
+                <a href="{{- item.variant.url -}}" class="">
+                  {{- item.product.title -}}
+                </a>
+              {%- else -%}
+                {{- item.product.title -}}
+              {%- endif -%}
+            </strong>
+          </div>
+          <div data-render-self-others="" class="line-item_render-self">
+            {%- if item.product.has_only_default_variant == false or item.properties.size != 0 -%}
+              {%- if item.product.has_only_default_variant == false -%}
+                <ul class="list-unstyled line-item_variant-list --word-break">
+                  {%- for option in item.options_with_values -%}
+                    <li class="line-item_variant-item --q-display">
+                      <strong
+                        class="line-item_variant-title text-size--small --font-weight --q-shrink"
+                        style="--font-weight: 600;"
+                      >
+                        {{- option.name -}}
+                        :
+                      </strong>
+                      <strong
+                        class="line-item_variant-value text-size--small --font-weight --q-grow"
+                        style="--font-weight: 400;"
+                      >
+                        {{- option.value -}}
+                      </strong>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+              {%- for property in item.properties -%}
+                {%- assign property_first_char = property.first | slice: 0 -%}
+                {%- if property.last != blank and property_first_char != '_' -%}
+                  <dl class="list-unstyled line-item_property-list --word-break">
+                    <dt class="line-item_property-title">
+                      {{- property.first -}}
+                      :
+                    </dt>
+                    <dd class="line-item_property-text">
+                      {%- if property.last contains '/uploads/' -%}
+                        <a href="{{- property.last -}}" class="line-item_property-text-link" target="_blank">
+                          {{- property.last | split: '/' | last -}}
+                        </a>
+                      {%- else -%}
+                        {{- property.last -}}
+                      {%- endif -%}
+                    </dd>
+                  </dl>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if item.discounts.size > 0 -%}
+              <ul class="list-unstyled line-item_discounts-list --q-display --q-gap --q-wrap">
+                {%- for discount in item.discounts -%}
+                  <li
+                    class="line-item_discounts-item --word-break --q-display --q-gap --q-align-alignment text-size--small --font-weight"
+                    style="--font-weight: 600;"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16px"
+                      height="16px"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                      <g id="SVGRepo_iconCarrier"> <path d="M10 8.99998C10.5523 8.99998 11 9.44769 11 9.99998C11 10.5523 10.5523 11 10 11C9.44775 11 9.00004 10.5523 9.00004 9.99998C9.00004 9.44769 9.44775 8.99998 10 8.99998Z" fill="#ffffff"/> <path d="M13 14C13 14.5523 13.4478 15 14 15C14.5523 15 15 14.5523 15 14C15 13.4477 14.5523 13 14 13C13.4478 13 13 13.4477 13 14Z" fill="#ffffff"/> <path d="M10.7071 14.7071L14.7071 10.7071C15.0977 10.3166 15.0977 9.6834 14.7071 9.29287C14.3166 8.90235 13.6835 8.90235 13.2929 9.29287L9.29293 13.2929C8.90241 13.6834 8.90241 14.3166 9.29293 14.7071C9.68346 15.0976 10.3166 15.0976 10.7071 14.7071Z" fill="#ffffff"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.3117 4.07145L15.1708 4.34503L14.5575 3.34485C13.3869 1.43575 10.6131 1.43575 9.44254 3.34485L8.82926 4.34503L7.68836 4.07145C5.51069 3.54925 3.54931 5.51063 4.07151 7.6883L4.34509 8.8292L3.34491 9.44248C1.43581 10.6131 1.43581 13.3869 3.34491 14.5575L4.34509 15.1708L4.07151 16.3117C3.54931 18.4893 5.51069 20.4507 7.68836 19.9285L8.82926 19.6549L9.44254 20.6551C10.6131 22.5642 13.3869 22.5642 14.5575 20.6551L15.1708 19.6549L16.3117 19.9285C18.4894 20.4507 20.4508 18.4893 19.9286 16.3117L19.655 15.1708L20.6552 14.5575C22.5643 13.3869 22.5643 10.6131 20.6552 9.44248L19.655 8.8292L19.9286 7.6883C20.4508 5.51063 18.4894 3.54925 16.3117 4.07145ZM11.1475 4.3903C11.5377 3.75393 12.4623 3.75393 12.8525 4.3903L13.8454 6.00951C14.0717 6.37867 14.51 6.56019 14.9311 6.45922L16.7781 6.01631C17.504 5.84225 18.1578 6.49604 17.9837 7.22193L17.5408 9.06894C17.4398 9.49003 17.6213 9.92827 17.9905 10.1546L19.6097 11.1475C20.2461 11.5377 20.2461 12.4623 19.6097 12.8525L17.9905 13.8453C17.6213 14.0717 17.4398 14.5099 17.5408 14.931L17.9837 16.778C18.1578 17.5039 17.504 18.1577 16.7781 17.9836L14.9311 17.5407C14.51 17.4398 14.0717 17.6213 13.8454 17.9904L12.8525 19.6097C12.4623 20.246 11.5377 20.246 11.1475 19.6097L10.1547 17.9904C9.92833 17.6213 9.49009 17.4398 9.069 17.5407L7.22199 17.9836C6.4961 18.1577 5.84231 17.5039 6.01637 16.778L6.45928 14.931C6.56026 14.5099 6.37873 14.0717 6.00957 13.8453L4.39036 12.8525C3.75399 12.4623 3.75399 11.5377 4.39036 11.1475L6.00957 10.1546C6.37873 9.92827 6.56026 9.49003 6.45928 9.06894L6.01637 7.22193C5.84231 6.49604 6.4961 5.84225 7.22199 6.01631L9.069 6.45922C9.49009 6.56019 9.92833 6.37867 10.1547 6.00951L11.1475 4.3903Z" fill="#ffffff"/> </g>
+                    </svg>
+                    {{ discount.title }}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+            {%- if item.selling_plan_allocation != null -%}
+              <div class="line-item_plan-wrap">
+                <strong class="line-item_plan-item">
+                  {{- item.selling_plan_allocation.selling_plan.name -}}
+                </strong>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="line-item_col-input" data-title="Quantity">
+            <div class="line-item_field-wrap --q-display">
+              <div class="line-item_quantity-select">
+                <p class="cart-item-qty">
+                  Qty:
+                  <line-item-qty
+                    class="cart-qty-w"
+                    data-line-id="{{- item.index | plus: 1 -}}"
+                    data-parent-selector="[{{ parent_attr }}]"
+                    data-sections='
+                      [
+                        {
+                          "id": "{{ section.id }}",
+                          "selectors": ["[data-line-items-container]"]
+                        }
+                      ]
+                    '
+                  >
+                    <button class="btn__button btn_button-minus" name="minus" type="button">
+                      {{ 'icon-minus-new.svg' | inline_asset_content }}
+                    </button>
+                    <input
+                      class=""
+                      type="number"
+                      name="updates[]"
+                      value="{{- item.quantity -}}"
+                      min="0"
+                      {% if item.variant.quantity_rule.max != null %}
+                        max="{{- item.variant.quantity_rule.max -}}"
+                      {% endif %}
+                      step="{{- item.variant.quantity_rule.increment -}}"
+                      aria-label="
+                        {{ 'products.product.quantity.input_label' | t:
+                        product: product.selected_or_first_available_variant.title | escape }}
+                      "
+                    >
+                    <button class="btn__button btn_button-plus" name="plus" type="button">
+                      {{ 'icon-plus-new.svg' | inline_asset_content }}
+                    </button>
+                  </line-item-qty>
+                </p>
+              </div>
+            </div>
+            {%- comment -%}
+              <div class="line-item_error-wrap line-item_error-wrap--cart --word-break parent-node --q-display">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12px" height="12px" viewBox="0 0 512 512" version="1.1" fill="#e60505" stroke="#e60505">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                  <g id="SVGRepo_iconCarrier"> <title>error-filled</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="add" fill="#a80505" transform="translate(42.666667, 42.666667)"> <path d="M213.333333,3.55271368e-14 C331.136,3.55271368e-14 426.666667,95.5306667 426.666667,213.333333 C426.666667,331.136 331.136,426.666667 213.333333,426.666667 C95.5306667,426.666667 3.55271368e-14,331.136 3.55271368e-14,213.333333 C3.55271368e-14,95.5306667 95.5306667,3.55271368e-14 213.333333,3.55271368e-14 Z M262.250667,134.250667 L213.333333,183.168 L164.416,134.250667 L134.250667,164.416 L183.168,213.333333 L134.250667,262.250667 L164.416,292.416 L213.333333,243.498667 L262.250667,292.416 L292.416,262.250667 L243.498667,213.333333 L292.416,164.416 L262.250667,134.250667 Z" id="Combined-Shape"> </path> </g> </g> </g>
+                </svg>
+              </div>
+            {%- endcomment -%}
+            <span class="hidden main-cart_error" data-render-error=""></span>
+          </div>
+        </div>
+        <div class="line-item_price-container info-col_two --q-shrink --q-align">
+          <strong class="visually-hidden"> Price: </strong>
+          <div class="line-item_head-price">
+            {%- if item.original_price != item.final_price -%}
+              <span class="line-item_discounted-prices --word-break">
+                <span class="visually-hidden"> Regular price </span>
+                <s class="line-item_old-price">
+                  {{- item.original_price | money -}}
+                </s>
+                <span class="visually-hidden"> Discount price </span>
+                <span
+                  class="line-item_final-price h --font-weight"
+                  style="--font-weight: 400;"
+                >
+                  {{- item.final_price | money -}}
+                </span>
+              </span>
+            {%- else -%}
+              <div class="line-item_col" data-title="Total">
+                <strong
+                  class="line-item_final-price h --font-weight --word-break"
+                  data-render-self-price=""
+                  style="--font-weight: 400;"
+                >
+                  {{- item.final_line_price | money -}}
+                </strong>
+              </div>
+            {%- endif -%}
+            {%- if item.variant.available and item.unit_price_measurement -%}
+              <span
+                class="line-item_unit-price --font-weight --q-display"
+                style="--font-weight: 400;"
+              >
+                <span class="visually-hidden">Unit price</span>
+                {{ item.variant.unit_price | money }}
+                <span aria-hidden="true">/</span>
+                <span class="visually-hidden">&nbsp;per&nbsp;</span>
+                {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
+                  {{- item.variant.unit_price_measurement.reference_value -}}
+                {%- endif -%}
+                {{ item.variant.unit_price_measurement.reference_unit }}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="line-item_col" data-title="Total">
+    <strong class="line-item_total-price --word-break" data-render-self-price="">
+      {{- item.final_line_price | money -}}
+      {%- if item.variant.available and item.unit_price_measurement -%}
+        <small
+          class="line-item_unit-price --font-weight --q-display"
+          style="--font-weight: 400;"
+        >
+          <span class="visually-hidden"> Unit price </span>
+          {{- item.variant.unit_price | money -}}
+          <span aria-hidden="true">/</span>
+          <span class="visually-hidden">&nbsp;per&nbsp; </span>
+          {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
+            {{- item.variant.unit_price_measurement.reference_value -}}
+          {%- endif -%}
+          {{- item.variant.unit_price_measurement.reference_unit -}}
+        </small>
+      {%- endif -%}
+    </strong>
+  </div>
+  <span class="loader line-item_loader hidden --v-align-middle --justify-center" data-loader="">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+      <g id="SVGRepo_iconCarrier"> <path d="M12 3C10.22 3 8.47991 3.52784 6.99987 4.51677C5.51983 5.50571 4.36628 6.91131 3.68509 8.55585C3.0039 10.2004 2.82567 12.01 3.17294 13.7558C3.5202 15.5016 4.37737 17.1053 5.63604 18.364C6.89472 19.6226 8.49836 20.4798 10.2442 20.8271C11.99 21.1743 13.7996 20.9961 15.4442 20.3149C17.0887 19.6337 18.4943 18.4802 19.4832 17.0001C20.4722 15.5201 21 13.78 21 12" stroke="#000000" stroke-width="2" stroke-linecap="round"/> <path d="M19.7942 7.5C19.8905 7.66673 19.9813 7.83651 20.0667 8.00907" stroke="#000000" stroke-width="2" stroke-linecap="round"/> </g>
+    </svg>
+    <span class="visually-hidden"> Loading&hellip; </span>
+  </span>
+</div>
+{%- javascript -%}
+  const toggleLoader = (state) => {
+    const loader = document.querySelector('[data-theme-loader]');
+    if (!loader) return;
+    if (state) {
+      loader.style.display = 'flex';
+      loader.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 300,
+        fill: 'forwards',
+        easing: 'ease',
+      }).onfinish = () => {
+        loader.classList.add('theme-loader--active');
+      };
+      return;
+    }
+    loader.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 300,
+      fill: 'forwards',
+      easing: 'ease',
+    }).onfinish = () => {
+      loader.classList.remove('theme-loader--active');
+      loader.style.display = 'none';
+    };
+  };
+  const getJsonParse = (attrStr) => {
+    let arr = [];
+    const strArr = attrStr ? JSON.parse(attrStr) : null;
+    if (!strArr) return (arr = null);
+    strArr.forEach((selector) => arr.push(document.querySelector(selector)));
+    return arr;
+  };
+{%- endjavascript -%}

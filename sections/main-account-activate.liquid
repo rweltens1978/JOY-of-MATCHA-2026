@@ -1,0 +1,60 @@
+<section class="account-page">
+    <div class="container">
+        <div class="pure-g justify-content-center">
+            <div class="pure-u-1 pure-u-md-17-24 pure-u-xl-10-24 pure-u-lg-1-2">
+                <div class="account-page__form-wrapper pt-25 pb-40 py-md-55">
+                    <div class="text-center mb-20 mb-md-50">
+                        <h1 class="title">{{ 'customer.activate_account.title' | t }}</h1>
+                        <h4 class="subtitle">{{ 'customer.activate_account.subtext' | t }}</h4>
+                    </div>
+                    {%- form 'activate_customer_password' -%}
+                        {%- if form.errors -%}
+                          <div class="form__messages" tabindex="-1" autofocus>
+                            <h2>{{ 'templates.contact.form.error_heading' | t }}</h2>
+                            <ul>
+                              {%- for field in form.errors -%}
+                                <li>
+                                  {%- if field == 'form' -%}
+                                    {{ form.errors.messages[field] }}
+                                  {%- else -%}
+                                    <a href="#{{ field }}">
+                                      {{ form.errors.translated_fields[field] | capitalize }}
+                                      {{ form.errors.messages[field] }}
+                                    </a>
+                                  {%- endif-%}
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          </div>
+                        {%- endif -%}
+                        <div class="form-row form-group">
+                            <label class="form-label fw-700" for="password">
+                                {{ 'customer.activate_account.password' | t }} 
+                            </label>
+                            <input type="password" name="customer[password]" id="password" autocomplete="new-password" placeholder="{{ 'customer.activate_account.password' | t }}"{% if form.errors contains 'password' %} aria-invalid="true" aria-describedby="password-error"{% endif %} class="form-input form-control" required data-pristine-required-message="Please enter Password">
+                        </div>
+                        <div class="form-row form-group">
+                            <label class="form-label fw-700" for="password_confirmation">
+                                {{ 'customer.activate_account.password_confirm' | t }}
+                            </label>
+                            <input type="password" name="customer[password_confirmation]" id="password_confirmation" autocomplete="new-password" placeholder="{{ 'customer.activate_account.password_confirm' | t }}"{% if form.errors contains 'password' %} aria-invalid="true" aria-describedby="password_confirmation-error"{% endif %} class="form-input form-control" required data-pristine-required-message="Please enter Password">
+                        </div>
+                        <div class="form-button text-center mt-30 mt-md-50">
+                            <button type="submit" class="btn mb-30 btn--fixed-width">{{ 'customer.activate_account.submit' | t }}</button>
+                        </div>
+                        <div class="form-link text-center">
+                            <button name="decline" class="fw-700 text-4">{{ 'customer.activate_account.cancel' | t }}</button>
+                        </div>
+                    {%- endform -%}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "Accont activate",
+  "settings": [
+  ]
+}
+{% endschema %}

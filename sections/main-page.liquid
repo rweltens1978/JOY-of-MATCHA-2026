@@ -1,0 +1,179 @@
+<style>
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .main-page .wysiwyg :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  {% endif %}
+</style>
+{%- stylesheet -%}
+  .main-page .wysiwyg .content-page-title
+  {
+    margin-bottom: 70px;
+  }
+  .main-page .wysiwyg .content-page-title h1
+  {
+    font-size: var(--font-size);
+    text-transform: var(--text-transform);
+    color: var(--color-text);
+    line-height: 120%;
+    font-weight: 700;
+  }
+  .main-page .wysiwyg .content-page-title p
+  {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    color: #696969;
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .main-page .wysiwyg .content-page-title
+    {
+      margin-bottom: 40px;
+    }
+    .main-page .wysiwyg .content-page-title h1 {
+      font-size: var(--xs-font-size);
+    }
+    .main-page .wysiwyg .content-page-title p{
+      font-size: 16px;
+    }
+  }
+{%- endstylesheet -%}
+<section class="wysiwyg pt-25 pb-35 py-md-55" {% if section.settings.background_color != blank and section.settings.background_color != 'transparent' %}style="background-color: {{ section.settings.background_color }};"{% endif %}>
+  <div class="container">
+      <div class="pure-g justify-content-center">
+          <div class="pure-u-1 pure-u-md-19-24">
+              <div 
+                class="content-page-title"
+                style="
+                --color-text: {{ section.settings.text_color }};
+                --text-transform: {{ section.settings.headline_typography }};
+                {% case section.settings.heading_size %}
+                  {% when 'small' %}
+                   --font-size: 36px;
+                  {% when 'medium' %}
+                   --font-size: 45px;
+                  {% when 'large' %}
+                   --font-size: 60px;
+                {% endcase %}
+                {% case section.settings.heading_size %}
+                  {% when 'small' %}
+                    --xs-font-size: 20px;
+                  {% when 'medium' %}
+                    --xs-font-size: 28px;
+                  {% when 'large' %}
+                    --xs-font-size: 36px;
+                {% endcase %};
+                "
+              >
+                <h1 style="text-align: center;">{{page.title}}</h1>
+                {% if section.settings.sub_title != blank %}
+                  <p>{{ section.settings.sub_title }}</p>
+                {% endif %}
+              </div>
+              {% if page.content != blank %}
+                <div class="rte">
+                  {{page.content}}
+                </div>
+              {% endif %}
+          </div>
+      </div>
+  </div>
+</section>
+<hr>
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "class": "main-page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub title"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "headline_typography",
+      "label": "Headline Typography",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "AA"
+        },
+        {
+          "value": "capitalize",
+          "label": "Aa"
+        },
+        {
+          "value": "lowercase",
+          "label": "aa"
+        }
+      ],
+      "default": "capitalize"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font Family",
+      "options": [
+        { "value": "default", "label": "Default by theme" },
+        { "value": "custom", "label": "Own choice" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular Font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title Color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}

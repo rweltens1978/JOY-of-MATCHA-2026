@@ -1,0 +1,2269 @@
+{%- liquid
+  assign sid = section.id
+  assign section_prefix_class = 'hero-cropped-banner'
+
+  capture section_width
+    case section.settings.section_width
+      when 'container-fluid'
+        echo 'container-fluid'
+      else
+        echo 'container'
+    endcase
+  endcapture
+
+  capture banner_mobile_size
+    case section.settings.size
+      when 'small'
+        echo '60vh'
+      when 'medium'
+        echo '65vh'
+      else
+        echo '70vh'
+    endcase
+  endcapture
+
+  capture banner_desktop_size
+    case section.settings.size
+      when 'small'
+        echo '600px'
+      when 'medium'
+        echo '700px'
+      else
+        echo '800px'
+    endcase
+  endcapture
+-%}
+{%- stylesheet -%}
+  .hero-cropped-banner .desk {
+    display: block;
+  }
+
+  .hero_payment-icons {
+    display: flex !important;
+    list-style: none;
+    align-items: center;
+  }
+
+  .hero-cropped-banner .mob {
+    display: none;
+  }
+
+  .hero-cropped-banner_custom-page-width .container {
+    max-width: calc(var(--custom-width, 1200) * 1px);
+  }
+
+  .hero-cropped-banner .swiper-container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .hero-cropped-banner_wrapper {
+    display: var(--display-value);
+    padding: var(--xl-padding-y) 0;
+    background-color: var(--bg-color);
+    margin: 0 auto;
+    color: var(--text-color);
+    position: relative;
+    overflow: hidden;
+    height: auto;
+  }
+
+  .hero-cropped-banner_container-wrapper {
+    border-radius: var(--yas-radius, 10px);
+  }
+
+  .hero-cropped-banner_content-wrapper {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: var(--yas-direction, row);
+    align-items: var(--alignment);
+    gap: var(--yas-gap, 88px);
+    background: var(--yas-bg, transparent);
+    background-size: cover;
+    padding: calc(var(--yas-pad-y, 0) * 1) calc(var(--yas-pad-x, 0) * 1);
+    border-radius: var(--yas-radius, 10px);
+  }
+
+  .hero-cropped-banner .wrap_image {
+    width: 50%;
+    align-content: center;
+  }
+
+  .hero-cropped-banner .wrap_image div {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .hero-cropped-banner .wrap_image img,
+  .hero-cropped-banner .wrap_image svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--yas-image-radius, 0px);
+  }
+
+  .hero-cropped-banner .hero-banner-text-content {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: initial;
+    width: 69.2%;
+    flex-direction: column;
+  }
+
+  .hero-cropped-banner .title * {
+    margin: 0;
+  }
+
+  .hero-cropped-banner [class^='title-'] h1,
+  .hero-cropped-banner [class^='title-'] h2,
+  .hero-cropped-banner [class^='title-'] h3,
+  .hero-cropped-banner [class^='title-'] p,
+  .hero-cropped-banner .title h1,
+  .hero-cropped-banner .title h2,
+  .hero-cropped-banner .title h3,
+  .hero-cropped-banner .title p {
+    font-size: var(--yas-heading-size, 56px);
+    text-transform: var(--yas-heading-transform, none);
+    color: var(--yas-text-color, #111);
+    line-height: 100%;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+  }
+
+  .hero-cropped-banner .subtitle * {
+    margin: 0;
+  }
+
+  .hero-cropped-banner [class^='subtitle-'] h2,
+  .hero-cropped-banner [class^='subtitle-'] h1,
+  .hero-cropped-banner [class^='subtitle-'] h3,
+  .hero-cropped-banner .subtitle h2,
+  .hero-cropped-banner .subtitle h1,
+  .hero-cropped-banner .subtitle h3 {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 0 0 20px 0;
+    color: var(--yas-text-color, #111);
+  }
+  .hero-cropped-banner [class^='subtitle-'] p,
+  .hero-cropped-banner .subtitle p {
+    font-size: 24px;
+    line-height: 120%;
+    font-weight: 500;
+  }
+
+  .hero-cropped-banner .uppertitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--yas-text-color, #111);
+    justify-content: var(--yas-justify, flex-start);
+  }
+
+  .hero-cropped-banner .title.title-1 {
+    margin: 0;
+  }
+
+  .hero-cropped-banner .title.title-1 h2 {
+    margin-bottom: 24px;
+  }
+
+  .hero-cropped-banner .subtitle.subtitle-1,
+  .hero-cropped-banner .subtitle.subtitle-1 h3,
+  .hero-cropped-banner .subtitle.subtitle-1 h2,
+  .hero-cropped-banner .subtitle.subtitle-1 h1 {
+    margin: 0;
+    color: var(--yas-text-color);
+  }
+
+  .hero-cropped-banner .uppertitle .star_span {
+    display: inline-flex;
+    gap: 2px;
+    position: relative;
+    top: -1px;
+  }
+
+  .hero-cropped-banner .uppertitle svg {
+    display: block;
+  }
+
+  .hero-cropped-banner .uppertitle h2,
+  .hero-cropped-banner .uppertitle h3,
+  .hero-cropped-banner .uppertitle p {
+    line-height: 1.2;
+    margin-bottom: 0;
+  }
+
+  .hero-cropped-banner .uppertitle svg path {
+    fill: var(--yas-star-color);
+  }
+
+  .hero-cropped-banner ul {
+    padding: 0;
+    margin: 20px 0 0 0;
+    display: var(--ul-display);
+    color: var(--ul-color);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hero-cropped-banner .image-with-text-list li {
+    font-size: 16px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    line-height: 150%;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+
+  .hero-cropped-banner .image-with-text-list li img,
+  .hero-cropped-banner .image-with-text-list li svg {
+    width: 23.33px;
+    height: 23.33px;
+    margin-right: 12px;
+  }
+  .hero-cropped-banner .button {
+    border-radius: var(--yas-btn-radius, 10px);
+    border: var(--yas-btn-border-w, 1px) solid var(--yas-btn-border-c, #000);
+    color: var(--yas-btn-text, #000);
+    background: var(--yas-btn-bg, #fff);
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 32px;
+    width: fit-content;
+    min-width: 100%;
+    padding: 18px 20px;
+    gap: 16px;
+  }
+
+  .hero-cropped-banner .button svg path {
+    fill: var(--yas-btn-text, #000);
+  }
+
+  .hero-cropped-banner .button:hover svg path {
+    fill: var(--yas-btn-bg, #fff);
+    transition: fill 300ms ease-in-out;
+  }
+
+  .hero-cropped-banner .payicons {
+    display: flex;
+    padding-bottom: 0;
+    gap: 8px;
+    text-align: center;
+    max-width: 426px;
+    margin: 10px 0;
+    justify-content: center;
+  }
+
+  .hero-cropped-banner .payicons .payicon {
+    max-width: 36px;
+  }
+
+  .hero-cropped-banner .payicons img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-cropped-banner .review {
+    display: flex;
+    max-width: 459px;
+    flex-wrap: nowrap;
+    border-radius: 14px;
+    padding: 26px 22px;
+    gap: 15px;
+    margin-top: 32px;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hero-cropped-banner .review.--no-radius,
+  .hero-cropped-banner .review.--no-radius::before,
+  .review.--no-radius .review-image img,
+  .review.--no-radius .review-image svg {
+    border-radius: 0;
+  }
+
+  .hero-cropped-banner .review::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--review-bg-color, #fff);
+    opacity: var(--review-bg-opacity, 1);
+    border-radius: 14px;
+    z-index: -1;
+  }
+
+  .hero-cropped-banner .review.review-height {
+    margin-top: 32px;
+  }
+
+  .hero-cropped-banner .review-image img,
+  .hero-cropped-banner .review-image svg {
+    width: 97px;
+    border-radius: 50%;
+    height: 97px;
+  }
+
+  .hero-cropped-banner .review-content {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .hero-cropped-banner .review-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    line-height: normal;
+  }
+
+  .hero-cropped-banner .review-st-w {
+    display: flex;
+    gap: 2.7px;
+  }
+
+  .hero-cropped-banner .review-title h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--review-text-color, #111);
+  }
+
+  .hero-cropped-banner .review-text p {
+    line-height: 120%;
+    font-weight: 400;
+    margin: 0;
+    color: var(--review-text-color, #111);
+  }
+
+  .hero-cropped-banner .img--fit {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero-cropped-banner .image-with-text-list .material-symbols-outlined {
+    background-color: var(--pointer-background-color);
+    color: var(--pointer-color);
+    border-radius: 50%;
+  }
+
+  .hero-cropped-banner .button .icon_cart-btns {
+    line-height: 0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .hero-cropped-banner .button .icon_cart-btns img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-cropped-banner_wrapper.outer-padding .container,
+  .hero-cropped-banner_wrapper.outer-padding .container-fluid {
+    --cp-spacer-left: 0;
+    --cp-spacer-right: 0;
+  }
+
+  .hero-cropped-banner .uppertitle h2,
+  .hero-cropped-banner .uppertitle h3,
+  .hero-cropped-banner .uppertitle p {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .hero-cropped-banner .uppertitle p {
+    margin-left: 0;
+  }
+
+  .hero-cropped-banner .subtitle {
+    font-weight: 500;
+  }
+
+  .hero-cropped-banner .subtitle p {
+    margin-bottom: 0;
+  }
+
+  .hero-cropped-banner .review-image {
+    line-height: 0;
+  }
+
+  .hero-cropped-banner .hero_img-hide .wrap_image {
+    display: none;
+  }
+
+  .hero-cropped-banner .hero_img-hide .hero-banner-text-content {
+    width: 100%;
+  }
+
+  .hero-cropped-banner .review .review-st-w svg path {
+    fill: var(--review-star-color);
+  }
+
+  @media (min-width: 768px) {
+    .hero-cropped-banner .button {
+      min-width: 302px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .hero-cropped-banner .img--mob,
+    .image-with-text-list_mob {
+      display: none;
+    }
+
+    .hero-cropped-banner .--sm-image .wrap_image {
+      height: 450px;
+    }
+
+    .hero-cropped-banner .--mm-image .wrap_image {
+      height: 550px;
+    }
+
+    .hero-cropped-banner .--big-image .wrap_image {
+      height: 650px;
+    }
+
+    .hero-cropped-banner_content-wrapper {
+      min-height: var(--xl-min-height);
+    }
+
+    .hero-cropped-banner .review-text p {
+      font-size: 14px;
+    }
+
+    .hero-cropped-banner .img--desktop {
+      display: block;
+    }
+
+    .hero-cropped-banner_wrapper.outer-padding:has(.container-fluid),
+    .hero-cropped-banner_wrapper.outer-padding:has(.container) {
+      padding-left: var(--xl-padding-x);
+      padding-right: var(--xl-padding-x);
+    }
+
+    .hero-cropped-banner_wrapper.inner-padding .container {
+      --cp-spacer-left: var(--xl-padding-x);
+      --cp-spacer-right: var(--xl-padding-x);
+    }
+
+    .hero-cropped-banner_content-wrapper {
+      padding: calc(var(--yas-pad-y, 0) * 0.7) calc(var(--yas-pad-x, 0) * 0.7);
+    }
+
+    .hero-cropped-banner .title h3 {
+      margin-bottom: 13px;
+      margin-top: 4px;
+    }
+
+    .hero-cropped-banner [class^='title-'] h1,
+    .hero-cropped-banner [class^='title-'] h2,
+    .hero-cropped-banner [class^='title-'] h3,
+    .hero-cropped-banner [class^='title-'] p,
+    .hero-cropped-banner .title h1,
+    .hero-cropped-banner .title h2,
+    .hero-cropped-banner .title h3,
+    .hero-cropped-banner .title p {
+      text-align: var(--yas-heading-align, left);
+    }
+
+    .hero-cropped-banner [class^='subtitle-'] h2,
+    .hero-cropped-banner [class^='subtitle-'] h1,
+    .hero-cropped-banner [class^='subtitle-'] h3,
+    .hero-cropped-banner [class^='subtitle-'] p,
+    .hero-cropped-banner .subtitle h2,
+    .hero-cropped-banner .subtitle h1,
+    .hero-cropped-banner .subtitle h3,
+    .hero-cropped-banner .subtitle p {
+      text-align: var(--yas-heading-align, left);
+    }
+
+    .hero-cropped-banner .subtitle {
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .hero-cropped-banner .image-with-text-list-desk {
+      margin-top: 20px;
+    }
+
+    .hero-cropped-banner .image-with-text-list li {
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hero-cropped-banner_content-wrapper {
+      padding: calc(var(--yas-pad-y, 0) * 1) calc(var(--yas-pad-x, 0) * 1);
+    }
+  }
+
+  @media (max-width: 991px) {
+    .hero-cropped-banner_wrapper.outer-padding:has(.container-fluid),
+    .hero-cropped-banner_wrapper.outer-padding:has(.container) {
+      padding-left: var(--xs-padding-x);
+      padding-right: var(--xs-padding-x);
+    }
+
+    .hero-cropped-banner_content-wrapper {
+      flex-direction: var(--xs-yas-direction);
+    }
+
+    .hero-cropped-banner .--sm-image .wrap_image {
+      height: 190px;
+    }
+
+    .hero-cropped-banner .--mm-image .wrap_image {
+      height: 200px;
+    }
+
+    .hero-cropped-banner .--big-image .wrap_image {
+      height: 214px;
+    }
+
+    .hero-cropped-banner_content-wrapper {
+      height: auto;
+      min-height: var(--min-height);
+    }
+
+    .hero-cropped-banner .review {
+      padding: 16px;
+      margin-top: 24px;
+    }
+
+    .hero-cropped-banner .review-text p {
+      font-size: 12px;
+    }
+
+    .hero-cropped-banner .review-text {
+      margin-top: 8px;
+    }
+
+    .hero-cropped-banner .button {
+      margin-top: 24px;
+      max-width: 100%;
+    }
+
+    .hero-cropped-banner_wrapper.inner-padding .container {
+      --cp-spacer-left: var(--xs-padding-x);
+      --cp-spacer-right: var(--xs-padding-x);
+    }
+
+    .hero-cropped-banner_wrapper {
+      display: var(--xs-display-value);
+      padding: var(--xs-padding-y) 0;
+    }
+
+    .hero-cropped-banner .img--mob {
+      display: block;
+    }
+
+    .hero-cropped-banner .img--desktop,
+    .hero-cropped-banner .image-with-text-list_desk {
+      display: none;
+    }
+
+    .hero-cropped-banner .image-with-text-list li {
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    .hero-cropped-banner .desk {
+      display: none;
+    }
+
+    .hero-cropped-banner .mob {
+      display: block;
+    }
+
+    .image-with-text-list-mob {
+      margin-top: 24px;
+    }
+
+    .hero-cropped-banner .wrap_image {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .hero-cropped-banner .wrap_image > div {
+      padding-top: 0;
+      height: auto;
+    }
+
+    .hero-cropped-banner .swiper-container,
+    .hero-cropped-banner .swiper-wrapper,
+    .hero-cropped-banner .swiper-slide {
+      height: auto;
+    }
+
+    .hero-cropped-banner_content-wrapper {
+      background: var(--yas-bg-m, var(--yas-bg));
+      padding: var(--yas-pad-y-m, var(--yas-pad-y)) var(--yas-pad-x-m, var(--yas-pad-x));
+      flex-wrap: wrap;
+      gap: 20px;
+      height: auto;
+      align-items: var(--alignment);
+    }
+
+    .hero-cropped-banner .hero-banner-text-content {
+      width: 100%;
+      display: block;
+    }
+
+    .hero-cropped-banner .image-with-text-list li {
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-cropped-banner .image-with-text-container {
+      gap: 32px;
+    }
+
+    .hero-cropped-banner .uppertitle svg {
+      max-width: 12px;
+    }
+
+    .hero-cropped-banner .wrap_image {
+      width: 100%;
+    }
+
+    .hero-cropped-banner .payicons {
+      width: 100%;
+      gap: 5.5px;
+      justify-content: center;
+    }
+
+    .hero-cropped-banner .payicons .payicon {
+      max-width: 27px;
+    }
+
+    .hero-cropped-banner .payicons img {
+      width: 27px;
+      height: 27px;
+    }
+
+    .hero-cropped-banner .review {
+      order: 8;
+    }
+
+    .hero-cropped-banner .review-content {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+
+    .hero-cropped-banner .review-image {
+      width: 56px;
+      margin-right: 16px;
+      line-height: 0;
+    }
+
+    .hero-cropped-banner .review-image img,
+    .hero-cropped-banner .review-image svg {
+      max-width: 56px;
+      height: 56px;
+    }
+
+    .hero-cropped-banner .review-title {
+      display: block;
+      align-content: center;
+    }
+
+    .hero-cropped-banner .review-st-w {
+      margin-top: 5px;
+    }
+
+    .hero-cropped-banner .review-title h2 {
+      font-size: 14px;
+      line-height: 100%;
+      margin: 0;
+    }
+
+    .hero-cropped-banner [class^='title-'] h1,
+    .hero-cropped-banner [class^='title-'] h2,
+    .hero-cropped-banner [class^='title-'] h3,
+    .hero-cropped-banner [class^='title-'] p,
+    .hero-cropped-banner .title h1,
+    .hero-cropped-banner .title h2,
+    .hero-cropped-banner .title h3,
+    .hero-cropped-banner .title p {
+      font-size: var(--yas-heading-size-m, 40px);
+      line-height: 100%;
+      margin: 0 0 16px 0;
+    }
+
+    .hero-cropped-banner [class^='subtitle-'] p,
+    .hero-cropped-banner .subtitle p {
+      font-size: 18px;
+    }
+
+    .hero-cropped-banner .title h3 {
+      margin-bottom: 13px;
+      margin-top: 8px;
+    }
+
+    .hero-cropped-banner .uppertitle .star_span {
+      order: -1;
+    }
+
+    .hero-cropped-banner [class^='title-'] h1,
+    .hero-cropped-banner [class^='title-'] h2,
+    .hero-cropped-banner [class^='title-'] h3,
+    .hero-cropped-banner [class^='title-'] p,
+    .hero-cropped-banner .title h1,
+    .hero-cropped-banner .title h2,
+    .hero-cropped-banner .title h3,
+    .hero-cropped-banner .title p {
+      text-align: var(--yas-mob-heading-align, left);
+    }
+
+    .hero-cropped-banner [class^='subtitle-'] h1,
+    .hero-cropped-banner [class^='subtitle-'] h2,
+    .hero-cropped-banner [class^='subtitle-'] h3,
+    .hero-cropped-banner [class^='subtitle-'] p,
+    .hero-cropped-banner .subtitle h1,
+    .hero-cropped-banner .subtitle h2,
+    .hero-cropped-banner .subtitle h3,
+    .hero-cropped-banner .subtitle p {
+      text-align: var(--yas-mob-heading-align, left);
+    }
+
+    .hero-cropped-banner .subtitle {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+{%- endstylesheet -%}
+<style>
+  /* Font overrides */
+  {% if section.settings.font_variant == 'custom' %}
+    {%- liquid
+      assign body_font_bold = section.settings.title_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = section.settings.title_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    -%}
+    {{ section.settings.title_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    .hero-cropped-banner :where(h1,h2,h3,h4,h5,h6,p,li,a,span,strong,em,small,button,label,div) {
+      font-family: {{ section.settings.title_font.family }}, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    .hero-cropped-banner .material-symbols-outlined {
+      font-family: "Material Symbols Outlined" !important;
+      line-height: 1;
+      display: inline-block;
+    }
+  {% endif %}
+</style>
+
+<div
+  class="{{ section_prefix_class }}_wrapper {% if section.settings.section_width == 'contained-content' or section.settings.section_width == 'container-fluid' %}outer-padding{% else %}inner-padding{% endif %} {% if section.settings.size == 'small' %}--sm-image{% endif %} {% if section.settings.size == 'medium' %}--mm-image{% endif %} {% if section.settings.size == 'big' %}--big-image{% endif %}"
+  style="
+    --min-height: {{ banner_mobile_size }};
+    --xl-min-height: {{ banner_desktop_size }};
+    {% case section.settings.align_content %}
+      {% when 'center' %}
+      --alignment: center;
+      {% when 'top' %}
+        --alignment: flex-start;
+    {% endcase %}
+    --text-color: {{ section.settings.text_color }};
+    --xl-padding-x: {{ section.settings.padding_x_desk }}px;
+    --xl-padding-y: {{ section.settings.padding_y_desk }}px;
+    --xs-padding-x: {{ section.settings.padding_x_mob }}px;
+    --xs-padding-y: {{ section.settings.padding_y_mob }}px;
+    --bg-color: {{ section.settings.background_color }};
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --xs-display-value: block;
+      {% when 'mobile_only' %}
+        --xs-display-value: block;
+      {% when 'desktop_only' %}
+        --xs-display-value: none;
+    {% endcase %}
+    {% case section.settings.display_on %}
+      {% when 'all' %}
+        --display-value: block;
+      {% when 'mobile_only' %}
+        --display-value: none;
+      {% when 'desktop_only' %}
+        --display-value: block;
+    {% endcase %}
+  "
+>
+  <div
+    class="swiper-container"
+    id="yas-hero-{{ sid }}"
+  >
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div
+          class="swiper-slide"
+          data-idx="{{ forloop.index }}"
+          style="
+            --yas-direction: {% if block.settings.image_position == 'left' %}row{% else %}row-reverse{% endif %};
+            --xs-yas-direction: {% if block.settings.image_positionm == 'top' %}column{% else %}column-reverse{% endif %};
+            --yas-gap: 88px;
+            --yas-pad-x: {{ block.settings.cpadding_x_desk }}px;
+            --yas-pad-y: {{ block.settings.cpadding_y_desk }}px;
+            --yas-radius: {{ block.settings.container_radius }}px;
+            --yas-image-radius: {{ block.settings.image_round }}px;
+            --yas-text-color: {{ block.settings.text_color }};
+            --pointer-background-color: {{ block.settings.pointer_background_color }};
+            --pointer-color: {{ block.settings.pointer_color }};
+            --yas-pad-x-m: {{ block.settings.cpadding_x_mob }}px;
+            --yas-pad-y-m: {{ block.settings.cpadding_y_mob }}px;
+            --yas-bg: {% if block.settings.container_bg %}
+              {{ section.settings.background_color }} url('{{ block.settings.container_bg | img_url: 'x3000' }}') no-repeat center/cover
+            {% else %}transparent{% endif %};
+            --yas-bg-m: {% if block.settings.container_bgm %}
+              {{ section.settings.background_color }} url('{{ block.settings.container_bgm | img_url: 'x1000' }}') no-repeat center/cover
+            {% else %}var(--yas-bg){% endif %};
+            --yas-heading-align: {% case block.settings.heading_align %}{% when 'left' %}left{% when 'center' %}center{% when 'right' %}right{% endcase %};
+            --yas-mob-heading-align: {% case block.settings.mob_heading_align %}{% when 'left' %}left{% when 'center' %}center{% when 'right' %}right{% endcase %};
+            --yas-justify: {% case block.settings.heading_align %}{% when 'left' %}flex-start{% when 'center' %}center{% when 'right' %}flex-end{% else %}flex-start{% endcase %};
+            --yas-heading-transform: {{ block.settings.headline_typography }};
+            --yas-star-color: {{ block.settings.star_color }};
+            --review-star-color: {{ block.settings.review_star_color }};
+            --yas-heading-size:
+            {% case block.settings.heading_size %}
+              {% when 'small' %}
+                28px
+              {% when 'medium' %}
+                40px
+              {% when 'large' %}
+                48px
+            {% endcase %};
+            --yas-heading-size-m:
+            {% case block.settings.heading_size %}
+              {% when 'small' %}
+                20px
+              {% when 'medium' %}
+                32px
+              {% when 'large' %}
+                32px
+            {% endcase %};
+          "
+          {{ block.shopify_attributes }}
+        >
+          <div
+            class="{{ section_prefix_class }}_container-wrapper {% if section.settings.enable_custom_width %}{{ section_prefix_class }}_custom-page-width{% endif %}"
+            style="
+              --custom-width: {{ section.settings.custom_page_width }};
+              {% unless section.settings.section_width == 'page-width' %}
+                background-color:{{ block.settings.slide_bg }};
+              {% endunless %}
+            "
+          >
+            <div class="{{ section_width }}">
+              <div
+                class="{{ section_prefix_class }}_content-wrapper {{ section_prefix_class }}_content-wrapper-{{ forloop.index }} {% if block.settings.hide_image %}hero_img-hide{% endif %}"
+                style="
+                  {% if section_width == 'container' %}
+                    background-color:{{ block.settings.slide_bg }};
+                  {% endif %}
+                "
+              >
+                <div class="wrap_image">
+                  {%- if block.settings.show_image_only == 'all' -%}
+                    {%- if block.settings.image -%}
+                      {%- liquid
+                        assign max_width = block.settings.image.width
+                        if block.settings.image > 1200
+                          assign max_width = 1200
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.image.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.image.alt != blank
+                            echo block.settings.image.alt
+                          elsif block.settings.image.alt == blank
+                            echo 'Hero image'
+                          else
+                            echo block.settings.title
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.image
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          size: sizes_attr,
+                          alt: image_alt,
+                          class: 'img--fit img--desktop'
+                      -}}
+                    {%- else -%}
+                      {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'img--fit img--desktop' -%}
+                    {%- endif -%}
+                    {%- if block.settings.imagem -%}
+                      {%- liquid
+                        assign max_width = block.settings.imagem.width
+                        if block.settings.imagem > 1200
+                          assign max_width = 1200
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.imagem.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.imagem.alt != blank
+                            echo block.settings.imagem.alt
+                          elsif block.settings.imagem.alt == blank
+                            echo 'Hero image'
+                          else
+                            echo block.settings.title
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.imagem
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          size: sizes_attr,
+                          alt: image_alt,
+                          class: 'img--fit img--mob'
+                      -}}
+                    {%- else -%}
+                      {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'img--fit img--mob' -%}
+                    {%- endif -%}
+                  {% endif %}
+                  {%- if block.settings.show_image_only == 'desktop' -%}
+                    {%- if block.settings.image -%}
+                      {%- liquid
+                        assign max_width = block.settings.image.width
+                        if block.settings.image > 1200
+                          assign max_width = 1200
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.image.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.image.alt != blank
+                            echo block.settings.image.alt
+                          elsif block.settings.image.alt == blank
+                            echo 'Hero image'
+                          else
+                            echo block.settings.title
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.image
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          size: sizes_attr,
+                          alt: image_alt,
+                          class: 'img--fit img--desktop'
+                      -}}
+                    {%- else -%}
+                      {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'img--fit img--desktop' -%}
+                    {%- endif -%}
+                  {% endif %}
+                  {%- if block.settings.show_image_only == 'mobile' -%}
+                    {%- if block.settings.imagem -%}
+                      {%- liquid
+                        assign max_width = block.settings.imagem.width
+                        if block.settings.imagem > 1200
+                          assign max_width = 1200
+                        endif
+                        assign image_height = max_width | divided_by: block.settings.imagem.aspect_ratio | round
+
+                        capture image_alt
+                          if block.settings.imagem.alt != blank
+                            echo block.settings.imagem.alt
+                          elsif block.settings.imagem.alt == blank
+                            echo 'Hero image'
+                          else
+                            echo block.settings.title
+                          endif
+                        endcapture
+
+                        capture sizes_attr
+                          echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 59.216vw'
+                        endcapture
+                      -%}
+                      {{-
+                        block.settings.imagem
+                        | image_url: width: max_width
+                        | image_tag:
+                          loading: 'lazy',
+                          width: max_width,
+                          height: image_height,
+                          size: sizes_attr,
+                          alt: image_alt,
+                          class: 'img--fit img--mob'
+                      -}}
+                    {%- else -%}
+                      {%- render 'placeholder-svgs', type: 'hero', index: 1, class: 'img--fit img--mob' -%}
+                    {%- endif -%}
+                  {% endif %}
+                </div>
+                <div class="hero-banner-text-content">
+                  {% if block.settings.uppertitle != blank %}
+                    <div class="uppertitle uppertitle-{{ forloop.index }}">
+                      {{ block.settings.uppertitle }}
+                      <span class="star_span" aria-label="5 out of 5 stars">
+                        {% for i in (1..5) %}
+                          {% render 'star_comparison' %}
+                        {% endfor %}
+                      </span>
+                    </div>
+                  {% endif %}
+
+                  <div class="title title-{{ forloop.index }}">
+                    {% if block.settings.title != blank %}
+                      {% if forloop.first %}
+                        {{ block.settings.title }}
+                      {% else %}
+                        <h2>{{ block.settings.title }}</h2>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+
+                  <div class="subtitle subtitle-{{ forloop.index }}">
+                    {% if block.settings.subtitle != blank %}
+                      {{ block.settings.subtitle }}
+                    {% endif %}
+                  </div>
+
+                  {% if block.settings.point_1_text != blank
+                    or block.settings.point_2_text != blank
+                    or block.settings.point_3_text != blank
+                  %}
+                    <div class="image-with-text-list_desk">
+                      <ul
+                        class="image-with-text-list image-with-text-list-{{ forloop.index }}"
+                        style="--ul-color: {{ block.settings.btext_color }}; --ul-display: {{ block.settings.show_points }};"
+                      >
+                        <li>
+                          {% if block.settings.icon_1 %}
+                            {%- liquid
+                              assign max_width = block.settings.icon_1.width
+                              if block.settings.icon_1 > 24
+                                assign max_width = 24
+                              endif
+                              assign image_height = max_width | divided_by: block.settings.icon_1.aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings.icon_1.alt != blank
+                                  echo block.settings.icon_1.alt
+                                else
+                                  echo 'Point 1 icon'
+                                endif
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings.icon_1
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% elsif block.settings.icon_1_text %}
+                            <span class="material-symbols-outlined">{{ block.settings.icon_1_text }}</span>
+                          {% else %}
+                            {% render 'icon_number_1' %}
+                          {% endif %}
+                          {{ block.settings.point_1_text }}
+                        </li>
+
+                        <li>
+                          {% if block.settings.icon_2 %}
+                            {%- liquid
+                              assign max_width = block.settings.icon_2.width
+                              if block.settings.icon_2 > 24
+                                assign max_width = 24
+                              endif
+                              assign image_height = max_width | divided_by: block.settings.icon_2.aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings.icon_2.alt != blank
+                                  echo block.settings.icon_2.alt
+                                else
+                                  echo 'Point 2 icon'
+                                endif
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings.icon_2
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% elsif block.settings.icon_2_text %}
+                            <span class="material-symbols-outlined">{{ block.settings.icon_2_text }}</span>
+                          {% else %}
+                            {% render 'icon_number_2' %}
+                          {% endif %}
+                          {{ block.settings.point_2_text }}
+                        </li>
+
+                        <li>
+                          {% if block.settings.icon_3 %}
+                            {%- liquid
+                              assign max_width = block.settings.icon_3.width
+                              if block.settings.icon_3 > 24
+                                assign max_width = 24
+                              endif
+                              assign image_height = max_width | divided_by: block.settings.icon_3.aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings.icon_3.alt != blank
+                                  echo block.settings.icon_3.alt
+                                else
+                                  echo 'Point 3 icon'
+                                endif
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings.icon_3
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% elsif block.settings.icon_3_text %}
+                            <span class="material-symbols-outlined">{{ block.settings.icon_3_text }}</span>
+                          {% else %}
+                            {% render 'icon_number_3' %}
+                          {% endif %}
+                          {{ block.settings.point_3_text }}
+                        </li>
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {%- comment -%} Button styles via CSS variables from settings {%- endcomment -%}
+                  {% assign btn_mode = block.settings.setting_btn
+                    | default: block.settings.settging_btn
+                    | default: 'global'
+                  %}
+
+                  {% if btn_mode == 'global' %}
+                    {% assign btn_radius = settings.button_radius %}
+                    {% assign btn_border_w = settings.button_border_size %}
+                    {% assign btn_border_c = settings.button_color_border %}
+                    {% assign btn_bg = settings.button_color %}
+                    {% assign btn_text = settings.button_text_color %}
+                  {% else %}
+                    {% assign btn_radius = block.settings.button_radius %}
+                    {% assign btn_border_w = block.settings.button_border_size %}
+                    {% assign btn_border_c = block.settings.button_border_color %}
+                    {% assign btn_bg = block.settings.button_color %}
+                    {% assign btn_text = block.settings.button_text_color %}
+                  {% endif %}
+
+                  {% if block.settings.button_text %}
+                    <a
+                      {% if block.settings.button_link %}
+                        href="{{ block.settings.button_link }}"
+                      {% endif %}
+                      class="button button-{{ forloop.index }} word--break"
+                      style="
+                        --yas-btn-radius: {{ btn_radius }}px;
+                        --yas-btn-border-w: {{ btn_border_w }}px;
+                        --yas-btn-border-c: {{ btn_border_c }};
+                        --yas-btn-bg: {{ btn_bg }};
+                        --yas-btn-text: {{ btn_text }};
+                      "
+                      aria-label="{{ block.settings.button_text | escape }}"
+                    >
+                      <span>{{ block.settings.button_text }}</span>
+                      {% if block.settings.show_arrow == true %}
+                        {% if block.settings.icon != blank %}
+                          <i class="icon_cart-btns">
+                            {%- liquid
+                              assign max_width = block.settings.icon.width
+                              if block.settings.icon > 150
+                                assign max_width = 150
+                              endif
+                              assign image_height = max_width | divided_by: block.settings.icon.aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings.icon.alt != blank
+                                  echo block.settings.icon.alt
+                                else
+                                  echo 'Icon' | escape
+                                endif
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings.icon
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          </i>
+                        {% elsif block.settings.icon_alt != blank %}
+                          <i class="icon_cart-btns material-symbols-outlined">{{ block.settings.icon_alt }}</i>
+                        {% else %}
+                          <i class="icon_cart-btns">
+                            {% render 'icon_arrow_submit2' %}
+                          </i>
+                        {% endif %}
+                      {% endif %}
+                    </a>
+                  {% endif %}
+
+                  <div class="image-with-text-list_mob">
+                    <ul
+                      class="image-with-text-list image-with-text-list-{{ forloop.index }}"
+                      style="--ul-color: {{ block.settings.btext_color }}; --ul-display: {{ block.settings.show_points }};"
+                    >
+                      <li>
+                        {% if block.settings.icon_1 %}
+                          {%- liquid
+                            assign max_width = block.settings.icon_1.width
+                            if block.settings.icon_1 > 24
+                              assign max_width = 24
+                            endif
+                            assign image_height = max_width | divided_by: block.settings.icon_1.aspect_ratio | round
+
+                            capture image_alt
+                              if block.settings.icon_1.alt != blank
+                                echo block.settings.icon_1.alt
+                              else
+                                echo 'Point 1 icon'
+                              endif
+                            endcapture
+                          -%}
+                          {{-
+                            block.settings.icon_1
+                            | image_url: width: max_width
+                            | image_tag:
+                              loading: 'lazy',
+                              width: max_width,
+                              height: image_height,
+                              alt: image_alt,
+                              class: ''
+                          -}}
+                        {% elsif block.settings.icon_1_text %}
+                          <span class="material-symbols-outlined">{{ block.settings.icon_1_text }}</span>
+                        {% else %}
+                          {% render 'icon_number_1' %}
+                        {% endif %}
+                        {{ block.settings.point_1_text }}
+                      </li>
+
+                      <li>
+                        {% if block.settings.icon_2 %}
+                          {%- liquid
+                            assign max_width = block.settings.icon_2.width
+                            if block.settings.icon_2 > 24
+                              assign max_width = 24
+                            endif
+                            assign image_height = max_width | divided_by: block.settings.icon_2.aspect_ratio | round
+
+                            capture image_alt
+                              if block.settings.icon_2.alt != blank
+                                echo block.settings.icon_2.alt
+                              else
+                                echo 'Point 2 icon'
+                              endif
+                            endcapture
+                          -%}
+                          {{-
+                            block.settings.icon_2
+                            | image_url: width: max_width
+                            | image_tag:
+                              loading: 'lazy',
+                              width: max_width,
+                              height: image_height,
+                              alt: image_alt,
+                              class: ''
+                          -}}
+                        {% elsif block.settings.icon_2_text %}
+                          <span class="material-symbols-outlined">{{ block.settings.icon_2_text }}</span>
+                        {% else %}
+                          {% render 'icon_number_2' %}
+                        {% endif %}
+                        {{ block.settings.point_2_text }}
+                      </li>
+
+                      <li>
+                        {% if block.settings.icon_3 %}
+                          {%- liquid
+                            assign max_width = block.settings.icon_3.width
+                            if block.settings.icon_3 > 24
+                              assign max_width = 24
+                            endif
+                            assign image_height = max_width | divided_by: block.settings.icon_3.aspect_ratio | round
+
+                            capture image_alt
+                              if block.settings.icon_3.alt != blank
+                                echo block.settings.icon_3.alt
+                              else
+                                echo 'Point 3 icon'
+                              endif
+                            endcapture
+                          -%}
+                          {{-
+                            block.settings.icon_3
+                            | image_url: width: max_width
+                            | image_tag:
+                              loading: 'lazy',
+                              width: max_width,
+                              height: image_height,
+                              alt: image_alt,
+                              class: ''
+                          -}}
+                        {% elsif block.settings.icon_3_text %}
+                          <span class="material-symbols-outlined">{{ block.settings.icon_3_text }}</span>
+                        {% else %}
+                          {% render 'icon_number_3' %}
+                        {% endif %}
+                        {{ block.settings.point_3_text }}
+                      </li>
+                    </ul>
+                  </div>
+                  {% assign icons_count = 0 %}
+                  {% capture icons %}
+                    {% for i in (1..7) %}
+                      {% assign key    = 'payment_icon_' | append: i %}
+                      {% assign altkey = 'payment_icon_' | append: i | append: '_alt' %}
+                      {% assign icon   = settings[key] %}
+                      {% if icon %}
+                        {% assign icons_count = icons_count | plus: 1 %}
+                        <li>
+                        {%- liquid
+                          assign max_width = icon.width
+                          if icon > 72
+                              assign max_width = 72
+                          endif
+                          assign image_height = max_width | divided_by: icon.aspect_ratio | round
+        
+                          capture image_alt
+                            if icon.alt != blank
+                              echo icon.alt
+                            elsif icon.alt == blank
+                              echo 'Payment method'
+                            else
+                              echo settings[altkey]
+                            endif
+                          endcapture
+        
+                          capture sizes_attr
+                            echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 4.706vw'
+                          endcapture
+                        -%}
+                        {{-
+                          icon
+                          | image_url: width: max_width
+                          | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: 'payicon'
+                        -}}
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  {% endcapture %}
+                  {% if block.settings.show_payment_icons %}
+                    <ul class="hero_payment-icons common_payment-icns">
+                      {{ icons }}
+                      {%- for type in shop.enabled_payment_types -%}
+                        <li>
+                          {{ type | payment_type_svg_tag }}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {% endif %}
+                  {% if block.settings.review_on == 'on' %}
+                    <div
+                      class="review{% unless block.settings.show_payment_icons %} review-height{% endunless %} {% if block.settings.remove_review_radius %}--no-radius{% endif %}"
+                      role="region"
+                      aria-label="Customer review"
+                      style="--review-bg-color: {{ block.settings.review_bg_color }}; --review-bg-opacity: {{ block.settings.review_bg_opacity | default: 1 }}; --review-text-color: {{ block.settings.review_text_color }}"
+                    >
+                      <div class="review-image desk">
+                        {% if block.settings['review-image'] %}
+                          {%- liquid
+                            assign max_width = block.settings['review-image'].width
+                            if block.settings['review-image'] > 97
+                              assign max_width = 97
+                            endif
+                            assign image_height = max_width | divided_by: block.settings['review-image'].aspect_ratio | round
+
+                            capture image_alt
+                              if block.settings['review-image'].alt != blank
+                                echo block.settings['review-image'].alt
+                              else
+                                echo 'Reviewer photo (desktop)'
+                              endif
+                            endcapture
+
+                            capture sizes_attr
+                              echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 7.608vw'
+                            endcapture
+                          -%}
+                          {{-
+                            block.settings['review-image']
+                            | image_url: width: max_width
+                            | image_tag:
+                              loading: 'lazy',
+                              width: max_width,
+                              height: image_height,
+                              sizes: sizes_attr,
+                              alt: image_alt,
+                              class: ''
+                          -}}
+                        {% else %}
+                          {%- render 'placeholder-svgs', type: 'hero', index: 1, class: '' -%}
+                        {% endif %}
+                      </div>
+
+                      <div class="review-content">
+                        <div class="review-image mob">
+                          {% if block.settings['review-image'] %}
+                            {%- liquid
+                              assign max_width = block.settings['review-image'].width
+                              if block.settings['review-image'] > 97
+                                assign max_width = 97
+                              endif
+                              assign image_height = max_width | divided_by: block.settings['review-image'].aspect_ratio | round
+
+                              capture image_alt
+                                if block.settings['review-image'].alt != blank
+                                  echo block.settings['review-image'].alt
+                                else
+                                  echo 'Reviewer photo (mobile)'
+                                endif
+                              endcapture
+
+                              capture sizes_attr
+                                echo '(max-width: 415px) calc(100vw - 30px), (max-width: 767px) calc(60vw - 30px), (max-width: 1199px) 7.608vw'
+                              endcapture
+                            -%}
+                            {{-
+                              block.settings['review-image']
+                              | image_url: width: max_width
+                              | image_tag:
+                                loading: 'lazy',
+                                width: max_width,
+                                height: image_height,
+                                sizes: sizes_attr,
+                                alt: image_alt,
+                                class: ''
+                            -}}
+                          {% else %}
+                            {%- render 'placeholder-svgs', type: 'hero', index: 1, class: '' -%}
+                          {% endif %}
+                        </div>
+
+                        <div class="review-title">
+                          {{ block.settings['review-title'] }}
+                          <span class="review-st-w" aria-label="5 out of 5 stars">
+                            <span class="star_span">
+                              {% for i in (1..5) %}
+                                {% render 'star_comparison' %}
+                              {% endfor %}
+                            </span>
+                          </span>
+                        </div>
+
+                        <div class="review-text">
+                          {{ block.settings['review-text'] }}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-pagination"></div>
+    {% if section.blocks.size > 1 %}
+      <div class="swiper-b-prev" aria-label="Previous slide">{% render 'arrow-left-hero-svg' %}</div>
+      <div class="swiper-b-next" aria-label="Next slide">{% render 'arrow-right-hero-svg' %}</div>
+    {% endif %}
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var rootSel = '.hero-cropped-banner';
+    var root = document.querySelector(rootSel);
+    if (!root) return;
+
+    var swiper = new Swiper(rootSel + ' .swiper-container', {
+      loop: true,
+      spaceBetween: 30,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      navigation: {
+        nextEl: rootSel + ' .swiper-b-next',
+        prevEl: rootSel + ' .swiper-b-prev',
+      },
+      pagination: {
+        el: rootSel + ' .swiper-pagination',
+        clickable: true,
+      },
+      autoHeight: true,
+      a11y: { enabled: true },
+      keyboard: { enabled: true },
+      watchOverflow: true,
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section hero_banner hero-cropped-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "font_variant",
+      "label": "Font family",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default by theme"
+        },
+        {
+          "value": "custom",
+          "label": "Own choice"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "label": "Regular font",
+      "id": "title_font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "contained-content",
+          "label": "Contained content"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Edge to edge"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_width",
+      "label": "Enable custom page width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "custom_page_width",
+      "label": "Custom page width",
+      "min": 1292,
+      "max": 1600,
+      "step": 4,
+      "default": 1472,
+      "unit": "px",
+      "visible_if": "{{ section.settings.enable_custom_width }}"
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Banner height",
+      "info": "Height difference only becomes visible when the content is reduced",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "big",
+          "label": "Big"
+        }
+      ],
+      "default": "big"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desk",
+      "label": "Horizontal padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desk",
+      "label": "Vertical padding",
+      "info": "for desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mob",
+      "label": "Horizontal padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mob",
+      "label": "Vertical padding",
+      "info": "for mobile",
+      "min": 0,
+      "max": 100,
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "display_on",
+      "label": "Display on",
+      "options": [
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "mobile_only",
+          "label": "Mobile only"
+        },
+        {
+          "value": "desktop_only",
+          "label": "Desktop only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "select",
+      "id": "align_content",
+      "label": "Align content",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Hero-Banner",
+      "name": "Hero Banner",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Header content"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "<h2>A Simple Way to [Desired Outcome] Without [Pain Point]</h2>"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "<h3>Join [#] Happy Customers Already Enjoying [Core Benefit], Backed By Our [USP. Ex. Guarantee, Free Shipping, Expert Formula].</h3>"
+        },
+        {
+          "type": "richtext",
+          "id": "uppertitle",
+          "label": "Uppertitle",
+          "default": "<p>Reviewed by +100 Happy Customers </p>"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Stars color",
+          "default": "#FF8E00"
+        },
+        {
+          "type": "color_background",
+          "id": "slide_bg",
+          "label": "Banner background",
+          "default": "#f7f7f7"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "select",
+          "id": "show_image_only",
+          "label": "Show image on",
+          "options": [
+            {
+              "value": "desktop",
+              "label": "Desktop"
+            },
+            {
+              "value": "mobile",
+              "label": "Mobile"
+            },
+            {
+              "value": "all",
+              "label": "All devices"
+            }
+          ],
+          "default": "all"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_image",
+          "label": "Hide Image to make content full",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image for desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagem",
+          "label": "Image for mobile"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image position desktop",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "select",
+          "id": "image_positionm",
+          "label": "Image position mobile",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ],
+          "default": "top"
+        },
+        {
+          "type": "header",
+          "content": "Container settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "container_bg",
+          "label": "Container background image desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "container_bgm",
+          "label": "Container background image mobile"
+        },
+        {
+          "type": "range",
+          "id": "cpadding_x_desk",
+          "label": "Horizontal container padding",
+          "info": "for desktop",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "default": 120
+        },
+        {
+          "type": "range",
+          "id": "cpadding_y_desk",
+          "label": "Vertical container padding",
+          "info": "for desktop",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "default": 70
+        },
+        {
+          "type": "range",
+          "id": "cpadding_x_mob",
+          "label": "Horizontal container padding",
+          "info": "for mobile",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "cpadding_y_mob",
+          "label": "Vertical container padding",
+          "info": "for mobile",
+          "min": 0,
+          "max": 100,
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "container_radius",
+          "label": "Container corner radius",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "image_round",
+          "label": "Image corner radius",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 30
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "select",
+          "id": "headline_typography",
+          "label": "Headline typography",
+          "options": [
+            {
+              "value": "uppercase",
+              "label": "AA"
+            },
+            {
+              "value": "capitalize",
+              "label": "Aa"
+            },
+            {
+              "value": "lowercase",
+              "label": "aa"
+            }
+          ],
+          "default": "capitalize"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "btext_color",
+          "label": "Points text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "pointer_background_color",
+          "label": "Pointer background color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "pointer_color",
+          "label": "Pointer color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show payment icons",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "heading_align",
+          "label": "Desktop heading alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
+          "id": "mob_heading_align",
+          "label": "Mobile heading alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Numbers icons settings"
+        },
+        {
+          "type": "select",
+          "id": "show_points",
+          "label": "Show points",
+          "options": [
+            {
+              "value": "block",
+              "label": "Show"
+            },
+            {
+              "value": "none",
+              "label": "Hide"
+            }
+          ],
+          "default": "block"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_1",
+          "label": "Icon image for point 1"
+        },
+        {
+          "type": "text",
+          "id": "icon_1_text",
+          "label": "Icon symbol for point 1",
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "point_1_text",
+          "label": "Text for point 1",
+          "default": "Get [Primary Benefit] in just [Timeframe]"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_2",
+          "label": "Icon image for point 2"
+        },
+        {
+          "type": "text",
+          "id": "icon_2_text",
+          "label": "Icon symbol for point 2",
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "point_2_text",
+          "label": "Text for point 2",
+          "default": "Enjoy [Secondary Benefit] without [Common Hassle]"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_3",
+          "label": "Icon image for point 3"
+        },
+        {
+          "type": "text",
+          "id": "icon_3_text",
+          "label": "Icon symbol for point 3",
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "point_3_text",
+          "label": "Text for point 3",
+          "default": "Feel [Emotional Outcome] and finally [End Fear State]"
+        },
+        {
+          "type": "header",
+          "content": "Review settings"
+        },
+        {
+          "type": "select",
+          "id": "review_on",
+          "label": "Review show",
+          "options": [
+            {
+              "value": "on",
+              "label": "On"
+            },
+            {
+              "value": "off",
+              "label": "off"
+            }
+          ],
+          "default": "on"
+        },
+        {
+          "type": "checkbox",
+          "id": "remove_review_radius",
+          "label": "Remove review card border radius",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "review_bg_color",
+          "label": "Review background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "review_star_color",
+          "label": "Review star color",
+          "default": "#FF8E00"
+        },
+        {
+          "type": "range",
+          "id": "review_bg_opacity",
+          "label": "Review background opacity",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "review_text_color",
+          "label": "Review text color",
+          "default": "#111"
+        },
+        {
+          "type": "image_picker",
+          "id": "review-image",
+          "label": "Review image"
+        },
+        {
+          "type": "richtext",
+          "id": "review-title",
+          "label": "Review title",
+          "default": "<h2>Julia Larson</h2>"
+        },
+        {
+          "type": "richtext",
+          "id": "review-text",
+          "label": "Review text",
+          "default": "<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihi quo minus id quod maxime placeat facere possimus<p>"
+        },
+        {
+          "type": "header",
+          "content": "Button settings"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "SHOP NOW"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Button Icon image"
+        },
+        {
+          "type": "text",
+          "id": "icon_alt",
+          "label": "Button Google Icon"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_arrow",
+          "label": "Show arrow button",
+          "default": true
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "setting_btn",
+          "label": "Settings",
+          "options": [
+            {
+              "value": "global",
+              "label": "Global"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "global"
+        },
+        {
+          "type": "range",
+          "id": "button_border_size",
+          "label": "Button border size",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Button border color",
+          "default": "#000"
+        },
+        {
+          "type": "range",
+          "id": "button_radius",
+          "label": "Button corner radius",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 50
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button background",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "Hero-Banner",
+          "settings": {
+            "title": "<h3>A Simple Way to [Desired Outcome] Without [Pain Point]</h3>",
+            "subtitle": "<p>Join [#] happy customers already enjoying [core benefit], backed by our [USP. ex. guarantee, free shipping, expert formula].</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
