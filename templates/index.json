@@ -15,7 +15,7 @@
         "hero_banner_QEEgky": {
           "type": "Hero-Banner",
           "settings": {
-            "title": "<h3>A Simple Way to [Desired Outcome] Without [Pain Point]</h3>",
+            "title": "<h3>A Simple way to [Desired Outcome] Without [Pain Point]</h3>",
             "subtitle": "<p>Join [#] Happy Customers Already Enjoying [Core Benefit], Backed By Our [USP. Ex. Guarantee, Free Shipping, Expert Formula].</p>",
             "uppertitle": "<p>Reviewed by +100 Happy Customers </p>",
             "star_color": "#f28907",
@@ -590,6 +590,7 @@
         "point_KFEUbK",
         "point_EAgXYi"
       ],
+      "disabled": true,
       "name": "Shopable Image",
       "settings": {
         "heading_type": "top",
