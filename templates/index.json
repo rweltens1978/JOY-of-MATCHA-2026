@@ -1072,7 +1072,7 @@
       "settings": {
         "background_color": "rgba(0,0,0,0)",
         "heading_size": "medium",
-        "headline_typography": "capitalize",
+        "headline_typography": "lowercase",
         "font_variant": "default",
         "title_font": "montserrat_n4",
         "title_color": "#020b1e",
@@ -1092,7 +1092,7 @@
         "scroll_speed": 45,
         "auto_scroll": true,
         "uppertitle": "<h3>Based on <strong>89,503</strong> Reviews By Happy Customers</h3>",
-        "title": "<h2>what people are saying...</h2>",
+        "title": "<h2>Wat onze klanten zeggen...</h2>",
         "subtitle": "",
         "card_background": "#ededed",
         "card_border": 0,
