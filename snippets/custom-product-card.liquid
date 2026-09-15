@@ -135,7 +135,7 @@
             </div>
             {% if product_card_product.has_only_default_variant %}
             {% else %}
-                {% capture "form_classes" -%}
+                {% capture form_classes -%}
                     product-form {%- if current_variant.available == false %} product-form--variant-sold-out {%- endif -%}
                 {%- endcapture %}
                 <div method="post" action="/cart/add" id="product_form_{{ product_card_product.id }}" accept-charset="UTF-8" class="product-form" enctype="multipart/form-data" novalidate="novalidate" data-product-form="">
@@ -215,4 +215,13 @@
             {% endif %}
         </div>
     </div>
-</div>
+</div>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{% capture "form_classes" -%}'
+  to: "{% capture form_classes -%}"
+  position: 7732..7759
+{%- endcomment -%}
