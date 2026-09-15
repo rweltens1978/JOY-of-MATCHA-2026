@@ -38,10 +38,7 @@
         assign image_class = 'product__media-item--variant'
       endif
   -%}
-  {{-
-    media.preview_image
-    | image_url: width: max_width
-    | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: image_class, data-media-id: '{{ media.id }}'
+  {{- media.preview_image | image_url: width: max_width | image_tag: data-media-id, loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: image_class | media }}'
   -}}
 {%- else -%}
   {%- if media.media_type == 'model' -%}
@@ -119,3 +116,19 @@
     </deferred-media>
   {%- endif -%}
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {{-
+        media.preview_image
+        | image_url: width: max_width
+        | image_tag: loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt: image_alt, class: image_class, data-media-id: '{{ media.id }}
+  to: "{{- media.preview_image | image_url: width: max_width | image_tag: data-media-id,
+    loading: 'lazy', width: max_width, height: image_height, sizes: sizes_attr, alt:
+    image_alt, class: image_class | media }}"
+  position: 1123..1326
+{% endcomment %}

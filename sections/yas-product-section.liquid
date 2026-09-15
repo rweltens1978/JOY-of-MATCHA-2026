@@ -2539,9 +2539,9 @@
                               if block.settings.photo > 100
                                 assign max_width = 100
                               endif
-                              assign block.settings.photo_height = max_width | divided_by: block.settings.photo.aspect_ratio | round
+                              assign renamed_variable_block_2e_settings_2e_photo_height = max_width | divided_by: block.settings.photo.aspect_ratio | round
 
-                              capture block.settings.photo_alt
+                              capture renamed_variable_block_2e_settings_2e_photo_alt
                                 if block.settings.photo.alt != blank
                                   echo block.settings.photo.alt
                                 else
@@ -2748,9 +2748,9 @@
                                 if block.settings.pack_image > 200
                                   assign max_width = 200
                                 endif
-                                assign block.settings.pack_image_height = max_width | divided_by: block.settings.pack_image.aspect_ratio | round
+                                assign renamed_variable_block_2e_settings_2e_pack_image_height = max_width | divided_by: block.settings.pack_image.aspect_ratio | round
 
-                                capture block.settings.pack_image_alt
+                                capture renamed_variable_block_2e_settings_2e_pack_image_alt
                                   if block.settings.pack_image.alt != blank
                                     echo block.settings.pack_image.alt
                                   else
@@ -2810,9 +2810,9 @@
                                 if block.settings.pack_image_2 > 200
                                   assign max_width = 200
                                 endif
-                                assign block.settings.pack_image_2_height = max_width | divided_by: block.settings.pack_image_2.aspect_ratio | round
+                                assign renamed_variable_block_2e_settings_2e_pack_image_2_height = max_width | divided_by: block.settings.pack_image_2.aspect_ratio | round
 
-                                capture block.settings.pack_image_2_alt
+                                capture renamed_variable_block_2e_settings_2e_pack_image_2_alt
                                   if block.settings.pack_image_2.alt != blank
                                     echo block.settings.pack_image_2.alt
                                   else
@@ -2872,9 +2872,9 @@
                                 if block.settings.pack_image_3 > 200
                                   assign max_width = 200
                                 endif
-                                assign block.settings.pack_image_3_height = max_width | divided_by: block.settings.pack_image_3.aspect_ratio | round
+                                assign renamed_variable_block_2e_settings_2e_pack_image_3_height = max_width | divided_by: block.settings.pack_image_3.aspect_ratio | round
 
-                                capture block.settings.pack_image_3_alt
+                                capture renamed_variable_block_2e_settings_2e_pack_image_3_alt
                                   if block.settings.pack_image_3.alt != blank
                                     echo block.settings.pack_image_3.alt
                                   else
@@ -5387,3 +5387,42 @@
     }
   });
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "                              assign block.settings.photo_height = max_width
+    | divided_by: block.settings.photo.aspect_ratio | round"
+  to: "                              assign renamed_variable_block_2e_settings_2e_photo_height
+    = max_width | divided_by: block.settings.photo.aspect_ratio | round"
+  position: 119924..120079
+- from: "                              capture block.settings.photo_alt"
+  to: "                              capture renamed_variable_block_2e_settings_2e_photo_alt"
+  position: 120081..120166
+- from: "                                assign block.settings.pack_image_height =
+    max_width | divided_by: block.settings.pack_image.aspect_ratio | round"
+  to: "                                assign renamed_variable_block_2e_settings_2e_pack_image_height
+    = max_width | divided_by: block.settings.pack_image.aspect_ratio | round"
+  position: 130973..131140
+- from: "                                capture block.settings.pack_image_alt"
+  to: "                                capture renamed_variable_block_2e_settings_2e_pack_image_alt"
+  position: 131142..131234
+- from: "                                assign block.settings.pack_image_2_height
+    = max_width | divided_by: block.settings.pack_image_2.aspect_ratio | round"
+  to: "                                assign renamed_variable_block_2e_settings_2e_pack_image_2_height
+    = max_width | divided_by: block.settings.pack_image_2.aspect_ratio | round"
+  position: 134347..134518
+- from: "                                capture block.settings.pack_image_2_alt"
+  to: "                                capture renamed_variable_block_2e_settings_2e_pack_image_2_alt"
+  position: 134520..134614
+- from: "                                assign block.settings.pack_image_3_height
+    = max_width | divided_by: block.settings.pack_image_3.aspect_ratio | round"
+  to: "                                assign renamed_variable_block_2e_settings_2e_pack_image_3_height
+    = max_width | divided_by: block.settings.pack_image_3.aspect_ratio | round"
+  position: 137743..137914
+- from: "                                capture block.settings.pack_image_3_alt"
+  to: "                                capture renamed_variable_block_2e_settings_2e_pack_image_3_alt"
+  position: 137916..138010
+{% endcomment %}

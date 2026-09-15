@@ -13,5 +13,21 @@
 {% assign nstorefront= "document.getElementsByTagName('head')[0].appendChild(eventsListenerScript);})" %}
 {% if template == 'cart' %}{{ content_for_header | replace: 'src=', 'data-src=' | replace: domcontentloadeda, startasyncLoadinga  | replace: domcontentloaded, startasyncLoading | replace: rapp, napp  | replace: rappload, nappload }}
 {% else %} 
-{{ content_for_header | replace: ' defer="defer" ', ' type="lazyload2" | replace: 'src=', 'data-src=' | replace: domcontentloadeda, startasyncLoadinga  | replace: domcontentloaded, startasyncLoading | replace: rapp, napp  | replace: rappload, nappload | replace: rstorefrontload, nstorefrontload | replace: rstorefront, nstorefront }}{% endif %}
-<script>var trekkie=[];trekkie.integrations=!0;</script>
+{{ content_for_header | replace: ' defer="defer" ', ' type="lazyload2" | replace: ' | replace: domcontentloadeda, startasyncLoadinga | replace: domcontentloaded, startasyncLoading | replace: rapp, napp | replace: rappload, nappload | replace: rstorefrontload, nstorefrontload | replace: rstorefront, nstorefront }}{% endif %}
+<script>var trekkie=[];trekkie.integrations=!0;</script>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{{ content_for_header | replace: '' defer="defer" '', '' type="lazyload2"
+    | replace: ''src='', ''data-src='' | replace: domcontentloadeda, startasyncLoadinga  |
+    replace: domcontentloaded, startasyncLoading | replace: rapp, napp  | replace:
+    rappload, nappload | replace: rstorefrontload, nstorefrontload | replace: rstorefront,
+    nstorefront }}'
+  to: '{{ content_for_header | replace: '' defer="defer" '', '' type="lazyload2" |
+    replace: '' | replace: domcontentloadeda, startasyncLoadinga | replace: domcontentloaded,
+    startasyncLoading | replace: rapp, napp | replace: rappload, nappload | replace:
+    rstorefrontload, nstorefrontload | replace: rstorefront, nstorefront }}'
+  position: 2264..2578
+{%- endcomment -%}
